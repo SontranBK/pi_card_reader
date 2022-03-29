@@ -1,9 +1,29 @@
+"""""""""""""""""
+1) before you start lauching following commands, do this 
+when you flash Raspberry Pi Ubuntu SD Card:
+"""""""""""""""""
+sudo nano /boot/firmware/config.txt
+Identify the following line:
+
+dtoverlay=vc4-kms-v3d
+and change it to:
+
+dtoverlay=vc4-fkms-v3d
+
+"""""""""""""""""
+2) Now run those command to install dependencies:
+"""""""""""""""""
 cd ~
 sudo apt install --assume-yes chromium-browser
+cd ~
 sudo apt install python3-pip
+cd ~
 sudo pip install pyserial
+cd ~
 sudo python3 -m pip install firebase-admin
+cd ~
 sudo apt install linux-modules-extra-raspi
+cd ~
 sudo apt-get install minicom
 sudo minicom -s
 
