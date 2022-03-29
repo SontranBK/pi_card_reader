@@ -1,0 +1,32 @@
+cd ~
+sudo apt install --assume-yes chromium-browser
+sudo apt install python3-pip
+sudo pip install pyserial
+sudo python3 -m pip install firebase-admin
+sudo apt install linux-modules-extra-raspi
+sudo apt-get install minicom
+sudo minicom -s
+
+""""""""""""""""""
+""""""""""""""""""
+Run minicom with sudo minicom -s, go to "Serial port setup" 
+Change the first line to /dev/ttyUSB0.
+Save config as default with "Save setup as dfl". 
+Restart your Pi
+""""""""""""""""""
+""""""""""""""""""
+
+### use lsusb to check vendor and product id
+sudo modprobe usbserial vendor=1a86 product=7532
+
+cd ~
+sudo snap install flutter --classic
+sudo flutter doctor -v
+cd ~
+cd reader_pi_display/
+sudo flutter config --enable-web
+sudo flutter create --platforms=web-server .
+sudo flutter pub add firebase_messaging
+sudo flutter pub upgrade firebase_messaging
+sudo flutter run -d web-server
+
