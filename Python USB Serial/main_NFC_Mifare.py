@@ -1,3 +1,4 @@
+# flutter run -d web-server --web-hostname 127.0.0.1 --web-port 8989
 #!/usr/bin/python3
 import codecs
 import time
@@ -71,10 +72,16 @@ def main():
 	ses.headers.update({
 		'Content-Type': 'application/json'})
 
+	with open('C:/Users/ThienNV/Downloads/API_TOKEN.txt') as f:
+		MY_TOKEN = f.read()
+
+	print (f"Token received form file: {MY_TOKEN}, type: {type({MY_TOKEN})}")
+
 	# define token FCM
-	MY_TOKEN = 'f8bZE_OfMkFxTvgycZmFT2:APA91bGInTqLi0ki6G0yzrDcvQ7ZfFRAG0lLnomoRP16U65Fo7VPFHZVVFhD9pI4v_hYTNeZ3iWOMUZO7nX7yVd5M915SpPdqihZGbM_B-KobMdYJwmM1psdX72PNCcIrmDvI7pHqvRs'
+	#MY_TOKEN = 'f8bZE_OfMkFxTvgycZmFT2:APA91bGInTqLi0ki6G0yzrDcvQ7ZfFRAG0lLnomoRP16U65Fo7VPFHZVVFhD9pI4v_hYTNeZ3iWOMUZO7nX7yVd5M915SpPdqihZGbM_B-KobMdYJwmM1psdX72PNCcIrmDvI7pHqvRs'
 
 	print("Start reading !!!!!!!!!")
+	send_all('Start','Start using NFC reader',MY_TOKEN) # send infomation to User interface
 	# MAIN LOOP
 	while (True): 
 		#print(f"write to the card: {hex(int.from_bytes(READKEYcommand,byteorder='big'))}")
@@ -133,7 +140,7 @@ def main():
 						  
 					body = student_name + ' | ' + student_id + ' | '  + class_name + ' | ' + school_name + ' | ' + timeSentToUI + ' | ' + id_card
 
-					send_all('test mess from Son',body,MY_TOKEN) # send infomation to User interface
+					send_all('NFC_card_info',body,MY_TOKEN) # send infomation to User interface
 					time.sleep(3.2)
 
 
