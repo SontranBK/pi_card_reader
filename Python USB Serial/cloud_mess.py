@@ -37,18 +37,21 @@ def main():
     cred = credentials.Certificate('service-account.json')
     default_app = firebase_admin.initialize_app(cred)
     
-    MY_TOKEN = 'c4lKtm9mNAS-mWecWYGAp8:APA91bEAH3leGVYpByPi9wC5-cBeI_k-EmT6P3ZkPKiDBIwVlyNG0BmX3VdxMLdzUillcqNs9prTGIHYjgQeIyBOp-yfergkSy7K80Yyri_m4PaohTL_LugJIOKUG3GNtRmbIQ2DRcZp'
 
-    name = 'Tran Van A'
-    student_class = '71A'
-    student_id = '0013719878'
-    current_time = datetime.now().strftime('%H:%M:%S')
-    current_date = date.today().strftime('%d/%m/%Y')
+    with open('C:/Users/ThienNV/Downloads/API_TOKEN.txt') as f:
+        MY_TOKEN = f.read()
+
+    student_name = 'Tran Van A'
+    student_id = '0001_22_672'
+    class_name = '7A1'
+    school_name = "High School"
+    timeSentToUI = datetime.now().strftime('%H:%M:%S') + ', ' + date.today().strftime('%d/%m/%Y')
+    id_card = "0012071984"
 
     
-    body = name + ' | ' + student_class + ' | ' + student_id + ' | ' + current_time + ', ' + current_date
+    body = student_name + ' | ' + student_id + ' | '  + class_name + ' | ' + school_name + ' | ' + timeSentToUI + ' | ' + id_card
     while (True):       
-        send_all('test mess from Son',body,MY_TOKEN)
+        send_all('NFC_card_info',body,MY_TOKEN) # send infomation to User interface
         time.sleep(10)
 
 if __name__ == "__main__":
