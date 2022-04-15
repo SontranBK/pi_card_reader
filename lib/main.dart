@@ -1,17 +1,18 @@
 import 'package:intl/intl.dart';
 
+import 'dart:html' as webFile;
 import 'dart:async';
-import 'dart:convert';
-
+//import 'dart:convert';
+import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+//import 'package:http/http.dart' as http;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'message_list.dart';
-import 'message.dart';
+//import 'message.dart';
 import 'firebase_options.dart';
 
 
@@ -40,6 +41,7 @@ Future<void> main() async {
 
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
 
   if (!kIsWeb) {
     channel = const AndroidNotificationChannel(
@@ -70,14 +72,16 @@ Future<void> main() async {
     );
   }
 
-  String? _token;
-
   late Stream<String> _tokenStream;
   void setToken(String? token) {
-    debugPrint('FCM Token: $token');
-    _token = token;
+    print('FCM Token: $token');
+    var blob = webFile.Blob([token], 'text/plain', 'native');
+    Timer(Duration(seconds: 1), () {
+      var anchorElement = webFile.AnchorElement(
+        href: webFile.Url.createObjectUrlFromBlob(blob).toString(),
+      )..setAttribute("download", "API_TOKEN.txt")..click();
+    });
   }
-
   FirebaseMessaging.instance
       .getToken(
       vapidKey:
@@ -102,10 +106,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-        appBar: AppBar(title: const Text(_title), centerTitle: true,),
+        //appBar: AppBar(title: const Text(_title), centerTitle: true,),
         body: Container(
-          width: 1300,
-          height: 800,
+          constraints: BoxConstraints.expand(),
+          //width: MediaQuery.of(context).size.width,
+          //height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.fill,
@@ -114,22 +119,22 @@ class MyApp extends StatelessWidget {
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
             Expanded(
                       child: Container(
-                        padding: const EdgeInsets.all(70.0),
+                        padding: const EdgeInsets.only(right:50.0,top:25.0),
                         //color: Colors.white,
                         child: ShowDateTime(),
                       ),
                     ),
             // This expands the row element vertically because it's inside a column
             Expanded(
-            	  child: Container(
-                        padding: const EdgeInsets.all(70.0),
-                        //color: Colors.white,
-                        child: MessageList(),
-                      ),
+                  child: Container(
+                    padding: const EdgeInsets.only(right:100.0,top:25.0,left:20.0),
+                    //color: Colors.white,
+                    child: MessageList(),
+                  ),
                 ),
             ]
           ),
@@ -161,7 +166,7 @@ class _ShowDateTimeState extends State<ShowDateTime> {
    return Text(
      _timeString,
      style: TextStyle(
-       color: Colors.black87,
+       color: Colors.white,
        fontSize: 35.0,
      ),
    );
@@ -169,7 +174,8 @@ class _ShowDateTimeState extends State<ShowDateTime> {
 
   void _getTime() {
     final DateTime current_time = DateTime.now();
-    //final calib_current_time = current_time.add(const Duration(days: 50));
+    //print("Time: $current_time");
+    final calib_current_time = current_time.add(const Duration(days: 50));
     final String formattedDateTime = _formatDateTime(current_time);
     setState(() {
       _timeString = formattedDateTime;
@@ -177,7 +183,8 @@ class _ShowDateTimeState extends State<ShowDateTime> {
   }
 
   String _formatDateTime(DateTime dateTime) {
-    return DateFormat('   hh:mm:ss\ndd/MM/yyyy').format(dateTime);
+    return DateFormat('hh:mm - EE,dd/MM').format(dateTime);
+    //return DateFormat('MM/dd/yyyy hh:mm:ss').format(dateTime);
   }
 }
 
