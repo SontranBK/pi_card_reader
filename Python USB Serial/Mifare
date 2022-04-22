@@ -1,0 +1,27 @@
+// Test for reader Circle CIR315 Dual & 1S PICC 0
+// Example Script for Contactless Mifare card
+// Need following steps: Load keys (82), authenticate (86)
+// Then: read (b1) or write (d7) to each block
+
+// Wait for detected card before running script
+.WAITFORCARD
+// Number of script iterations (1 iteration here)
+.ITERATIONS: 1
+// Connect card using T=1 protocol
+.CONNECTT1
+// Send APDU commands (Format: command # [optional return bytes] response)
+
+//Load Authentication Key (Key Index 0)
+ff 82 00 00 06 ff ff ff ff ff ff#90 00
+//Authenticate (Block 4, Key Type A, Key Index 0)
+ff 86 00 00 05 01 00 04 60 00#90 00
+
+
+// Set Value Block 5 to 5
+ff d7 00 05 05 00 00 00 00 05#90 00
+// Read Value in Block 5
+ff b1 00 05 00#00 00 00 05 90 00
+// Set Value Block 4 to 4
+ff d7 00 04 05 00 00 00 00 04#90 00
+// Read Value in Block 5
+ff b1 00 04 00#00 00 00 05 90 00
