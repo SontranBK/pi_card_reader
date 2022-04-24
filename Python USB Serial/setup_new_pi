@@ -38,6 +38,10 @@ Restart your Pi
 
 ### use lsusb to check vendor and product id
 sudo modprobe usbserial vendor=1a86 product=7532
+### For some reason, some reader need to add 0x in font of id, eg:
+sudo modprobe usbserial vendor=0x31aa product=0x3000
+### Then use following line to check if ports are open:
+sudo python3 -m serial.tools.list_ports
 
 cd ~
 sudo snap install flutter --classic
