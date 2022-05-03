@@ -10,8 +10,15 @@ and change it to:
 
 dtoverlay=vc4-fkms-v3d
 
+
 """""""""""""""""
-2) Now run those command to install dependencies:
+2) Initialize operating system and source code
+"""""""""""""""""
+install setting for Ubuntu system, set user name to "Meta_edu"
+download this source code from github and put it in "home" folder
+
+"""""""""""""""""
+3) Now run those command to install dependencies:
 """""""""""""""""
 cd ~
 sudo apt install --assume-yes chromium-browser
@@ -54,3 +61,16 @@ sudo flutter pub add firebase_messaging
 sudo flutter pub upgrade firebase_messaging
 sudo flutter run -d web-server
 
+
+"""""""""""""""""
+4) Make system auto-boot and auto-config 
+"""""""""""""""""
+click "show application" or "activities", type in "Startup Application" and open it, then click "Add", then set:
+- Name: terminal
+- Command: /user/bin/gnome-terminal.real
+
+now right-click Terminal and open Preferences: 
+- add Profiles named "Meta_edu" and click down arrow, then choose "Set as default"
+- now navigate to "Command" tab in profile "Meta_edu", choose both "Run command as a login shell" and "Run custom command instead of my shell"
+- add line "sh ./auto_boot.sh" to Custom command
+- if possible, in "Text" tab, set "Initial terminal size" to 100 columns and 100 rows
