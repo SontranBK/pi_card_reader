@@ -78,3 +78,5 @@ now right-click Terminal and open Preferences:
 
 then, install "Autohide Downloads Bar" extension for chromium here (https://chrome.google.com/webstore/detail/autohide-downloads-bar/iaefpjibipfaofmigecedfapfgplmplo)
 and set "Delay Timer" of this extension to 0.
+
+then, go to Chromium setting (chrome://settings/content/notifications), in "Allowed to send notifications" part, add link: http://localhost:41200
