@@ -1,7 +1,9 @@
+# flutter run -d web-server --web-hostname 127.0.0.1 --web-port 8989
 #!/usr/bin/python3
-import codecs
+
 import sys
 sys.path.append('./.local/lib/python3.9/site-packages')
+import codecs
 import time
 import serial
 from requests import Session
@@ -17,6 +19,7 @@ REQAcommand.append(0x00) # LEN-H
 REQAcommand.append(0x01) # LEN-L
 REQAcommand.append(0x21) # REQA CMD
 REQAcommand.append(0x20) # LRC
+
 
 READKEYcommand = bytearray()
 READKEYcommand.append(0x02) # STX
@@ -72,10 +75,14 @@ def main():
 	ses.headers.update({
 		'Content-Type': 'application/json'})
 
-	# define token FCM
-	MY_TOKEN = 'ctvak9Hmfs_f-CVn-gjem-:APA91bFca2HNCLBF-nYz3y9mNHVU4482xWs4PDCZU4K1q9KvREF46l2VOB9Y0dUuYD8bLvt-52cV6JWamQZtg4n7jvQ6pOh9Ie9cRf81cGbkpBIy8ylFPndigasy4lU4izkzsDPFbFV2'
+	with open('/home/thien-nv/Downloads/API_TOKEN.txt') as f:
+		MY_TOKEN = f.read()
+
+	print (f"Token received form file: {MY_TOKEN}, type: {type({MY_TOKEN})}")
+
 
 	print("Start reading !!!!!!!!!")
+	send_all('Start','Start using NFC reader',MY_TOKEN) # send infomation to User interface
 	# MAIN LOOP
 	while (True): 
 		#print(f"write to the card: {hex(int.from_bytes(READKEYcommand,byteorder='big'))}")
@@ -89,8 +96,9 @@ def main():
 		#print(f"hexa read: {in_hex}")
 		if in_hex[2:9] == '2001500':
 			print("READ KEY command succeded")
-			#print(f"hexaread {in_hex}")
-			#print(f"hexaread 17:-2 {in_hex[17:-2]}")
+			print(f"hexaread {in_hex}")
+			#print(f"hexaread 2:9 {in_hex[2:9]}")
+			print(f"hexaread 17:-2 {in_hex[17:-2]}")
 			binary_str = codecs.decode(in_hex[17:-2], "hex")
 			id_card = str(binary_str,'utf-8')
 			print(f"ASCII code: {id_card}")
@@ -108,7 +116,7 @@ def main():
 						"checkingTime": timeSentToServer,
 						"cardNo": id_card,}
 				res = ses.post(server + '/api/self-attendances/checking', json=postData, auth=('user', 'user'))
-				#print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
+				print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
 
 				received_string = res.text
 				#print(received_string[received_string.index("errorCode")+12:received_string.index("errorMessage")-3])
@@ -132,8 +140,8 @@ def main():
 						  
 					body = student_name + ' | ' + student_id + ' | '  + class_name + ' | ' + school_name + ' | ' + timeSentToUI + ' | ' + id_card
 
-					send_all('test mess from Son',body,MY_TOKEN) # send infomation to User interface
-					time.sleep(3)
+					send_all('NFC_card_info',body,MY_TOKEN) # send infomation to User interface
+					time.sleep(3.2)
 
 
 if __name__ == "__main__":
