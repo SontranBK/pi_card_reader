@@ -17,6 +17,7 @@ dtoverlay=vc4-fkms-v3d
 install setting for Ubuntu system, set user name to "Meta_edu"
 download this source code from github and put it in "home" folder
 
+
 """""""""""""""""
 3) Now run those command to install dependencies:
 """""""""""""""""
@@ -74,3 +75,6 @@ now right-click Terminal and open Preferences:
 - now navigate to "Command" tab in profile "Meta_edu", choose both "Run command as a login shell" and "Run custom command instead of my shell"
 - add line "sh ./auto_boot.sh" to Custom command
 - if possible, in "Text" tab, set "Initial terminal size" to 100 columns and 100 rows
+
+then, install "Autohide Downloads Bar" extension for chromium here (https://chrome.google.com/webstore/detail/autohide-downloads-bar/iaefpjibipfaofmigecedfapfgplmplo)
+and set "Delay Timer" of this extension to 0.
