@@ -14,7 +14,7 @@ dtoverlay=vc4-fkms-v3d
 """""""""""""""""
 2) Initialize operating system and source code
 """""""""""""""""
-install setting for Ubuntu system, set user name to "Meta_edu"
+install setting for Ubuntu system, set user name to "Meta_edu", password to 1
 download this source code from github and put it in "home" folder
 change the name of main folder to "pi_card_reader"
 
