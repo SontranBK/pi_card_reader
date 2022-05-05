@@ -66,7 +66,7 @@ sudo flutter pub upgrade
 """""""""""""""""
 4) Make system auto-boot and auto-config 
 """""""""""""""""
-click "show application" or "activities", type in "Startup Application" and open it, then click "Add", then set:
+4.1) Click "show application" or "activities", type in "Startup Application" and open it, then click "Add", then set:
 - Name: terminal
 - Command: /user/bin/gnome-terminal.real
 
@@ -76,7 +76,8 @@ now right-click Terminal and open Preferences:
 - add line "sh ./pi_card_reader/Bash_Script/auto_boot.sh" to Custom command
 - if possible, in "Text" tab, set "Initial terminal size" to 100 columns and 100 rows
 
-then, install "Autohide Downloads Bar" extension for chromium here (https://chrome.google.com/webstore/detail/autohide-downloads-bar/iaefpjibipfaofmigecedfapfgplmplo)
+4.2) Install "Autohide Downloads Bar" extension for chromium here (https://chrome.google.com/webstore/detail/autohide-downloads-bar/iaefpjibipfaofmigecedfapfgplmplo)
 and set "Delay Timer" of this extension to 0.
 
-then, go to Chromium setting (chrome://settings/content/notifications), in "Allowed to send notifications" part, add link: http://localhost:41200
+4.3) Go to Chromium setting (chrome://settings/content/notifications), in "Allowed to send notifications" part, add link: http://localhost:41200
+4.4) Go to Setting (of Ubuntu) => Appearance => Enable "Auto-hide the Dock"
