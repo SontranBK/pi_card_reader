@@ -87,6 +87,12 @@ and set "Delay Timer" of this extension to 0.
 """""""""""""""""
 5) Change the apperance of Ubuntu, make our product commercialized  
 """""""""""""""""
-5.1) Bootup apperance
-Install plymouth with following command:
+5.1) Bootup apperance: Install plymouth with following command:
 
+cd ~
+sudo apt install plymouth-themes
+cd ~
+sudo cp pi_card_reader/Ubuntu_Bootup_Modification/bgrt-fallback.png /usr/share/plymouth/themes/spinner
+cd ~
+sudo cp pi_card_reader/Ubuntu_Bootup_Modification/watermark.png /usr/share/plymouth/themes/spinner
+reboot
