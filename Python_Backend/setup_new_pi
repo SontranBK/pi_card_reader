@@ -81,3 +81,12 @@ and set "Delay Timer" of this extension to 0.
 
 4.3) Go to Chromium setting (chrome://settings/content/notifications), in "Allowed to send notifications" part, add link: http://localhost:41200
 4.4) Go to Setting (of Ubuntu) => Appearance => Enable "Auto-hide the Dock"
+
+
+
+"""""""""""""""""
+5) Change the apperance of Ubuntu, make our product commercialized  
+"""""""""""""""""
+5.1) Bootup apperance
+Install plymouth with following command:
+
