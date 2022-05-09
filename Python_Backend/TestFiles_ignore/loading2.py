@@ -1,6 +1,7 @@
 
 from tkinter import Tk, Label
 from time import sleep
+import time
 
 class Loading:
     def __init__(self):
@@ -8,9 +9,10 @@ class Loading:
         self.root.config(bg = "black")
         self.root.title("Custom Loader")
         self.root.attributes("-fullscreen", True)
-        self.totaltime = 210
+        self.time_to_run = 171                                                                                                                                                                      
+        self.totaltime = self.time_to_run / 2.3                               
         # Loading text
-        Label(self.root, text = "Đang khởi tạo chương trình... Vui lòng đợi và theo dõi thanh tiến độ", font = "Bahnschrift 15", bg= "black", fg ="#FFBD09").place(x=490, y=320)
+        Label(self.root, text = "Khởi tạo chương trình... Vui lòng đợi", font = "Bahnschrift 15", bg= "black", fg ="#FFBD09").place(x=490, y=320)
         
         #Loading block
         for i in range(20):
@@ -24,17 +26,19 @@ class Loading:
         self.root.mainloop()
     #loader animation
     def play_animation(self):
-        for i in range(self.totaltime+1):
+        for i in range(int(self.totaltime+1.0)):
+            start = time.time()
             for j in range(20):
                 #make block yellow:
                 Label(self.root, bg="#7FFF00",width=2, height=1).place(x=(j+22)*22, y = 350)
-                sleep(0.05)
+                sleep(0.01)
                 self.root.update_idletasks()
                 #make block dark:
                 Label(self.root, bg="#ECECEC", width=2, height=1).place(x=(j + 22)*22,y=350)
             Rate =round((i+1)*100/self.totaltime,2)
             Label(self.root,text='Tiến độ khởi tạo: '+str(Rate)+'%', font = "Bahnschrift 15", bg= "black", fg ="#FFBD09").place(x=490, y=380)
-
+            end = time.time()
+            print(end-start)
         else:
             sleep(1)
             #for i in range(20):
