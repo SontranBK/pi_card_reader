@@ -8,9 +8,9 @@ class Loading:
         self.root.config(bg = "black")
         self.root.title("Custom Loader")
         self.root.attributes("-fullscreen", True)
-        self.totaltime = 300
+        self.totaltime = 210
         # Loading text
-        Label(self.root, text = "Loading...", font = "Bahnschrift 15", bg= "black", fg ="#FFBD09").place(x=490, y=320)
+        Label(self.root, text = "Đang khởi tạo chương trình... Vui lòng đợi và theo dõi thanh tiến độ", font = "Bahnschrift 15", bg= "black", fg ="#FFBD09").place(x=490, y=320)
         
         #Loading block
         for i in range(20):
@@ -33,7 +33,7 @@ class Loading:
                 #make block dark:
                 Label(self.root, bg="#ECECEC", width=2, height=1).place(x=(j + 22)*22,y=350)
             Rate =round((i+1)*100/self.totaltime,2)
-            Label(self.root,text='Progress:'+str(Rate)+'%', font = "Bahnschrift 15", bg= "black", fg ="#FFBD09").place(x=490, y=380)
+            Label(self.root,text='Tiến độ khởi tạo: '+str(Rate)+'%', font = "Bahnschrift 15", bg= "black", fg ="#FFBD09").place(x=490, y=380)
 
         else:
             sleep(1)
