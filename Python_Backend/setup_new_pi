@@ -33,6 +33,8 @@ sudo python3 -m pip install firebase-admin
 cd ~
 sudo apt install linux-modules-extra-raspi
 cd ~
+sudo apt-get install python3-tk
+cd ~
 sudo apt-get install minicom
 sudo minicom -s
 
