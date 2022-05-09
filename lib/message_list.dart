@@ -24,20 +24,59 @@ class _MessageList extends State<MessageList> {
 
 
       print(bodyOfNoti);
-      if (titleOfNoti == 'Start') {
+      if (titleOfNoti == 'Start: Start using NFC reader') {
         showDialog(
             context: context,
             builder: (context) {
-              Future.delayed(Duration(seconds: 5), () {
+              Future.delayed(Duration(seconds: 10), () {
                 Navigator.of(context).pop(true);
               });
               return AlertDialog(
-                title: Text('Bắt đầu đọc thẻ',
+                title: Text(bodyOfNoti,
                   style: TextStyle(color: Colors.blue,
                       fontSize: 30,
                       fontWeight: FontWeight.bold),
                 ),
                 content: Text('Quá trình khởi động hoàn tất\nBắt đầu đọc thẻ NFC'),
+              );
+            }
+        );
+      }
+      
+      if (titleOfNoti == 'Error: Reader not connected') {
+        showDialog(
+            context: context,
+            builder: (context) {
+              Future.delayed(Duration(seconds: 10), () {
+                Navigator.of(context).pop(true);
+              });
+              return AlertDialog(
+                title: Text(bodyOfNoti,
+                  style: TextStyle(color: Colors.blue,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold),
+                ),
+                content: Text('LOI: khong the ket noi voi dau doc\nKiem tra lai dau doc'),
+              );
+            }
+        );
+      }
+      
+      
+      if (titleOfNoti == 'Error: Lost connection to OCD server') {
+        showDialog(
+            context: context,
+            builder: (context) {
+              Future.delayed(Duration(seconds: 10), () {
+                Navigator.of(context).pop(true);
+              });
+              return AlertDialog(
+                title: Text(bodyOfNoti,
+                  style: TextStyle(color: Colors.blue,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold),
+                ),
+                content: Text('LOI: Khong the ket noi den server\n'),
               );
             }
         );

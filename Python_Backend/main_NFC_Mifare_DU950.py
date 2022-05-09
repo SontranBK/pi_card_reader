@@ -35,26 +35,29 @@ READKEYcommand.append(0x3d) # LRC
 
 
 def send_all(title,body,FCM_token):
-	# [START send_all]
-	# Create a list containing up to 500 messages.
-	messages = [
-	messaging.Message(
-	    notification=messaging.Notification(title, body),
-	    token=FCM_token,
-	),
+	try:
+		# [START send_all]
+		# Create a list containing up to 500 messages.
+		messages = [
+		messaging.Message(
+			notification=messaging.Notification(title, body),
+			token=FCM_token,
+		),
 
-	#messaging.Message(
-	#    notification=messaging.Notification('Price drop', '2% off all books'),
-	#    topic='readers-club',
-	#),
+		#messaging.Message(
+		#    notification=messaging.Notification('Price drop', '2% off all books'),
+		#    topic='readers-club',
+		#),
 
-	]
+		]
 
-	response = messaging.send_all(messages)
-	# See the BatchResponse reference documentation
-	# for the contents of response.
-	print('{0} messages were sent successfully'.format(response.success_count))
-	# [END send_all]
+		response = messaging.send_all(messages)
+		# See the BatchResponse reference documentation
+		# for the contents of response.
+		print('{0} messages were sent successfully'.format(response.success_count))
+		# [END send_all]
+	except:
+		print("Error: Unable to connect with UI !!!!!!!!!\n")
 
 
 
@@ -63,26 +66,34 @@ def main():
 	cred = credentials.Certificate('service-account.json')
 	default_app = firebase_admin.initialize_app(cred)
 
-	# initialize serial python, framework for reading serial USB
-	ser = serial.Serial(
-		port = "/dev/ttyUSB0",
-		baudrate = 115200,
-		timeout = 0.5)
-	
 	# initialize API for connecting to server-backend
+	
 	server = 'http://171.244.207.65:7856'
 	ses = Session()
 	ses.headers.update({
 		'Content-Type': 'application/json'})
+	
+	try: 
+		with open('/home/thien-nv/Downloads/API_TOKEN.txt') as f:
+			MY_TOKEN = f.read()
+		print (f"Token received form file: {MY_TOKEN}, type: {type({MY_TOKEN})}")
+	except:
+		print("Error: UI Token not found !!!!!!!!!\n")
+		MY_TOKEN = 'c7y9di1Dwje8TXegJiyBZX:APA91bH-SZpjbjx2YWl0MSMb4FIkSIvzbncn7PQjHUvcqaKdNPFrv9YdcJvEffdB4DUDe5l4ip1DO88o4Du9xinaWTubXWUXGsW-G8Qn36S6WJJ5LJ8i64Wdj-CxVuEFHdNWfo8t_Oj1'
+		
 
-	with open('/home/thien-nv/Downloads/API_TOKEN.txt') as f:
-		MY_TOKEN = f.read()
-
-	print (f"Token received form file: {MY_TOKEN}, type: {type({MY_TOKEN})}")
-
-
-	print("Start reading !!!!!!!!!")
-	send_all('Start','Start using NFC reader',MY_TOKEN) # send infomation to User interface
+	# initialize serial python, framework for reading serial USB
+	try:
+		ser = serial.Serial(
+			port = "/dev/ttyUSB0",
+			baudrate = 115200,
+			timeout = 0.2)
+		print("Start reading !!!!!!!!!\n")
+		send_all('Start: Start using NFC reader',datetime.now().strftime('%H:%M:%S') + ', ' + date.today().strftime('%d/%m/%Y'),MY_TOKEN) # send infomation to User interface
+	except:
+		print("Error: Reader not connected !!!!!!!!!\n")
+		send_all('Error: Reader not connected', datetime.now().strftime('%H:%M:%S') + ', ' + date.today().strftime('%d/%m/%Y'),MY_TOKEN) # send infomation to User interface
+		
 	# MAIN LOOP
 	while (True): 
 		#print(f"write to the card: {hex(int.from_bytes(READKEYcommand,byteorder='big'))}")
@@ -95,10 +106,10 @@ def main():
 		in_hex = hex(int.from_bytes(in_bin,byteorder='big'))
 		#print(f"hexa read: {in_hex}")
 		if in_hex[2:9] == '2001500':
-			print("READ KEY command succeded")
-			print(f"hexaread {in_hex}")
+			#print("READ KEY command succeded")
+			#print(f"hexaread {in_hex}")
 			#print(f"hexaread 2:9 {in_hex[2:9]}")
-			print(f"hexaread 17:-2 {in_hex[17:-2]}")
+			#print(f"hexaread 17:-2 {in_hex[17:-2]}")
 			binary_str = codecs.decode(in_hex[17:-2], "hex")
 			id_card = str(binary_str,'utf-8')
 			print(f"ASCII code: {id_card}")
@@ -115,12 +126,17 @@ def main():
 						"machineId": "1234TT",
 						"checkingTime": timeSentToServer,
 						"cardNo": id_card,}
-				res = ses.post(server + '/api/self-attendances/checking', json=postData, auth=('user', 'user'))
-				print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
+				try: 
+					res = ses.post(server + '/api/self-attendances/checking', json=postData, auth=('user', 'user'))
+					print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
 
-				received_string = res.text
-				#print(received_string[received_string.index("errorCode")+12:received_string.index("errorMessage")-3])
-
+					received_string = res.text
+					#print(received_string[received_string.index("errorCode")+12:received_string.index("errorMessage")-3])
+				except:
+					print("Error: Lost connection to OCD server !!!!!!!!!\n")
+					send_all('Error: Lost connection to OCD server',datetime.now().strftime('%H:%M:%S') + ', ' + date.today().strftime('%d/%m/%Y'),MY_TOKEN) # send infomation to User interface
+					received_string = 'errorCode,errorMessage'
+					
 				if (received_string[received_string.index("errorCode")+12:received_string.index("errorMessage")-3]=="00"):
 					
 					student_info = received_string[received_string.index("data")+7:received_string.index("school")-2]
