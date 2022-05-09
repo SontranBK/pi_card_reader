@@ -56,7 +56,7 @@ class _MessageList extends State<MessageList> {
                       fontSize: 30,
                       fontWeight: FontWeight.bold),
                 ),
-                content: Text('LOI: khong the ket noi voi dau doc\nKiem tra lai dau doc'),
+                content: Text('Lỗi: Không thể kết nối với đầu đọc, vui lòng:\n- Kiểm tra lại giắc cắm đầu đọc\n- Rút đầu đọc và cắm lại'),
               );
             }
         );
@@ -76,7 +76,7 @@ class _MessageList extends State<MessageList> {
                       fontSize: 30,
                       fontWeight: FontWeight.bold),
                 ),
-                content: Text('LOI: Khong the ket noi den server\n'),
+                content: Text('LỖI: Không thể kết nối với server, vui lòng:\nkiểm tra lại đường truyền mạng'),
               );
             }
         );
