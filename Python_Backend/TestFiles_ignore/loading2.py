@@ -9,8 +9,8 @@ class Loading:
         self.root.config(bg = "black")
         self.root.title("Custom Loader")
         self.root.attributes("-fullscreen", True)
-        self.time_to_run = 171                                                                                                                                                                      
-        self.totaltime = self.time_to_run / 2.3                               
+        self.time_to_run = 30
+        self.time_left = self.time_to_run                                                                                                                                                                                        
         # Loading text
         Label(self.root, text = "Khởi tạo chương trình... Vui lòng đợi", font = "Bahnschrift 15", bg= "black", fg ="#FFBD09").place(x=490, y=320)
         
@@ -26,7 +26,7 @@ class Loading:
         self.root.mainloop()
     #loader animation
     def play_animation(self):
-        for i in range(int(self.totaltime+1.0)):
+        while (self.time_left > 0):
             start = time.time()
             for j in range(20):
                 #make block yellow:
@@ -35,17 +35,19 @@ class Loading:
                 self.root.update_idletasks()
                 #make block dark:
                 Label(self.root, bg="#ECECEC", width=2, height=1).place(x=(j + 22)*22,y=350)
-            Rate =round((i+1)*100/self.totaltime,2)
-            Label(self.root,text='Tiến độ khởi tạo: '+str(Rate)+'%', font = "Bahnschrift 15", bg= "black", fg ="#FFBD09").place(x=490, y=380)
             end = time.time()
-            print(end-start)
-        else:
-            sleep(1)
-            #for i in range(20):
-                #Label(self.root, bg ="#7FFF00", width = 2, height = 1 ).place(x=(i+22)*22, y = 350)
             
-            self.root.destroy()
-            exit(0)
+            print(f"Time left: {self.time_left}")
+            self.time_left = self.time_left - (end-start)
+            Rate =round((self.time_to_run - self.time_left)*100/self.time_to_run,2)
+            Label(self.root,text='Tiến độ khởi tạo: '+str(Rate)+'%', font = "Bahnschrift 15", bg= "black", fg ="#FFBD09").place(x=490, y=380)
+    
+
+        Label(self.root,text='Tiến độ khởi tạo: '+str(100)+'%', font = "Bahnschrift 15", bg= "black", fg ="#FFBD09").place(x=490, y=380)
+        sleep(1)
+            
+        self.root.destroy()
+        exit(0)
             
 if __name__ == "__main__":
     Loading()
