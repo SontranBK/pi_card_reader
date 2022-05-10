@@ -83,19 +83,17 @@ def main():
 		
 
 	# initialize serial python, framework for reading serial USB
-	try:
-		ser = serial.Serial(
-			port = "/dev/ttyUSB0",
-			baudrate = 115200,
-			timeout = 0.2)
-		print("Start reading !!!!!!!!!\n")
-		send_all('Start: Start using NFC reader',datetime.now().strftime('%H:%M:%S') + ', ' + date.today().strftime('%d/%m/%Y'),MY_TOKEN) # send infomation to User interface
-	except:
-		print("Error: Reader not connected !!!!!!!!!\n")
-		send_all('Error: Reader not connected', datetime.now().strftime('%H:%M:%S') + ', ' + date.today().strftime('%d/%m/%Y'),MY_TOKEN) # send infomation to User interface
-		
+	#try:
+	ser = serial.Serial(
+		port = "/dev/ttyUSB0",
+		baudrate = 115200,
+		timeout = 0.2)
+	print("Start reading !!!!!!!!!\n")
+	send_all('Start: Start using NFC reader',datetime.now().strftime('%H:%M:%S') + ', ' + date.today().strftime('%d/%m/%Y'),MY_TOKEN) # send infomation to User interface
+	
 	# MAIN LOOP
 	while (True): 
+		
 		#print(f"write to the card: {hex(int.from_bytes(READKEYcommand,byteorder='big'))}")
 		ser.write(READKEYcommand) 
 		#print(f"Done writing")
@@ -134,7 +132,7 @@ def main():
 					#print(received_string[received_string.index("errorCode")+12:received_string.index("errorMessage")-3])
 				except:
 					print("Error: Lost connection to OCD server !!!!!!!!!\n")
-					send_all('Error: Lost connection to OCD server',datetime.now().strftime('%H:%M:%S') + ', ' + date.today().strftime('%d/%m/%Y'),MY_TOKEN) # send infomation to User interface
+					send_all('Error: Lost connection to OCD server',MY_TOKEN) # send infomation to User interface
 					received_string = 'errorCode,errorMessage'
 					
 				if (received_string[received_string.index("errorCode")+12:received_string.index("errorMessage")-3]=="00"):
@@ -143,11 +141,11 @@ def main():
 					school_info = received_string[received_string.index("school")+9:received_string.index("clazz")-3]
 					class_info = received_string[received_string.index("clazz")+8:-3]
 
-					#print(f'student_info: {student_info}\nschool_info: {school_info}\nclass_info: {class_info}\n')
+					print(f'student_info: {student_info}\nschool_info: {school_info}\nclass_info: {class_info}\n')
 
-					student_name = student_info[student_info.index("name")+7:student_info.index("email")-3]
-					student_id = student_info[student_info.index("studentId")+12:-1]
-					school_name = school_info[school_info.index("name")+7:-20]
+					student_name = student_info[student_info.index("name")+7:student_info.index("gender")-3]
+					student_id = student_info[student_info.index("studentId")+12:student_info.index("firstName")-3]
+					school_name = school_info[school_info.index("name")+7:school_info.index("type")-3]
 					class_name = class_info[class_info.index("name")+7:-1]
 					
 
@@ -157,9 +155,7 @@ def main():
 					body = student_name + ' | ' + student_id + ' | '  + class_name + ' | ' + school_name + ' | ' + timeSentToUI + ' | ' + id_card
 
 					send_all('NFC_card_info',body,MY_TOKEN) # send infomation to User interface
-					time.sleep(3.2)
-
-
+					time.sleep(5.2)
+					
 if __name__ == "__main__":
 	main()
- 
