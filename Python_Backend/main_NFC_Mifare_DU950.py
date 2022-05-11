@@ -207,10 +207,11 @@ def main():
 
 	# MAIN LOOP
 	while (True): 
+		# Read data from NFC reader
 		data = read_NFC_card(ser)
 		#print(f"Received data: {data}")
 
-		# Valid check string from usb and send to server
+		# If NFC card is presented and NFC reader return data
 		if data != None:
 			
 			# Time recorded when receive data from NFC reader
