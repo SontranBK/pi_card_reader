@@ -14,9 +14,18 @@ from firebase_admin import credentials
 from firebase_admin import messaging
 import sqlite3
 
+"""
+SECTION 1: DEFINE VARIABLES AND COMMAND
+"""
+# Define machine_id: id of our MCU device 
 machine_id = "00001"
-school_name_db = "Tieu hoc Thinh Long"
+# Name of school where device is installed
+school_name_db = "Tiểu học Thịnh Long"
 
+# READKEY command of DU950 reader
+# Please refer to our provided protocol
+
+# READKEY command applied to block no.4
 READKEY4command = bytearray()
 READKEY4command.append(0x02) # STX
 READKEY4command.append(0x00) # LEN-H
@@ -29,7 +38,7 @@ for i in range(6):
 	READKEY4command.append(0xFF) #  Key[0]..[5], The key data to be stored into the secret key buffer
 READKEY4command.append(0x38) # LRC
 
-
+# READKEY command applied to block no.5
 READKEY5command = bytearray()
 READKEY5command.append(0x02) # STX
 READKEY5command.append(0x00) # LEN-H
@@ -42,6 +51,7 @@ for i in range(6):
 	READKEY5command.append(0xFF) #  Key[0]..[5], The key data to be stored into the secret key buffer
 READKEY5command.append(0x39) # LRC
 
+# READKEY command applied to block no.6
 READKEY6command = bytearray()
 READKEY6command.append(0x02) # STX
 READKEY6command.append(0x00) # LEN-H
@@ -54,6 +64,56 @@ for i in range(6):
 	READKEY6command.append(0xFF) #  Key[0]..[5], The key data to be stored into the secret key buffer
 READKEY6command.append(0x3a) # LRC
 
+"""
+SECTION 2: FUNCTION DEFINATION
+"""
+
+# Decode the server response sent to our MCU
+def decode_server_response(server_error_code, received_string, timeSentToUI):
+	try:
+		if (server_error_code=="00"):
+		# Server response is saved in received string
+			student_info = received_string[received_string.index("data")+7:received_string.index("school")-2]
+			school_info = received_string[received_string.index("school")+9:received_string.index("clazz")-3]
+			class_info = received_string[received_string.index("clazz")+8:-3]
+
+			print(f'student_info: {student_info}\nschool_info: {school_info}\nclass_info: {class_info}\n')
+
+			student_name = student_info[student_info.index("name")+7:student_info.index("gender")-3]
+			student_id = student_info[student_info.index("studentId")+12:student_info.index("firstName")-3]
+			school_name = school_info[school_info.index("name")+7:school_info.index("type")-3]
+			class_name = class_info[class_info.index("name")+7:-1]
+			
+
+			print(f'Information received from server: student_name_id: {student_name}, {student_id}\n'
+					f'school_name: {school_name}\nclass_name: {class_name}\n')
+			
+			# return body of UI message
+			return student_name + ' | ' + student_id + ' | '  + class_name + ' | ' + school_name + ' | ' + timeSentToUI + ' | ' + '000000000'
+	except:
+		print("Error: Server response's format is incorrect !!!!!!!!!\n")
+
+# Read data from database and update our local database
+def read_update_database(database_link, data, school_name_db, timeSentToUI):
+	try:
+		conn = sqlite3.connect(database_link)
+		cursor = conn.execute(f"SELECT name, id, dateofbirth, time_a, error_code_a, time_b, error_code_b from CLASS_{data[0]} where ID = {data[1]}")
+		for row in cursor:
+			print (f"\nFind student with following info:\nNAME = {row[0]}\nID = {row[1]}\nDoB = {row[2]}\nTime A = {row[3]}\nTime B = {row[5]}\n")
+			print (f"Current updating time:\nNAME = {row[0]}\nID = {row[1]}\nDoB = {row[2]}\nTime A = {row[3]}\nTime B = {row[5]}\n")
+			
+			if (row[3] == None):
+				conn.execute("UPDATE CLASS_{} set TIME_A = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
+				conn.commit()
+			else:
+				conn.execute("UPDATE CLASS_{} set TIME_B = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
+				conn.commit()
+				
+		body = row[0] + ' | ' + data[1] + ' | '  + data[0] + ' | ' + school_name_db + ' | ' + timeSentToUI + ' | ' + '000000000'
+	except:
+		print("Error: Unable to read and update database !!!!!!!!!\n")
+
+# Read data from our NFC reader by sending READKEY command
 def read_NFC_card(ser):
 	ser.write(READKEY4command) 
 	in_hex = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
@@ -77,7 +137,7 @@ def read_NFC_card(ser):
 			except:
 				pass
 				
-
+# Send data from python code (backend) to UI (fontend)
 def send_all(title,body,FCM_token):
 	try:
 		# [START send_all]
@@ -100,6 +160,11 @@ def send_all(title,body,FCM_token):
 
 
 
+"""
+SECTION 3: MAIN PROGRAM
+"""
+
+
 def main():
 	# initialize firebase, API for backend-UI communication
 	cred = credentials.Certificate('service-account.json')
@@ -120,6 +185,11 @@ def main():
 		print("Error: UI Token not found !!!!!!!!!\n")
 		MY_TOKEN = 'c7y9di1Dwje8TXegJiyBZX:APA91bH-SZpjbjx2YWl0MSMb4FIkSIvzbncn7PQjHUvcqaKdNPFrv9YdcJvEffdB4DUDe5l4ip1DO88o4Du9xinaWTubXWUXGsW-G8Qn36S6WJJ5LJ8i64Wdj-CxVuEFHdNWfo8t_Oj1'
 		
+	try:
+		database_link = 'DB thg5/'+ date.today().strftime('%d_%m_%Y') +'.db'
+		print(f"Link of database: {database_link}")
+	except:
+		print("Error: database link not found !!!!!!!!!\n")
 
 	# initialize serial python, framework for reading serial USB
 	try:
@@ -162,45 +232,13 @@ def main():
 				
 			server_error_code = received_string[received_string.index("errorCode")+12:received_string.index("errorMessage")-3]	
 			
-			try:
-				if (server_error_code=="00"):
-					
-					student_info = received_string[received_string.index("data")+7:received_string.index("school")-2]
-					school_info = received_string[received_string.index("school")+9:received_string.index("clazz")-3]
-					class_info = received_string[received_string.index("clazz")+8:-3]
+			# body = decode_server_response(server_error_code, received_string, timeSentToUI)
+			body = read_update_database(database_link, data, school_name_db, timeSentToUI)
 
-					print(f'student_info: {student_info}\nschool_info: {school_info}\nclass_info: {class_info}\n')
 
-					student_name = student_info[student_info.index("name")+7:student_info.index("gender")-3]
-					student_id = student_info[student_info.index("studentId")+12:student_info.index("firstName")-3]
-					school_name = school_info[school_info.index("name")+7:school_info.index("type")-3]
-					class_name = class_info[class_info.index("name")+7:-1]
-					
-
-					print(f'student_name_id: {student_name}, {student_id}\n'
-						  f'school_name: {school_name}\nclass_name: {class_name}\n')
-						  
-					body = student_name + ' | ' + student_id + ' | '  + class_name + ' | ' + school_name + ' | ' + timeSentToUI + ' | ' + id_card
-			except:
-				print("Error: Server response's format is incorrect !!!!!!!!!\n")	
-			
-			conn = sqlite3.connect('/home/thien-nv/pi_card_reader/Database/SampleDB.db')
-			cursor = conn.execute(f"SELECT name, id, dateofbirth, time_a, error_code_a, time_b, error_code_b from CLASS_{data[0]} where ID = {data[1]}")
-			for row in cursor:
-				print (f"\nFind student with following info:\nNAME = {row[0]}\nID = {row[1]}\nDoB = {row[2]}\nTime A = {row[3]}\nTime B = {row[5]}\n")
-				print (f"Current updating time:\nNAME = {row[0]}\nID = {row[1]}\nDoB = {row[2]}\nTime A = {row[3]}\nTime B = {row[5]}\n")
-				
-				if (row[3] == None):
-					conn.execute("UPDATE CLASS_{} set TIME_A = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
-					conn.commit()
-				else:
-					conn.execute("UPDATE CLASS_{} set TIME_B = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
-					conn.commit()
-					
-			body = row[0] + ' | ' + data[1] + ' | '  + data[0] + ' | ' + school_name_db + ' | ' + timeSentToUI + ' | ' + '000000000'
-				
-			send_all('NFC_card_info',body,MY_TOKEN) # send infomation to User interface
-			time.sleep(5.2)
+			if body != None:
+				send_all('NFC_card_info',body,MY_TOKEN)
+				time.sleep(5.2)
 				
 if __name__ == "__main__":
 	main()
