@@ -6,6 +6,8 @@ import sqlite3
 import time
 from datetime import datetime,date
 
+database_name = date.today().strftime('%dd-%mm-%YY')
+print(f"Name of database: {database_name}")
 conn = sqlite3.connect('/home/thien-nv/pi_card_reader/Database/SampleDB.db')
 
 print ("Opened database successfully\n")
