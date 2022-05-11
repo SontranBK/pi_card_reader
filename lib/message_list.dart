@@ -26,6 +26,23 @@ class _MessageList extends State<MessageList> {
     fontFamily: 'Dosis', fontWeight: FontWeight.w400,
     );
 
+    showDialog(
+            context: context,
+            builder: (context) {
+              Future.delayed(Duration(seconds: 30), () {
+                Navigator.of(context).pop(true);
+              });
+              return AlertDialog(
+                title: Text('Vui lòng chờ thêm giây lát',
+                  style: TextStyle(color: Colors.blue,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold),
+                ),
+                content: Text('- Product version: v0.0.3\n-Sau khi thông báo này ẩn đi, đợi khoảng 10 giây,\nnếu không thấy thông báo "Bắt đầu đọc thẻ NFC",\nvui lòng kiểm tra kết nối mạng, đầu đọc, nguồn điện\nsau đó tắt đi bật lại'),
+              );
+            }
+        );
+        
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       Noti = message.notification ?? RemoteNotification();
       String? titleOfNoti = Noti.title ?? '';
