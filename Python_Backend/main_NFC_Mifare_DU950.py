@@ -166,17 +166,17 @@ SECTION 3: MAIN PROGRAM
 
 
 def main():
-	# initialize firebase, API for backend-UI communication
+	# Initialize firebase, API for backend-UI communication
 	cred = credentials.Certificate('service-account.json')
 	default_app = firebase_admin.initialize_app(cred)
 
-	# initialize API for connecting to server-backend
-	
+	# Initialize API for connecting to server-backend
 	server = 'http://171.244.207.65:7856'
 	ses = Session()
 	ses.headers.update({
 		'Content-Type': 'application/json'})
 	
+	# Initialize firebase TOKEN API
 	try: 
 		with open('/home/thien-nv/Downloads/API_TOKEN.txt') as f:
 			MY_TOKEN = f.read()
@@ -184,14 +184,15 @@ def main():
 	except:
 		print("Error: UI Token not found !!!!!!!!!\n")
 		MY_TOKEN = 'c7y9di1Dwje8TXegJiyBZX:APA91bH-SZpjbjx2YWl0MSMb4FIkSIvzbncn7PQjHUvcqaKdNPFrv9YdcJvEffdB4DUDe5l4ip1DO88o4Du9xinaWTubXWUXGsW-G8Qn36S6WJJ5LJ8i64Wdj-CxVuEFHdNWfo8t_Oj1'
-		
+	
+	# Initialize our local database
 	try:
 		database_link = 'DB thg5/'+ date.today().strftime('%d_%m_%Y') +'.db'
 		print(f"Link of database: {database_link}")
 	except:
 		print("Error: database link not found !!!!!!!!!\n")
 
-	# initialize serial python, framework for reading serial USB
+	# Initialize serial python, framework for reading serial USB
 	try:
 		ser = serial.Serial(
 			port = "/dev/ttyUSB0",
@@ -203,22 +204,28 @@ def main():
 		print ('Error: Reader not connected')
 		send_all('Error: Reader not connected',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN) # send infomation to User interface
 
+
 	# MAIN LOOP
 	while (True): 
 		data = read_NFC_card(ser)
 		#print(f"Received data: {data}")
 
-		# valid check string from usb and send to server
+		# Valid check string from usb and send to server
 		if data != None:
 			
-			# sent to server 
+			# Time recorded when receive data from NFC reader
+			# This time will be properly formated and send to server and UI
 			timeSentToServer = date.today().strftime('%Y-%m-%d') + ' ' + datetime.now().strftime('%H:%M:%S')
 			timeSentToUI = datetime.now().strftime('%H:%M:%S') + ', ' + date.today().strftime('%d/%m/%Y')
 			#print(len(timeSentToUI))
+
+			# Request data to be sent from client (our MCU) to server
 			postData = {
 					"machineId": machine_id,
 					"checkingTime": timeSentToServer,
 					"cardNo": data[1],}
+
+			# Perform sending above request data to server and receive response
 			try: 
 				res = ses.post(server + '/api/self-attendances/checking', json=postData, auth=('user', 'user'))
 				print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
@@ -230,14 +237,21 @@ def main():
 				send_all('Error: Lost connection to OCD server',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN) # send infomation to User interface
 				received_string = 'errorCode,errorMessage'
 				
+			# Error code of server response	
 			server_error_code = received_string[received_string.index("errorCode")+12:received_string.index("errorMessage")-3]	
 			
+			# What to do with our information? 
+			# 1) Send to server and receive response data
+			# OR 2) Look this information up in our local database and update database
+			# OR 3) Do both of above
+
 			# body = decode_server_response(server_error_code, received_string, timeSentToUI)
 			body = read_update_database(database_link, data, school_name_db, timeSentToUI)
 
-
+			# If student information is valid, send this information to UI
 			if body != None:
 				send_all('NFC_card_info',body,MY_TOKEN)
+				# Wait for our pop-up dialog in our UI to disappear
 				time.sleep(5.2)
 				
 if __name__ == "__main__":
