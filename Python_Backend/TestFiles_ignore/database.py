@@ -7,7 +7,7 @@ import time
 from datetime import datetime,date
 
 # Modify the link to our database here
-# Sample name of database: 11_05_2022.db (format: day_month_year)
+# Sample name of database: 11_05_2022.db (format: day_month_year.db)
 database_link = 'DB thg5/'+ date.today().strftime('%d_%m_%Y') +'.db'
 
 print(f"Link of database: {database_link}")
