@@ -3,6 +3,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
+   
+   
 /// Listens for incoming foreground messages and displays them in a list.
 class MessageList extends StatefulWidget {
   @override
@@ -13,20 +15,9 @@ class _MessageList extends State<MessageList> {
   //RemoteMessage mymess = RemoteMessage();
   RemoteNotification Noti = RemoteNotification();
   //List<RemoteMessage> mymess = [];
-
-  @override
-  void initState() {
-    super.initState();
-    var _ID = " ";
-    var _class = " ";
-    var _textSt = TextStyle(
-    decoration: TextDecoration.none,
-    fontSize: 30,
-    color: Colors.white70,
-    fontFamily: 'Dosis', fontWeight: FontWeight.w400,
-    );
-
-    showDialog(
+  
+  void _showStartDialog(){
+	showDialog(
             context: context,
             builder: (context) {
               Future.delayed(Duration(seconds: 30), () {
@@ -38,17 +29,32 @@ class _MessageList extends State<MessageList> {
                       fontSize: 30,
                       fontWeight: FontWeight.bold),
                 ),
-                content: Text('- Product version: v0.0.3\n-Sau khi thông báo này ẩn đi, đợi khoảng 10 giây,\nnếu không thấy thông báo "Bắt đầu đọc thẻ NFC",\nvui lòng kiểm tra kết nối mạng, đầu đọc, nguồn điện\nsau đó tắt đi bật lại'),
+                content: Text('- Product version: v0.0.3\n- Sau khi thông báo này ẩn đi, đợi khoảng 10 giây,\nnếu không thấy thông báo "Bắt đầu đọc thẻ NFC",\nvui lòng kiểm tra kết nối mạng, đầu đọc, nguồn điện\nsau đó khoi dong lai thiet bi'),
               );
             }
         );
+   }
+   
+  @override
+  void initState() {
+    super.initState();
+    var _ID = " ";
+    var _class = " ";
+    var _textSt = TextStyle(
+    decoration: TextDecoration.none,
+    fontSize: 30,
+    color: Colors.white70,
+    fontFamily: 'Dosis', fontWeight: FontWeight.w400,
+    );
+    
+    Future(_showStartDialog);
+   
         
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       Noti = message.notification ?? RemoteNotification();
       String? titleOfNoti = Noti.title ?? '';
       String? bodyOfNoti = Noti.body ?? '';
-
-
+        
       print(bodyOfNoti);
       if (titleOfNoti == 'Start: Start using NFC reader') {
         showDialog(
@@ -60,10 +66,10 @@ class _MessageList extends State<MessageList> {
               return AlertDialog(
                 title: Text(bodyOfNoti,
                   style: TextStyle(color: Colors.blue,
-                      fontSize: 30,
+                      fontSize: 25,
                       fontWeight: FontWeight.bold),
                 ),
-                content: Text('Quá trình khởi động hoàn tất\nBắt đầu đọc thẻ NFC'),
+                content: Text('Quá trình khởi động hoàn tất\nBắt đầu đọc thẻ NFC\nsau khi thong bao nay an di'),
               );
             }
         );
@@ -82,7 +88,7 @@ class _MessageList extends State<MessageList> {
                       fontSize: 30,
                       fontWeight: FontWeight.bold),
                 ),
-                content: Text('Lỗi: Không thể kết nối với đầu đọc, vui lòng:\n- Kiểm tra lại giắc cắm đầu đọc\n- Rút đầu đọc và cắm lại'),
+                content: Text('Lỗi: Không thể kết nối với đầu đọc, vui lòng:\n1) Kiểm tra lại giắc cắm đầu đọc\n2) Rút đầu đọc và cắm lại\n3) Kiem tra nguon dien cua dau doc\n4) Khoi dong lai thiet bi'),
               );
             }
         );
@@ -102,7 +108,7 @@ class _MessageList extends State<MessageList> {
                       fontSize: 30,
                       fontWeight: FontWeight.bold),
                 ),
-                content: Text('LỖI: Không thể kết nối với server, vui lòng:\nkiểm tra lại đường truyền mạng'),
+                content: Text('LỖI: Không thể kết nối với server, vui lòng:\n1) Kiểm tra lại đường truyền mạng\n2) Lien he voi ki thuat vien'),
               );
             }
         );
