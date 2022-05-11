@@ -29,7 +29,7 @@ class _MessageList extends State<MessageList> {
                       fontSize: 30,
                       fontWeight: FontWeight.bold),
                 ),
-                content: Text('- Product version: v0.0.3\n- Sau khi thông báo này ẩn đi, đợi khoảng 10 giây,\nnếu không thấy thông báo "Bắt đầu đọc thẻ NFC",\nvui lòng kiểm tra kết nối mạng, đầu đọc, nguồn điện\nsau đó khoi dong lai thiet bi'),
+                content: Text('- Product version: v0.0.3\n- Sau khi thông báo này ẩn đi, đợi khoảng 10 giây,\nnếu không thấy thông báo "Bắt đầu đọc thẻ NFC",\nvui lòng làm theo các bước sau:\n1) Kiểm tra lại nguồn điện thiết bị, nguồn điện đầu đọc\n2) Kiểm tra giắc cắm đầu đọc\n3) Kiểm tra kết nối mạng\n4) Cuối cùng, khởi động lại thiết bị'),
               );
             }
         );
@@ -69,7 +69,7 @@ class _MessageList extends State<MessageList> {
                       fontSize: 25,
                       fontWeight: FontWeight.bold),
                 ),
-                content: Text('Quá trình khởi động hoàn tất\nBắt đầu đọc thẻ NFC\nsau khi thong bao nay an di'),
+                content: Text('BẮT ĐẦU ĐỌC THẺ NFC\nToàn bộ quá trình khởi động đã hoàn tất\nVui lòng quẹt thẻ sau khi thông báo này ẩn đi'),
               );
             }
         );
@@ -88,7 +88,7 @@ class _MessageList extends State<MessageList> {
                       fontSize: 30,
                       fontWeight: FontWeight.bold),
                 ),
-                content: Text('Lỗi: Không thể kết nối với đầu đọc, vui lòng:\n1) Kiểm tra lại giắc cắm đầu đọc\n2) Rút đầu đọc và cắm lại\n3) Kiem tra nguon dien cua dau doc\n4) Khoi dong lai thiet bi'),
+                content: Text('Lỗi: Không thể kết nối với đầu đọc, vui lòng làm theo các bước sau:\n1) Kiểm tra lại giắc cắm đầu đọc\n2) Kiểm tra nguồn điện của đầu đọc\n3) Cuối cùng, khởi động lại thiết bị'),
               );
             }
         );
@@ -108,7 +108,7 @@ class _MessageList extends State<MessageList> {
                       fontSize: 30,
                       fontWeight: FontWeight.bold),
                 ),
-                content: Text('LỖI: Không thể kết nối với server, vui lòng:\n1) Kiểm tra lại đường truyền mạng\n2) Lien he voi ki thuat vien'),
+                content: Text('LỖI: Không thể kết nối với server, vui lòng:\n1) Kiểm tra lại đường truyền mạng\n2) Liên hệ với kĩ thuật viên'),
               );
             }
         );
