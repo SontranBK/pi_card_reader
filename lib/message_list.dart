@@ -17,6 +17,15 @@ class _MessageList extends State<MessageList> {
   @override
   void initState() {
     super.initState();
+    var _ID = " ";
+    var _class = " ";
+    var _textSt = TextStyle(
+    decoration: TextDecoration.none,
+    fontSize: 30,
+    color: Colors.white70,
+    fontFamily: 'Dosis', fontWeight: FontWeight.w400,
+    );
+
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       Noti = message.notification ?? RemoteNotification();
       String? titleOfNoti = Noti.title ?? '';
@@ -104,27 +113,108 @@ class _MessageList extends State<MessageList> {
         Info.add(Rest);
         print('Info: $Info');
 
-        showDialog(
-            context: context,
-            builder: (context) {
-              Future.delayed(Duration(seconds: 3), () {
-                Navigator.of(context).pop(true);
-              });
-              return AlertDialog(
-                title: Text('Thông tin quẹt thẻ',
-                  style: TextStyle(color: Colors.blue,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold),
+        showGeneralDialog(
+          context: context,
+          barrierLabel: "Barrier",
+          barrierDismissible: true,
+          barrierColor: Colors.black.withOpacity(0.1),
+          transitionDuration: Duration(milliseconds: 500),
+          pageBuilder: (_, __, ___) {
+            Future.delayed(Duration(seconds: 5), () {
+              Navigator.of(context).pop(true);
+            });
+            return Center(
+              child: Container(
+                padding: EdgeInsets.only (top:0),
+                height: 180,
+                width: 550,
+                margin: EdgeInsets.only(top: 50, left: 750),
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      stops: [
+                        0.0,
+                        0.33,
+                        0.68,
+                        0.99,
+                      ],
+                      colors: [
+                        Colors.lightBlue.withOpacity(0.6),
+                        Colors.lightBlue.withOpacity(0.0),
+                        Colors.lightBlue.withOpacity(0.0),
+                        Colors.lightBlue.withOpacity(0.6),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(40),
                 ),
-                content: Text('- Tên học sinh:  ' + Info[0] + '\n'
-                    '- Id học sinh:  ' + Info[1] + '\n'
-                    '- Lớp:  ' + Info[2] + '\n'
-                    '- Trường:  ' + Info[3] + '\n'
-                    '- Ngày giờ quẹt thẻ:  ' + Info[4] + '\n'
-                    '- Mã thẻ:  ' + Info[5]),
-              );
+                child: SizedBox.expand(
+                  child: Row(
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 30, right: 30),
+                            width: 100, height: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.white70,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 2,
+                              )
+                            ),
+                            child: Image.asset('THCS_CG.png', scale: 6,),
+                          )
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            Info[0],
+                            style: TextStyle(
+                              decoration: TextDecoration.none,
+                              fontSize: 28,
+                              color: Colors.white,
+                              fontFamily: 'Dosis', fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            'ID: '+Info[1],
+                            style: _textSt,
+                          ),
+                          Text(
+                            'Lớp: '+Info[2],
+                            style: _textSt,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+          transitionBuilder: (_, anim, __, child) {
+            Tween<Offset> tween;
+            if (anim.status == AnimationStatus.reverse) {
+              tween = Tween(begin: Offset(-1, 0), end: Offset.zero);
+            } else {
+              tween = Tween(begin: Offset(1, 0), end: Offset.zero);
             }
-        );
+
+            return SlideTransition(
+              position: tween.animate(anim),
+              child: FadeTransition(
+                opacity: anim,
+                child: child,
+              ),
+            );
+          },
+        );//show dialog
       }
     });
   }
@@ -135,3 +225,4 @@ class _MessageList extends State<MessageList> {
   }
 
 }
+
