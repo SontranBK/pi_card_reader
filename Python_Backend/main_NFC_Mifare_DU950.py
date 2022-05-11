@@ -14,6 +14,8 @@ from firebase_admin import credentials
 from firebase_admin import messaging
 import sqlite3
 
+machine_id = "00001"
+school_name_db = "Tieu hoc Thinh Long"
 
 READKEY4command = bytearray()
 READKEY4command.append(0x02) # STX
@@ -120,14 +122,17 @@ def main():
 		
 
 	# initialize serial python, framework for reading serial USB
-	#try:
-	ser = serial.Serial(
-		port = "/dev/ttyUSB0",
-		baudrate = 115200,
-		timeout = 0.05)
-	print("Start reading !!!!!!!!!\n")
-	send_all('Start: Start using NFC reader',datetime.now().strftime('%H:%M:%S') + ', ' + date.today().strftime('%d/%m/%Y'),MY_TOKEN) # send infomation to User interface
-	
+	try:
+		ser = serial.Serial(
+			port = "/dev/ttyUSB0",
+			baudrate = 115200,
+			timeout = 0.05)
+		print("Start reading !!!!!!!!!\n")
+		send_all('Start: Start using NFC reader',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m') + '; ID thiet bi: ' + machine_id,MY_TOKEN) # send infomation to User interface
+	except: 
+		print ('Error: Reader not connected')
+		send_all('Error: Reader not connected',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN) # send infomation to User interface
+
 	# MAIN LOOP
 	while (True): 
 		data = read_NFC_card(ser)
@@ -141,7 +146,7 @@ def main():
 			timeSentToUI = datetime.now().strftime('%H:%M:%S') + ', ' + date.today().strftime('%d/%m/%Y')
 			#print(len(timeSentToUI))
 			postData = {
-					"machineId": "00001",
+					"machineId": machine_id,
 					"checkingTime": timeSentToServer,
 					"cardNo": data[1],}
 			try: 
@@ -152,29 +157,32 @@ def main():
 				#print(received_string[received_string.index("errorCode")+12:received_string.index("errorMessage")-3])
 			except:
 				print("Error: Lost connection to OCD server !!!!!!!!!\n")
-				send_all('Error: Lost connection to OCD server',MY_TOKEN) # send infomation to User interface
+				send_all('Error: Lost connection to OCD server',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN) # send infomation to User interface
 				received_string = 'errorCode,errorMessage'
+				
 			server_error_code = received_string[received_string.index("errorCode")+12:received_string.index("errorMessage")-3]	
 			
-			if (server_error_code=="00"):
-				
-				student_info = received_string[received_string.index("data")+7:received_string.index("school")-2]
-				school_info = received_string[received_string.index("school")+9:received_string.index("clazz")-3]
-				class_info = received_string[received_string.index("clazz")+8:-3]
+			try:
+				if (server_error_code=="00"):
+					
+					student_info = received_string[received_string.index("data")+7:received_string.index("school")-2]
+					school_info = received_string[received_string.index("school")+9:received_string.index("clazz")-3]
+					class_info = received_string[received_string.index("clazz")+8:-3]
 
-				print(f'student_info: {student_info}\nschool_info: {school_info}\nclass_info: {class_info}\n')
+					print(f'student_info: {student_info}\nschool_info: {school_info}\nclass_info: {class_info}\n')
 
-				student_name = student_info[student_info.index("name")+7:student_info.index("gender")-3]
-				student_id = student_info[student_info.index("studentId")+12:student_info.index("firstName")-3]
-				school_name = school_info[school_info.index("name")+7:school_info.index("type")-3]
-				class_name = class_info[class_info.index("name")+7:-1]
-				
+					student_name = student_info[student_info.index("name")+7:student_info.index("gender")-3]
+					student_id = student_info[student_info.index("studentId")+12:student_info.index("firstName")-3]
+					school_name = school_info[school_info.index("name")+7:school_info.index("type")-3]
+					class_name = class_info[class_info.index("name")+7:-1]
+					
 
-				print(f'student_name_id: {student_name}, {student_id}\n'
-					  f'school_name: {school_name}\nclass_name: {class_name}\n')
-					  
-				body = student_name + ' | ' + student_id + ' | '  + class_name + ' | ' + school_name + ' | ' + timeSentToUI + ' | ' + id_card
-			
+					print(f'student_name_id: {student_name}, {student_id}\n'
+						  f'school_name: {school_name}\nclass_name: {class_name}\n')
+						  
+					body = student_name + ' | ' + student_id + ' | '  + class_name + ' | ' + school_name + ' | ' + timeSentToUI + ' | ' + id_card
+			except:
+				print("Error: Server response's format is incorrect !!!!!!!!!\n")	
 			
 			conn = sqlite3.connect('/home/thien-nv/pi_card_reader/Database/SampleDB.db')
 			cursor = conn.execute(f"SELECT name, id, dateofbirth, time_a, error_code_a, time_b, error_code_b from CLASS_{data[0]} where ID = {data[1]}")
@@ -189,7 +197,7 @@ def main():
 					conn.execute("UPDATE CLASS_{} set TIME_B = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
 					conn.commit()
 					
-			body = row[0] + ' | ' + data[1] + ' | '  + data[0] + ' | ' + 'Tieu hoc Thinh Long' + ' | ' + timeSentToUI + ' | ' + '000000000'
+			body = row[0] + ' | ' + data[1] + ' | '  + data[0] + ' | ' + school_name_db + ' | ' + timeSentToUI + ' | ' + '000000000'
 				
 			send_all('NFC_card_info',body,MY_TOKEN) # send infomation to User interface
 			time.sleep(5.2)
