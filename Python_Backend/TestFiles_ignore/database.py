@@ -6,9 +6,11 @@ import sqlite3
 import time
 from datetime import datetime,date
 
-database_name = date.today().strftime('%dd-%mm-%YY')
-print(f"Name of database: {database_name}")
-conn = sqlite3.connect('/home/thien-nv/pi_card_reader/Database/SampleDB.db')
+# Modify the link to our database here
+database_link = 'DB thg5/'+ date.today().strftime('%d_%m_%Y') +'.db'
+
+print(f"Link of database: {database_link}")
+conn = sqlite3.connect(database_link)
 
 print ("Opened database successfully\n")
 
