@@ -9,7 +9,7 @@ class Loading:
         self.root.config(bg = "black")
         self.root.title("Custom Loader")
         self.root.attributes("-fullscreen", True)
-        self.time_to_run = 190
+        self.time_to_run = 163
         self.time_left = self.time_to_run                                                                                                                                                                                        
         # Loading text
         Label(self.root, text = "Khởi tạo chương trình... Vui lòng đợi", font = "Bahnschrift 15", bg= "black", fg ="#FFBD09").place(x=490, y=320)
@@ -39,7 +39,7 @@ class Loading:
             self.time_left = self.time_left - (end-start)
             Rate =round((self.time_to_run - self.time_left)*100/self.time_to_run,2)
             Label(self.root,text='Tiến độ khởi tạo: '+str(Rate)+'%\n\nQuá trình khởi tạo sẽ xong khi thanh tiến độ đạt 100%\n\n'
-                '60 giây sau khi quá trình khởi tạo đạt 100%, nếu giao diện không\nhiện thông báo "Bắt đầu đọc thẻ NFC", vui lòng làm theo các bước sau:\n'
+                'Khi màn hình chờ này tắt đi, giao diện sẽ hiện lên. 60 giây sau đó, nếu giao diện không\nhiện thông báo "Bắt đầu đọc thẻ NFC", vui lòng làm theo các bước sau:\n'
                 '1) Kiểm tra lại nguồn điện thiết bị, nguồn điện đầu đọc\n2) Kiểm tra giắc cắm đầu đọc\n3) Kiểm tra kết nối mạng\n4) Cuối cùng, khởi động lại thiết bị', font = "Bahnschrift 15", bg= "black", fg ="#FFBD09").place(x=490, y=380)
     
         #sleep(1)
