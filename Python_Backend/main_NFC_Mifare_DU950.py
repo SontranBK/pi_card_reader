@@ -90,7 +90,10 @@ def decode_server_response(server_error_code, received_string, timeSentToUI):
 			
 			# return body of UI message
 			return student_name + ' | ' + student_id + ' | '  + class_name + ' | ' + school_name + ' | ' + timeSentToUI + ' | ' + '000000000'
+		else:
+			return None
 	except:
+		return None
 		print("Error: Server response's format is incorrect !!!!!!!!!\n")
 
 # Read data from database and update our local database
@@ -209,6 +212,7 @@ def main():
 	# MAIN LOOP
 	while (True): 
 		# Read data from NFC reader
+		# data[0] is class name, data[1] is student ID
 		data = read_NFC_card(ser)
 		#print(f"Received data: {data}")
 
@@ -238,17 +242,47 @@ def main():
 				print("Error: Lost connection to OCD server !!!!!!!!!\n")
 				send_all('Error: Lost connection to OCD server',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN) # send infomation to User interface
 				received_string = 'errorCode,errorMessage'
-				
+			
+			"""
+			Standard server response format for product v.0.0.3:
+
+			{"errorCode":"00",
+			"errorMessage":"",
+			"data":
+				{"id":1,
+				"name":"Phạm Ngọc Bảo An",
+				"gender":"FEMALE",
+				"studentId":"0012-22-0219",
+				"firstName":"Pham Ngoc Bao ",
+				"lastName":"An",
+				"school":
+					{"id":3,
+					"name":"Tiểu học Thịnh Long A",
+					"type":"SECONDARY",
+					"schoolContract":
+						{"id":3,
+						"name":"HD0003",
+						"useSelfCheckAttendance":true,
+						"useNutrition":true}
+					},
+				"clazz":
+					{"id":1,
+					"name":"1A1"}
+				}
+			} """
+			
 			# Error code of server response	
 			server_error_code = received_string[received_string.index("errorCode")+12:received_string.index("errorMessage")-3]	
-			
+			print(f"Server response error code: {server_error_code}")
+
 			# What to do with our information? 
 			# 1) Send to server and receive response data
 			# OR 2) Look this information up in our local database and update database
 			# OR 3) Do both of above
-
-			# body = decode_server_response(server_error_code, received_string, timeSentToUI)
-			body = read_update_database(database_link, data, school_name_db, timeSentToUI)
+			
+			body = decode_server_response(server_error_code, received_string, timeSentToUI)
+			if body == None:
+				body = read_update_database(database_link, data, school_name_db, timeSentToUI)
 
 			# If student information is valid, send this information to UI
 			if body != None:

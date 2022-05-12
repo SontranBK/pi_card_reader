@@ -1,6 +1,7 @@
 from requests import Session
 from datetime import datetime,date
 import time
+import json
 
 server = 'http://171.244.207.65:7856'
 
@@ -23,7 +24,7 @@ while (True):
     res = ses.post(server + '/api/self-attendances/checking', json=postData, auth=('user', 'user'))
     print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
 
-    received_string = res.text
+    received_string = json.loads(res.text)
     #print(received_string[received_string.index("errorCode")+12:received_string.index("errorMessage")-3])
 
     if (received_string[received_string.index("errorCode")+12:received_string.index("errorMessage")-3]=="00"):
