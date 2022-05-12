@@ -187,8 +187,9 @@ def main():
 	
 	# Initialize our local database
 	try:
-		database_link = 'DB thg5/'+ date.today().strftime('%d_%m_%Y') +'.db'
-		print(f"Link of database: {database_link}")
+		#database_link = 'pi_card_reader/Database/Sample/SampleDB.db' # if you want to try out sample Database
+		database_link = 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'
+		#print(f"Link of database: {database_link}")
 	except:
 		print("Error: database link not found !!!!!!!!!\n")
 

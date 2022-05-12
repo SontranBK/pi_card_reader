@@ -8,7 +8,7 @@ from datetime import datetime,date
 
 # Modify the link to our database here
 # Sample name of database: 11_05_2022.db (format: day_month_year.db)
-database_link = 'DB thg5/'+ date.today().strftime('%d_%m_%Y') +'.db'
+database_link = 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'
 
 print(f"Link of database: {database_link}")
 conn = sqlite3.connect(database_link)
