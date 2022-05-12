@@ -13,6 +13,8 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import messaging
 import sqlite3
+import json
+
 
 """
 SECTION 1: DEFINE VARIABLES AND COMMAND
@@ -92,29 +94,30 @@ def decode_server_response(server_error_code, received_string, timeSentToUI):
 		print("Error: Server response's format is incorrect !!!!!!!!!\n")
 
 # Read data from database and update our local database
-def read_database(conn, data, school_name_db, timeSentToUI):
+def read_database(connection, data, school_name_db, timeSentToUI):
 	try:
-		cursor = conn.execute(f"SELECT name from CLASS_{data[0]} where ID = {data[1]}")
+		cursor = connection.execute(f"SELECT name from CLASS_{data[0]} where ID = {data[1]}")
 		for row in cursor:
 			print (f"\nFind student with following info:\nName = {row[0]}")
 			pass				
-		return body = row[0] + ' | ' + data[1] + ' | '  + data[0] + ' | ' + school_name_db + ' | ' + timeSentToUI + ' | ' + '000000000'
+		body = row[0] + ' | ' + data[1] + ' | '  + data[0] + ' | ' + school_name_db + ' | ' + timeSentToUI + ' | ' + '000000000'
+		return body
 	except:
 		print("Error: Unable to read database !!!!!!!!!\n")
 		return None
 
 # Read data from database and update our local database
-def update_database(conn, data, timeSentToServer):
+def update_database(connection, data, timeSentToServer):
 	try:
-		cursor = conn.execute(f"SELECT time_a from CLASS_{data[0]} where ID = {data[1]}")
+		cursor = connection.execute(f"SELECT time_a from CLASS_{data[0]} where ID = {data[1]}")
 		for row in cursor:
 			print (f"\nFind student with following info:\nTime A = {row[0]}")
-			if (row[1] == None):
-				conn.execute("UPDATE CLASS_{} set TIME_A = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
-				conn.commit()
+			if (row[0] == None):
+				connection.execute("UPDATE CLASS_{} set TIME_A = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
+				connection.commit()
 			else:
-				conn.execute("UPDATE CLASS_{} set TIME_B = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
-				conn.commit()			
+				connection.execute("UPDATE CLASS_{} set TIME_B = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
+				connection.commit()			
 	except:
 		print("Error: Unable to update database !!!!!!!!!\n")
 		
@@ -211,7 +214,10 @@ def main():
 		print ('Error: Reader not connected')
 		send_all('Error: Reader not connected',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN) # send infomation to User interface
 
-
+	database_link = 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'
+	print(f"\n\nLink of database: {database_link}")
+	conn = sqlite3.connect(database_link)
+	
 	# MAIN LOOP
 	while (True): 
 		# Read data from NFC reader
@@ -222,10 +228,11 @@ def main():
 		# If NFC card is presented and NFC reader return data
 		if data != None:
 			
+			
 			# We first look this information up in our local database and update database
 			# If our local database somehow doesn't work, body will be none. Then we count on server's response
 			if (database_link != 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'):
-				database_link = 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db''
+				database_link = 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'
 				print(f"\n\nLink of database: {database_link}")
 				conn = sqlite3.connect(database_link)
 
@@ -240,6 +247,7 @@ def main():
 			body = read_database(conn, data, school_name_db, timeSentToUI)
 			if body != None:
 				send_all('NFC_card_info',body,MY_TOKEN)
+				time.sleep(5.2)
 
 			# Request data to be sent from client (our MCU) to server
 			postData = {
@@ -253,7 +261,6 @@ def main():
 				#print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
 
 				received_string = json.loads(res.text)
-				#print(received_string[received_string.index("errorCode")+12:received_string.index("errorMessage")-3])
 			except:
 				print("Error: Lost connection to OCD server !!!!!!!!!\n")
 				received_string = {"errorCode":"","errorMessage":""}
