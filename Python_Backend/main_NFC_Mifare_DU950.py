@@ -92,22 +92,32 @@ def decode_server_response(server_error_code, received_string, timeSentToUI):
 		print("Error: Server response's format is incorrect !!!!!!!!!\n")
 
 # Read data from database and update our local database
-def read_update_database(conn, data, school_name_db, timeSentToUI, timeSentToServer):
+def read_database(conn, data, school_name_db, timeSentToUI):
 	try:
-		cursor = conn.execute(f"SELECT name, time_a from CLASS_{data[0]} where ID = {data[1]}")
+		cursor = conn.execute(f"SELECT name from CLASS_{data[0]} where ID = {data[1]}")
 		for row in cursor:
-			print (f"\nFind student with following info:\nName = {row[0]}\nTime A = {row[1]}")
+			print (f"\nFind student with following info:\nName = {row[0]}")
+			pass				
+		return body = row[0] + ' | ' + data[1] + ' | '  + data[0] + ' | ' + school_name_db + ' | ' + timeSentToUI + ' | ' + '000000000'
+	except:
+		print("Error: Unable to read database !!!!!!!!!\n")
+		return None
+
+# Read data from database and update our local database
+def update_database(conn, data, timeSentToServer):
+	try:
+		cursor = conn.execute(f"SELECT time_a from CLASS_{data[0]} where ID = {data[1]}")
+		for row in cursor:
+			print (f"\nFind student with following info:\nTime A = {row[0]}")
 			if (row[1] == None):
 				conn.execute("UPDATE CLASS_{} set TIME_A = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
 				conn.commit()
 			else:
 				conn.execute("UPDATE CLASS_{} set TIME_B = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
-				conn.commit()
-				
-		return body = row[0] + ' | ' + data[1] + ' | '  + data[0] + ' | ' + school_name_db + ' | ' + timeSentToUI + ' | ' + '000000000'
+				conn.commit()			
 	except:
-		print("Error: Unable to read and update database !!!!!!!!!\n")
-		return None
+		print("Error: Unable to update database !!!!!!!!!\n")
+		
 
 # Read data from our NFC reader by sending READKEY command
 def read_NFC_card(ser):
@@ -212,11 +222,24 @@ def main():
 		# If NFC card is presented and NFC reader return data
 		if data != None:
 			
+			# We first look this information up in our local database and update database
+			# If our local database somehow doesn't work, body will be none. Then we count on server's response
+			if (database_link != 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'):
+				database_link = 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db''
+				print(f"\n\nLink of database: {database_link}")
+				conn = sqlite3.connect(database_link)
+
+
 			# Time recorded when receive data from NFC reader
 			# This time will be properly formated and send to server and UI
 			timeSentToServer = date.today().strftime('%Y-%m-%d') + ' ' + datetime.now().strftime('%H:%M:%S')
 			timeSentToUI = datetime.now().strftime('%H:%M:%S') + ', ' + date.today().strftime('%d/%m/%Y')
 			#print(len(timeSentToUI))
+
+			# Read student info from database if possible
+			body = read_database(conn, data, school_name_db, timeSentToUI)
+			if body != None:
+				send_all('NFC_card_info',body,MY_TOKEN)
 
 			# Request data to be sent from client (our MCU) to server
 			postData = {
@@ -274,14 +297,8 @@ def main():
 			# OR 2) Look this information up in our local database and update database
 			# OR 3) Do both of above
 
-			# We first look this information up in our local database and update database
-			# If our local database somehow doesn't work, body will be none. Then we count on server's response
-			if (database_link != 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'):
-				database_link = 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db''
-				print(f"\n\nLink of database: {database_link}")
-				conn = sqlite3.connect(database_link)
-
-			body = read_update_database(conn, data, school_name_db, timeSentToUI, timeSentToServer)
+			# Update Time A or Time B in local database
+			update_database(conn, data, timeSentToServer)
 
 			# If our local database doesn't work, turn into server response and decode it for information
 			if body == None:
@@ -289,13 +306,14 @@ def main():
 				# Then, mission fail. Studen information is not valid
 				body = decode_server_response(server_error_code, received_string, timeSentToUI)
 
-			# If student information is valid, send this information to UI
-			if body != None:
-				send_all('NFC_card_info',body,MY_TOKEN)
-				# Wait for our pop-up dialog in our UI to disappear
-				time.sleep(5.2)
-			else:
-				send_all('Error: Student Info Not Found',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
-				time.sleep(3.2)
+				# If student information is valid, send this information to UI
+				if body != None:
+					send_all('NFC_card_info',body,MY_TOKEN)
+					# Wait for our pop-up dialog in our UI to disappear
+					time.sleep(5)
+				else:
+					send_all('Error: Student Info Not Found',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
+					time.sleep(5)
+
 if __name__ == "__main__":
 	main()
