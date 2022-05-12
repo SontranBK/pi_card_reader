@@ -22,6 +22,8 @@ machine_id = "00001"
 # Name of school where device is installed
 school_name_db = "Tiểu học Thịnh Long"
 
+database_link = None
+
 # READKEY command of DU950 reader
 # Please refer to our provided protocol
 
@@ -90,22 +92,19 @@ def decode_server_response(server_error_code, received_string, timeSentToUI):
 		print("Error: Server response's format is incorrect !!!!!!!!!\n")
 
 # Read data from database and update our local database
-def read_update_database(database_link, data, school_name_db, timeSentToUI):
+def read_update_database(conn, data, school_name_db, timeSentToUI, timeSentToServer):
 	try:
-		conn = sqlite3.connect(database_link)
-		cursor = conn.execute(f"SELECT name, id, dateofbirth, time_a, error_code_a, time_b, error_code_b from CLASS_{data[0]} where ID = {data[1]}")
+		cursor = conn.execute(f"SELECT name, time_a from CLASS_{data[0]} where ID = {data[1]}")
 		for row in cursor:
-			print (f"\nFind student with following info:\nNAME = {row[0]}\nID = {row[1]}\nDoB = {row[2]}\nTime A = {row[3]}\nTime B = {row[5]}\n")
-			print (f"Current updating time:\nNAME = {row[0]}\nID = {row[1]}\nDoB = {row[2]}\nTime A = {row[3]}\nTime B = {row[5]}\n")
-			
-			if (row[3] == None):
+			print (f"\nFind student with following info:\nName = {row[0]}\nTime A = {row[1]}")
+			if (row[1] == None):
 				conn.execute("UPDATE CLASS_{} set TIME_A = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
 				conn.commit()
 			else:
 				conn.execute("UPDATE CLASS_{} set TIME_B = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
 				conn.commit()
 				
-		body = row[0] + ' | ' + data[1] + ' | '  + data[0] + ' | ' + school_name_db + ' | ' + timeSentToUI + ' | ' + '000000000'
+		return body = row[0] + ' | ' + data[1] + ' | '  + data[0] + ' | ' + school_name_db + ' | ' + timeSentToUI + ' | ' + '000000000'
 	except:
 		print("Error: Unable to read and update database !!!!!!!!!\n")
 		return None
@@ -277,7 +276,12 @@ def main():
 
 			# We first look this information up in our local database and update database
 			# If our local database somehow doesn't work, body will be none. Then we count on server's response
-			body = read_update_database(database_link, data, school_name_db, timeSentToUI)
+			if (database_link != 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'):
+				database_link = 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db''
+				print(f"\n\nLink of database: {database_link}")
+				conn = sqlite3.connect(database_link)
+
+			body = read_update_database(conn, data, school_name_db, timeSentToUI, timeSentToServer)
 
 			# If our local database doesn't work, turn into server response and decode it for information
 			if body == None:

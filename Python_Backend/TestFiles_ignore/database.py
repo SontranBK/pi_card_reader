@@ -6,37 +6,52 @@ import sqlite3
 import time
 from datetime import datetime,date
 
-# Modify the link to our database here
-# Sample name of database: 11_05_2022.db (format: day_month_year.db)
-database_link = 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'
+school_name_db = "Tiểu học Thịnh Long"
 
-print(f"Link of database: {database_link}")
-conn = sqlite3.connect(database_link)
-
-print ("Opened database successfully\n")
+database_link = None
 
 while(True):
-	inputClass = input("Input Class: ")
-	inputID = input("Input ID: ")
-	timeSentToServer = date.today().strftime('%Y-%m-%d')
+
+	inputClass = input("\n\n\nInput Class: ")
+	#inputID = input("Input ID: ")
+	#inputClass ='1A1'
+	inputID = '1083682100084'
+
+
+	#data[0] = inputClass
+	#data[1] = inputID
+
+	# Modify the link to our database here
+	# Sample name of database: 11_05_2022.db (format: day_month_year.db)
+
+	if (database_link != 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'):
+		database_link = 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db''
+		print(f"\n\nLink of database: {database_link}")
+		conn = sqlite3.connect(database_link)
+
+	print ("Opened database successfully\n")
+
+
+	timeSentToServer = date.today().strftime('%Y-%m-%d') + ' ' + datetime.now().strftime('%H:%M:%S')
+	timeSentToUI = datetime.now().strftime('%H:%M:%S') + ', ' + date.today().strftime('%d/%m/%Y')
 	print(f"time sent to server: {timeSentToServer}")
+
 	start = time.time()
 
-	cursor = conn.execute(f"SELECT name, id, dateofbirth, time_a, error_code_a, time_b, error_code_b from CLASS_{inputClass} where ID = {inputID}")
+	cursor = conn.execute(f"SELECT name, time_a from CLASS_{inputClass} where ID = {inputID}")
 	for row in cursor:
-		print (f"\nFind student with following info:\nNAME = {row[0]}\nID = {row[1]}\nDoB = {row[2]}\nTime A = {row[3]}\nTime B = {row[5]}\n")
-		if (row[3] == None):
-			#row[3] = timeSentToServer
-			conn.execute(f"UPDATE CLASS_{inputClass} set TIME_A = {timeSentToServer} where ID = {inputID}")
+		print (f"\nFind student with following info:\nName = {row[0]}\nTime A = {row[1]}")
+		if (row[1] == None):
+			conn.execute("UPDATE CLASS_{} set TIME_A = ? where ID = ?".format(inputClass),(timeSentToServer,inputID))
 			conn.commit()
-			print (f"After updating time:\nNAME = {row[0]}\nID = {row[1]}\nDoB = {row[2]}\nTime A = {row[3]}\nTime B = {row[5]}\n")
 		else:
-			#row[5] = timeSentToServer
-			conn.execute(f"UPDATE CLASS_{inputClass} set TIME_B = {timeSentToServer} where ID = {inputID}")
+			conn.execute("UPDATE CLASS_{} set TIME_B = ? where ID = ?".format(inputClass),(timeSentToServer,inputID))
 			conn.commit()
-			print (f"After updating time:\nNAME = {row[0]}\nID = {row[1]}\nDoB = {row[2]}\nTime A = {row[3]}\nTime B = {row[5]}\n")
+	
+	
+	body = row[0] + ' | ' + inputID + ' | '  + inputClass + ' | ' + school_name_db + ' | ' + timeSentToUI + ' | ' + '000000000'
+	print(f"Info sent to UI:{body}")
+
 	end = time.time()
 	print("Execution time: "+str(end-start))
 	
-
-conn.close()
