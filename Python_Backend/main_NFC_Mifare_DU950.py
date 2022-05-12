@@ -71,24 +71,17 @@ SECTION 2: FUNCTION DEFINATION
 # Decode the server response sent to our MCU
 def decode_server_response(server_error_code, received_string, timeSentToUI):
 	try:
-		if (server_error_code=="00"):
-		# Server response is saved in received string
-			student_info = received_string[received_string.index("data")+7:received_string.index("school")-2]
-			school_info = received_string[received_string.index("school")+9:received_string.index("clazz")-3]
-			class_info = received_string[received_string.index("clazz")+8:-3]
-
-			print(f'student_info: {student_info}\nschool_info: {school_info}\nclass_info: {class_info}\n')
-
-			student_name = student_info[student_info.index("name")+7:student_info.index("gender")-3]
-			student_id = student_info[student_info.index("studentId")+12:student_info.index("firstName")-3]
-			school_name = school_info[school_info.index("name")+7:school_info.index("type")-3]
-			class_name = class_info[class_info.index("name")+7:-1]
-			
+		if (server_error_code == "00"):
+			# Server response is saved in received string, this contains student information
+			student_name = received_string["data"]["name"]
+			student_id = received_string["data"]["studentId"]
+			school_name = received_string["data"]["school"]["name"]
+			class_name = received_string["data"]["clazz"]["name"]
 
 			print(f'Information received from server: student_name_id: {student_name}, {student_id}\n'
 					f'school_name: {school_name}\nclass_name: {class_name}\n')
 			
-			# return body of UI message
+			# Return body of UI message	
 			return student_name + ' | ' + student_id + ' | '  + class_name + ' | ' + school_name + ' | ' + timeSentToUI + ' | ' + '000000000'
 		else:
 			return None
@@ -115,6 +108,7 @@ def read_update_database(database_link, data, school_name_db, timeSentToUI):
 		body = row[0] + ' | ' + data[1] + ' | '  + data[0] + ' | ' + school_name_db + ' | ' + timeSentToUI + ' | ' + '000000000'
 	except:
 		print("Error: Unable to read and update database !!!!!!!!!\n")
+		return None
 
 # Read data from our NFC reader by sending READKEY command
 def read_NFC_card(ser):
@@ -234,15 +228,16 @@ def main():
 			# Perform sending above request data to server and receive response
 			try: 
 				res = ses.post(server + '/api/self-attendances/checking', json=postData, auth=('user', 'user'))
-				print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
+				#print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
 
-				received_string = res.text
+				received_string = json.loads(res.text)
 				#print(received_string[received_string.index("errorCode")+12:received_string.index("errorMessage")-3])
 			except:
 				print("Error: Lost connection to OCD server !!!!!!!!!\n")
-				send_all('Error: Lost connection to OCD server',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN) # send infomation to User interface
-				received_string = 'errorCode,errorMessage'
+				received_string = {"errorCode":"","errorMessage":""}
 			
+			
+
 			"""
 			Standard server response format for product v.0.0.3:
 
@@ -270,25 +265,33 @@ def main():
 					"name":"1A1"}
 				}
 			} """
-			
+
 			# Error code of server response	
-			server_error_code = received_string[received_string.index("errorCode")+12:received_string.index("errorMessage")-3]	
+			server_error_code = received_string["errorCode"]
 			print(f"Server response error code: {server_error_code}")
 
 			# What to do with our information? 
 			# 1) Send to server and receive response data
 			# OR 2) Look this information up in our local database and update database
 			# OR 3) Do both of above
-			
-			body = decode_server_response(server_error_code, received_string, timeSentToUI)
+
+			# We first look this information up in our local database and update database
+			# If our local database somehow doesn't work, body will be none. Then we count on server's response
+			body = read_update_database(database_link, data, school_name_db, timeSentToUI)
+
+			# If our local database doesn't work, turn into server response and decode it for information
 			if body == None:
-				body = read_update_database(database_link, data, school_name_db, timeSentToUI)
+				# If we're unable to decode server's response, body will be none
+				# Then, mission fail. Studen information is not valid
+				body = decode_server_response(server_error_code, received_string, timeSentToUI)
 
 			# If student information is valid, send this information to UI
 			if body != None:
 				send_all('NFC_card_info',body,MY_TOKEN)
 				# Wait for our pop-up dialog in our UI to disappear
 				time.sleep(5.2)
-				
+			else:
+				send_all('Error: Student Info Not Found',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
+				time.sleep(3.2)
 if __name__ == "__main__":
 	main()
