@@ -14,13 +14,13 @@ dtoverlay=vc4-fkms-v3d
 """""""""""""""""
 2) Initialize operating system and source code
 """""""""""""""""
-install setting for Ubuntu system, set user name to "Meta_edu", password to 1
-download this source code from github and put it in "home" folder
-change the name of main folder to "pi_card_reader"
+2.1) install setting for Ubuntu system, set user name to "Meta_edu", password to 1
+2.2) download this source code from github and put it in "home" folder
+2.3) change the name of main folder to "pi_card_reader"
 
 
 """""""""""""""""
-3) Now run those command to install dependencies:
+3) Open Terminal and run those command to install dependencies:
 """""""""""""""""
 cd ~
 sudo apt install --assume-yes chromium-browser
@@ -40,10 +40,10 @@ sudo minicom -s
 
 """"""""""""""""""
 """"""""""""""""""
-Run minicom with sudo minicom -s, go to "Serial port setup" 
-Change the first line to /dev/ttyUSB0.
-Save config as default with "Save setup as dfl". 
-Restart your Pi
+- Run minicom with sudo minicom -s, go to "Serial port setup" 
+- Change the first line to /dev/ttyUSB0.
+- Save config as default with "Save setup as dfl". 
+- Restart your Pi
 """"""""""""""""""
 """"""""""""""""""
 
@@ -73,7 +73,8 @@ sudo flutter pub upgrade
 - Command: /user/bin/gnome-terminal.real
 
 now right-click Terminal and open Preferences: 
-- add Profiles named "Meta_edu" and click down arrow, then choose "Set as default"
+- change the name of current profile to "Debug"
+- add new Profiles named "Meta_edu" and click down arrow, then choose "Set as default"
 - now navigate to "Command" tab in profile "Meta_edu", choose both "Run command as a login shell" and "Run custom command instead of my shell"
 - add line "sh ./pi_card_reader/Bash_Script/auto_boot.sh" to Custom command
 - if possible, in "Text" tab, set "Initial terminal size" to 100 columns and 100 rows
@@ -98,3 +99,10 @@ sudo cp pi_card_reader/Ubuntu_Bootup_Modification/bgrt-fallback.png /usr/share/p
 cd ~
 sudo cp pi_card_reader/Ubuntu_Bootup_Modification/watermark.png /usr/share/plymouth/themes/spinner
 reboot
+
+5.2) Install virtual keyboard on device
+
+- Open Setting on Ubuntu
+- 
+
+

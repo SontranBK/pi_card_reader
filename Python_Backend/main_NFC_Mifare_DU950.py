@@ -187,7 +187,7 @@ def main():
 	
 	# Initialize firebase TOKEN API
 	try: 
-		with open('/home/thien-nv/Downloads/API_TOKEN.txt') as f:
+		with open('/home/Meta_edu/Downloads/API_TOKEN.txt') as f:
 			MY_TOKEN = f.read()
 		print (f"Token received form file: {MY_TOKEN}, type: {type({MY_TOKEN})}")
 	except:
