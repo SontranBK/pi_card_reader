@@ -4,20 +4,24 @@ when you flash Raspberry Pi Ubuntu SD Card:
 """""""""""""""""
 sudo nano /boot/firmware/config.txt
 
-or find file with name: config.txt
+- Or find file with name: config.txt
 
-Identify the following line:
+- Identify the following line:
 
 dtoverlay=vc4-kms-v3d
-and change it to:
+
+- And change it to:
 
 dtoverlay=vc4-fkms-v3d
-
 
 """""""""""""""""
 2) Initialize operating system and source code
 """""""""""""""""
-2.1) install setting for Ubuntu system, set user name to "Meta_edu", password to 1
+2.1) install setting for Ubuntu system, set user name to "metaedu", password to 1
+- Choose Location: Ho Chi Minh
+- Language/ keyboard: English US
+- Your name, user: metaedu
+
 2.2) download this source code from github and put it in "home" folder
 2.3) change the name of main folder to "pi_card_reader"
 
@@ -103,9 +107,10 @@ cd ~
 sudo cp pi_card_reader/Ubuntu_Bootup_Modification/watermark.png /usr/share/plymouth/themes/spinner
 reboot
 
-5.2) Install virtual keyboard on device
+5.2) Install virtual keyboard on device (screen keyboard)
 
 - Open Setting on Ubuntu
-- 
+- Choose Accessibility
+- In Typing section -> Turn "Screen Keyboard" to "on" 
 
 
