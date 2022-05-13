@@ -20,7 +20,8 @@ dtoverlay=vc4-fkms-v3d
 2.1) install setting for Ubuntu system, set user name to "metaedu", password to 1
 - Choose Location: Ho Chi Minh
 - Language/ keyboard: English US
-- Your name, user: metaedu
+- Your name, user, desktop name: metaedu
+- Choose "auto login" => Must auto login
 
 2.2) download this source code from github and put it in "home" folder
 2.3) change the name of main folder to "pi_card_reader"
