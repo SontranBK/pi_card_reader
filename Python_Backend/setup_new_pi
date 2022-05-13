@@ -3,6 +3,9 @@
 when you flash Raspberry Pi Ubuntu SD Card:
 """""""""""""""""
 sudo nano /boot/firmware/config.txt
+
+or find file with name: config.txt
+
 Identify the following line:
 
 dtoverlay=vc4-kms-v3d
