@@ -3,6 +3,19 @@ from datetime import datetime,date
 import time
 import json
 
+ID_list =[1083682100084, 1083682100100,
+1083682100113,
+1083682100111,
+1083682100106,
+1083682100089,
+1083682100082,
+1083682100077,
+108368632000253,
+1083682100109,
+1083682100230,
+1083682100076,
+1083682100093,
+]
 server = 'http://171.244.207.65:7856'
 
 
@@ -11,19 +24,19 @@ ses.headers.update({
 	'Content-Type': 'application/json'
 })
 
-while (True):
+for student_id in ID_list:
 	time_sent_toServer = date.today().strftime('%Y-%m-%d') + ' ' + datetime.now().strftime('%H:%M:%S')
-	#print(time_sent_toServer)
+	#print(f"\n\n\ntime sent to server: {time_sent_toServer}")
 	# 0012071984
 	# 0013719878
 	postData = {
-	        "machineId": "1234TT",
+	        "machineId": "00001",
 	        "checkingTime": time_sent_toServer,
-	        "cardNo": "0013719878",
+	        "studentID": str(student_id),
 	}
 	try: 
 		res = ses.post(server + '/api/self-attendances/checking', json=postData, auth=('user', 'user'))
-		print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
+		#print(f'\nserver response: {res.text}, type res: {type(res)}, type: {type(res.text)}\n')
 
 		received_string = json.loads(res.text)
 		#print(received_string[received_string.index("errorCode")+12:received_string.index("errorMessage")-3])
@@ -35,16 +48,14 @@ while (True):
 	server_error_code = received_string["errorCode"]
 
 	#for employee in data["employees"]: 
-	print("Server error code: "+server_error_code)
+	#print("Server error code: "+server_error_code)
 	if server_error_code == '00':
-		print("It works !!!!")
-
 		student_name = received_string["data"]["name"]
 		student_id = received_string["data"]["studentId"]
 		school_name = received_string["data"]["school"]["name"]
 		class_name = received_string["data"]["clazz"]["name"]
 
-		print(f'student_name_id: {student_name}, {student_id}\n'
+		print(f'\n\nstudent_name_id: {student_name}, {student_id}\n'
 		f'school_name: {school_name}\nclass_name: {class_name}\n')
 
 	else:
@@ -70,6 +81,6 @@ while (True):
 
 
 
-	time.sleep(5)
+	time.sleep(3)
                 
 
