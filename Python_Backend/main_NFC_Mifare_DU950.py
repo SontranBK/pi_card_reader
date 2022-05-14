@@ -253,7 +253,7 @@ def main():
 			postData = {
 					"machineId": machine_id,
 					"checkingTime": timeSentToServer,
-					"cardNo": data[1],}
+					"studentID": data[1],}
 
 			# Perform sending above request data to server and receive response
 			try: 
