@@ -29,6 +29,8 @@ dtoverlay=vc4-fkms-v3d
 
 """""""""""""""""
 3) Open Terminal and run those command to install dependencies:
+if there's issue with "Could not get lock /var/cache/apt/archives/lock, or process is hold, ...", 
+here is the solution: https://itsfoss.com/fix-ubuntu-install-error/
 """""""""""""""""
 cd ~
 sudo apt install --assume-yes chromium-browser
@@ -56,10 +58,14 @@ sudo minicom -s
 """"""""""""""""""
 
 lsusb
+
 ### use lsusb to check vendor and product id
 sudo modprobe usbserial vendor=1a86 product=7532
+
+### If above line "sudo modprobe usbserial vendor=1a86 product=7532" doesn't work
 ### For some reason, some reader need to add 0x in font of id, eg:
 sudo modprobe usbserial vendor=0x31aa product=0x3000
+
 ### Then use following line to check if ports are open:
 sudo python3 -m serial.tools.list_ports
 
