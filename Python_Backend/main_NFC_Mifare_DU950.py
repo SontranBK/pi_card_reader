@@ -124,18 +124,19 @@ def update_database(connection, data, timeSentToServer):
 
 # Read data from our NFC reader by sending READKEY command
 def read_NFC_card(ser):
+	data = ""
 	ser.write(READKEY4command) 
 	in_hex = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
 	if in_hex[2:9] == '2001500':
-		data = str(codecs.decode(in_hex[17:-2], "hex"),'utf-8')		
+		data = str(codecs.decode(in_hex[17:49], "hex"),'utf-8')		
 		ser.write(READKEY5command)
 		in_hex = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
 		if in_hex[2:9] == '2001500':
-			data = data + str(codecs.decode(in_hex[17:-2], "hex"),'utf-8')			
+			data = data + str(codecs.decode(in_hex[17:49], "hex"),'utf-8')			
 			ser.write(READKEY6command)		
 			in_hex = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
 			if in_hex[2:9] == '2001500':
-				data = data + str(codecs.decode(in_hex[17:-2], "hex"),'utf-8')	
+				data = data + str(codecs.decode(in_hex[17:49], "hex"),'utf-8')	
 				#print(f"data: {data}")
 			try:
 				class_name = data[:data.index("|")]
