@@ -15,7 +15,7 @@ dtoverlay=vc4-kms-v3d
 dtoverlay=vc4-fkms-v3d
 
 """""""""""""""""
-2) Initialize operating system and source code
+2) Initialize reader, operating system and source code
 """""""""""""""""
 2.1) install setting for Ubuntu system, set user name to "metaedu", password to 1
 - Choose Location: Ho Chi Minh
@@ -26,11 +26,15 @@ dtoverlay=vc4-fkms-v3d
 2.2) download this source code from github and put it in "home" folder
 2.3) change the name of main folder to "pi_card_reader"
 
-
+2.4) Open window computer, open software DEDOWNLOADER, connect to reader, and open firmware
+DE-620L_950_DualCard_161227 (1)
+Then click "FW file down" to write this firmware to our reader
 """""""""""""""""
 3) Open Terminal and run those command to install dependencies:
 if there's issue with "Could not get lock /var/cache/apt/archives/lock, or process is hold, ...", 
 here is the solution: https://itsfoss.com/fix-ubuntu-install-error/
+
+cd into /var/lib/dpkg/ and remove lock-fontend by: rm lock-fontend
 """""""""""""""""
 cd ~
 sudo apt install --assume-yes chromium-browser
