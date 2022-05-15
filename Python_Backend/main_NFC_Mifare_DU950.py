@@ -261,7 +261,7 @@ def main():
 			# Perform sending above request data to server and receive response
 			try: 
 				res = ses.post(server + '/api/self-attendances/checking', json=postData, auth=('user', 'user'))
-				#print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
+				print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
 
 				received_string = json.loads(res.text)
 			except:
