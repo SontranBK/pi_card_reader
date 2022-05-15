@@ -9,7 +9,7 @@ class Loading:
         self.root.config(bg = "black")
         self.root.title("Custom Loader")
         self.root.attributes("-fullscreen", True)
-        self.time_to_run = 163
+        self.time_to_run = 175
         self.time_left = self.time_to_run                                                                                                                                                                                        
         # Loading text
         Label(self.root, text = "Khởi tạo chương trình... Vui lòng đợi", font = "Bahnschrift 15", bg= "black", fg ="#FFBD09").place(x=490, y=320)
