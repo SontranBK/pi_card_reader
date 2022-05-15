@@ -74,6 +74,7 @@ sudo modprobe usbserial vendor=0x31aa product=0x3000
 
 ### Then use following line to check if ports are open:
 sudo python3 -m serial.tools.list_ports
+### If everything works well, the terminal output should show "/dev/ttyUSB0" as a port
 
 cd ~
 sudo snap install flutter --classic
@@ -90,7 +91,7 @@ sudo flutter pub upgrade
 """""""""""""""""
 4.1) Click "show application" or "activities", type in "Startup Application" and open it, then click "Add", then set:
 - Name: terminal
-- Command: /user/bin/gnome-terminal.real
+- Command: click "browser", then find following path: "/user/bin/gnome-terminal.real"
 
 now right-click Terminal and open Preferences: 
 - change the name of current profile to "Debug"
@@ -104,7 +105,8 @@ and set "Delay Timer" of this extension to 0.
 
 4.3) Go to Chromium setting (chrome://settings/content/notifications), in "Allowed to send notifications" part, add link: http://localhost:41200
 4.4) Go to Setting (of Ubuntu) => Appearance => Enable "Auto-hide the Dock"
-4.5) Go to Setting (of Ubuntu) => Power => Make Ubuntu never goes to "sleep" mode
+4.5) Go to Setting (of Ubuntu) => Power => Power Saving Options => Change to "Never" 
+(Make Ubuntu never goes to "sleep" mode)
 
 
 """""""""""""""""
