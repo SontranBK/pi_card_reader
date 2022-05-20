@@ -6,6 +6,8 @@
 import sqlite3
 import time
 from datetime import datetime,date
+from requests import Session
+import json
 
 # Decode the server response sent to our MCU
 def decode_server_response(server_error_code, received_string, timeSentToUI):
@@ -43,11 +45,11 @@ def update_database(connection, data, server_error_code, timeSentToServer):
 		print (f"\nFind student with following info:\nTime A = {row[0]}")
 		if (row[0] == None):
 			connection.execute("UPDATE CLASS_{} set TIME_A = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
-			connection.execute("UPDATE CLASS_{} set ERROR_CODE_A = ? where ID = ?".format(server_error_code),(timeSentToServer,data[1]))
+			connection.execute("UPDATE CLASS_{} set ERROR_CODE_A = ? where ID = ?".format(data[0]),(server_error_code,data[1]))
 			connection.commit()
 		else:
 			connection.execute("UPDATE CLASS_{} set TIME_B = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
-			connection.execute("UPDATE CLASS_{} set ERROR_CODE_B = ? where ID = ?".format(server_error_code),(timeSentToServer,data[1]))
+			connection.execute("UPDATE CLASS_{} set ERROR_CODE_B = ? where ID = ?".format(data[0]),(server_error_code,data[1]))
 			connection.commit()			
 
 
@@ -90,15 +92,26 @@ school_name_db = "Tiểu học Thịnh Long"
 
 database_link = None
 
+
+
+server = 'http://171.244.207.65:7856'
+
+
+ses = Session()
+ses.headers.update({
+	'Content-Type': 'application/json'
+})
+
+
 for student_id in ID_list:
 
 	# Modify the link to our database here
 	# Sample name of database: 11_05_2022.db (format: day_month_year.db)
 
 	data = []
-	data.append(str(student_id))
 	data.append(str("1A1"))
-	print(f"our input data: {data[0]}, {data[1]}")
+	data.append(str(student_id))
+	#print(f"our input data: {data[0]}, {data[1]}")
 
 	try:
 		#database_link = 'pi_card_reader/Database/Sample/SampleDB.db' # if you want to try out sample Database
@@ -121,21 +134,19 @@ for student_id in ID_list:
 
 	# Read student info from database if possible
 	body = read_database(conn, data, school_name_db, timeSentToUI)
-	print(f"Body read from local DB: {body}")
+	#print(f"Information received from local DB: {body}")
 	postData = {
 			"machineId": machine_id,
 			"checkingTime": timeSentToServer,
 			"studentID": data[1],}
 
 	# Perform sending above request data to server and receive response
-	try: 
-		res = ses.post(server + '/api/self-attendances/checking', json=postData, auth=('user', 'user'))
-		print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
+	
+	res = ses.post(server + '/api/self-attendances/checking', json=postData, auth=('user', 'user'))
+	print(f'\nserver response: {res.text}, type res: {type(res)}, type: {type(res.text)}\n')
 
-		received_string = json.loads(res.text)
-	except:
-		print("Error: Lost connection to OCD server !!!!!!!!!\n")
-		received_string = {"errorCode":"","errorMessage":""}
+	received_string = json.loads(res.text)
+
 
 	# Error code of server response	
 	server_error_code = received_string["errorCode"]
@@ -154,8 +165,55 @@ for student_id in ID_list:
 		# If we're unable to decode server's response, body will be none
 		# Then, mission fail. Studen information is not valid
 		body = decode_server_response(server_error_code, received_string, timeSentToUI)
-		print(f"Body read from server: {body}")
+		print(f"Information received from server: {body}")
 	time.sleep(15)
 
 
-	
+"""
+Standard server response format for product v.0.0.3:
+
+{"errorCode":"00",
+"errorMessage":"",
+"data":
+	{"id":1,
+	"name":"Phạm Ngọc Bảo An",
+	"gender":"FEMALE",
+	"studentId":"0012-22-0219",
+	"firstName":"Pham Ngoc Bao ",
+	"lastName":"An",
+	"school":
+		{"id":3,
+		"name":"Tiểu học Thịnh Long A",
+		"type":"SECONDARY",
+		"schoolContract":
+			{"id":3,
+			"name":"HD0003",
+			"useSelfCheckAttendance":true,
+			"useNutrition":true}
+		},
+	"clazz":
+		{"id":1,
+		"name":"1A1"}
+	}
+} """	
+"""
+errorCode: 00
+====> Ok
+
+ errorCode: E011
++ errorMessage: Mã học sinh không được để trống!
+
++ errorCode: E007
++ errorMessage: Học sinh không tồn tại!
+
++ errorCode: E008
++ errorMessage: Học sinh không thuộc lớp học nào!
+
++ errorCode: E009
++ errorMessage: Lớp học không tồn tại!
+                    
++ errorCode: E010
++ errorMessage: Dữ liệu quẹt thẻ đã tồn tại!
+09:34 AM
+"""
+
