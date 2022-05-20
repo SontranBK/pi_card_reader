@@ -9,26 +9,6 @@ from datetime import datetime,date
 
 # Decode the server response sent to our MCU
 def decode_server_response(server_error_code, received_string, timeSentToUI):
-	"""
-	try:
-		if (server_error_code == "00"):
-			# Server response is saved in received string, this contains student information
-			student_name = received_string["data"]["name"]
-			student_id = received_string["data"]["studentId"]
-			school_name = received_string["data"]["school"]["name"]
-			class_name = received_string["data"]["clazz"]["name"]
-
-			print(f'Information received from server: student_name_id: {student_name}, {student_id}\n'
-					f'school_name: {school_name}\nclass_name: {class_name}\n')
-			
-			# Return body of UI message	
-			return student_name + ' | ' + student_id + ' | '  + class_name + ' | ' + school_name + ' | ' + timeSentToUI + ' | ' + '000000000'
-		else:
-			return None
-	except:
-		return None
-		print("Error: Server response's format is incorrect !!!!!!!!!\n")
-	"""
 	if (server_error_code == "00"):
 			# Server response is saved in received string, this contains student information
 			student_name = received_string["data"]["name"]
@@ -47,22 +27,6 @@ def decode_server_response(server_error_code, received_string, timeSentToUI):
 # Read data from database and update our local database
 def read_database(connection, data, school_name_db, timeSentToUI):
 	start = time.time()
-	"""
-	try:
-		cursor = connection.execute(f"SELECT name from CLASS_{data[0]} where ID = {data[1]}")
-		for row in cursor:
-			print (f"\nFind student with following info:\nName = {row[0]}")
-			pass				
-		body = row[0] + ' | ' + data[1] + ' | '  + data[0] + ' | ' + school_name_db + ' | ' + timeSentToUI + ' | ' + '000000000'					
-		end = time.time()
-		print("Read local DB time: "+str(end-start))
-		return body
-	except:
-		print("Error: Unable to read database !!!!!!!!!\n")
-		end = time.time()
-		print("Read local DB time: "+str(end-start))
-		return None
-	"""
 	cursor = connection.execute(f"SELECT name from CLASS_{data[0]} where ID = {data[1]}")
 	for row in cursor:
 		print (f"\nFind student with following info:\nName = {row[0]}")
@@ -74,20 +38,18 @@ def read_database(connection, data, school_name_db, timeSentToUI):
 
 # Read data from database and update our local database
 def update_database(connection, data, server_error_code, timeSentToServer):
-	try:
-		cursor = connection.execute(f"SELECT time_a from CLASS_{data[0]} where ID = {data[1]}")
-		for row in cursor:
-			print (f"\nFind student with following info:\nTime A = {row[0]}")
-			if (row[0] == None):
-				connection.execute("UPDATE CLASS_{} set TIME_A = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
-				connection.execute("UPDATE CLASS_{} set ERROR_CODE_A = ? where ID = ?".format(server_error_code),(timeSentToServer,data[1]))
-				connection.commit()
-			else:
-				connection.execute("UPDATE CLASS_{} set TIME_B = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
-				connection.execute("UPDATE CLASS_{} set ERROR_CODE_B = ? where ID = ?".format(server_error_code),(timeSentToServer,data[1]))
-				connection.commit()			
-	except:
-		print("Error: Unable to update database !!!!!!!!!\n")
+	cursor = connection.execute(f"SELECT time_a from CLASS_{data[0]} where ID = {data[1]}")
+	for row in cursor:
+		print (f"\nFind student with following info:\nTime A = {row[0]}")
+		if (row[0] == None):
+			connection.execute("UPDATE CLASS_{} set TIME_A = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
+			connection.execute("UPDATE CLASS_{} set ERROR_CODE_A = ? where ID = ?".format(server_error_code),(timeSentToServer,data[1]))
+			connection.commit()
+		else:
+			connection.execute("UPDATE CLASS_{} set TIME_B = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
+			connection.execute("UPDATE CLASS_{} set ERROR_CODE_B = ? where ID = ?".format(server_error_code),(timeSentToServer,data[1]))
+			connection.commit()			
+
 
 """
 # new ID list
