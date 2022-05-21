@@ -203,7 +203,13 @@ def main():
 		#print(f"Link of database: {database_link}")
 		conn = sqlite3.connect(database_link)
 	except:
+		database_link = 'pi_card_reader/Database/Sample/SampleDB.db'
+		print(f"\n\nLink of database: {database_link}")
+		conn = sqlite3.connect(database_link)
+
 		print("Error: database link not found, could not connect to local DB !!!!!!!!!\n")
+		print("Error: connect to Sample DB instead !!!!!!!!!\n")
+
 
 	# Initialize serial python, framework for reading serial USB
 	try:
@@ -238,6 +244,9 @@ def main():
 					database_link = 'pi_card_reader/Database/Sample/SampleDB.db'
 					print(f"\n\nLink of database: {database_link}")
 					conn = sqlite3.connect(database_link)
+					print("Error: database link not found, could not connect to local DB !!!!!!!!!\n")
+					print("Error: connect to Sample DB instead !!!!!!!!!\n")
+
 
 
 			# Time recorded when receive data from NFC reader
