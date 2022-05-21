@@ -118,7 +118,12 @@ for student_id in ID_list:
 		#print(f"Link of database: {database_link}")
 		conn = sqlite3.connect(database_link)
 	except:
+		database_link = 'pi_card_reader/Database/Sample/SampleDB.db'
+		print(f"\n\nLink of database: {database_link}")
+		conn = sqlite3.connect(database_link)
+
 		print("Error: database link not found, could not connect to local DB !!!!!!!!!\n")
+		print("Error: connect to Sample DB instead !!!!!!!!!\n")
 
 
 	timeSentToServer = date.today().strftime('%Y-%m-%d') + ' ' + datetime.now().strftime('%H:%M:%S')
