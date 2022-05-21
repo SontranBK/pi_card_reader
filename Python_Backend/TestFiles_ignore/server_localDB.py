@@ -120,7 +120,6 @@ for student_id in ID_list:
 	except:
 		print("Error: database link not found !!!!!!!!!\n")
 
-	database_link = 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'
 	print(f"\n\nLink of database: {database_link}")
 	conn = sqlite3.connect(database_link)
 

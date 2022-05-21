@@ -199,11 +199,11 @@ def main():
 	
 	# Initialize our local database
 	try:
-		#database_link = 'pi_card_reader/Database/Sample/SampleDB.db' # if you want to try out sample Database
 		database_link = 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'
 		#print(f"Link of database: {database_link}")
+		conn = sqlite3.connect(database_link)
 	except:
-		print("Error: database link not found !!!!!!!!!\n")
+		print("Error: database link not found, could not connect to local DB !!!!!!!!!\n")
 
 	# Initialize serial python, framework for reading serial USB
 	try:
@@ -216,10 +216,6 @@ def main():
 	except: 
 		print ('Error: Reader not connected')
 		send_all('Error: Reader not connected',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN) # send infomation to User interface
-
-	database_link = 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'
-	print(f"\n\nLink of database: {database_link}")
-	conn = sqlite3.connect(database_link)
 	
 	# MAIN LOOP
 	while (True): 
@@ -230,14 +226,18 @@ def main():
 
 		# If NFC card is presented and NFC reader return data
 		if data != None:
-			
-			
+					
 			# We first look this information up in our local database and update database
 			# If our local database somehow doesn't work, body will be none. Then we count on server's response
 			if (database_link != 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'):
-				database_link = 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'
-				print(f"\n\nLink of database: {database_link}")
-				conn = sqlite3.connect(database_link)
+				try:
+					database_link = 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'
+					print(f"\n\nLink of database: {database_link}")
+					conn = sqlite3.connect(database_link)
+				except:
+					database_link = 'pi_card_reader/Database/Sample/SampleDB.db'
+					print(f"\n\nLink of database: {database_link}")
+					conn = sqlite3.connect(database_link)
 
 
 			# Time recorded when receive data from NFC reader
