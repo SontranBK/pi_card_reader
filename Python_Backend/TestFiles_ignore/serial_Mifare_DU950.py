@@ -1,5 +1,10 @@
 #!/usr/bin/python3
  
+"""
+This is a serial Mifare DU-950 python code
+for reading block 4,5,6 continuously
+"""
+
 import sys
 import time
 sys.path.append('./.local/lib/python3.9/site-packages')
@@ -19,8 +24,13 @@ def main():
 	
 
 	#print(f"valid check readable: {ser.readable()}, writeable: {ser.writable()}")
-            
+    """
+	Check out protocol Duali file for protocol information
+	All command below must have STX and LRC in font and back
+	Read "Communication Protocol Frame Format" in page 9 for STX and LRC information
+	"""
 	# read USB serial and convert to string
+	# Command no.21
 	REQAcommand = bytearray()
 	REQAcommand.append(0x02) # STX
 	REQAcommand.append(0x00) # LEN-H
@@ -28,6 +38,7 @@ def main():
 	REQAcommand.append(0x21) # REQA CMD
 	REQAcommand.append(0x20) # LRC
 
+	# Command no.22
 	WUPAcommand = bytearray()
 	WUPAcommand.append(0x02) # STX
 	WUPAcommand.append(0x00) # LEN-H
@@ -35,14 +46,15 @@ def main():
 	WUPAcommand.append(0x22) # WUPA CMD
 	WUPAcommand.append(0x23) # LRC
 
+	# Command no.23
 	ANCOcommand = bytearray()
 	ANCOcommand.append(0x02) # STX
 	ANCOcommand.append(0x00) # LEN-H
 	ANCOcommand.append(0x01) # LEN-L
-	ANCOcommand.append(0x23) # REQA CMD
+	ANCOcommand.append(0x23) # ANCO CMD
 	ANCOcommand.append(0x22) # LRC
 	
-
+	# Command no.30
 	AUTHcommand = bytearray()
 	AUTHcommand.append(0x02) # STX
 	AUTHcommand.append(0x00) # LEN-H
@@ -54,16 +66,16 @@ def main():
 	AUTHcommand.append(0x01) # Block number of the card
 	AUTHcommand.append(0x39) # LRC
 	
-
+	# Command no.27
 	READcommand = bytearray()
 	READcommand.append(0x02) # STX
 	READcommand.append(0x00) # LEN-H
 	READcommand.append(0x02) # LEN-L
-	READcommand.append(0x27) # REQA CMD
+	READcommand.append(0x27) # READ CMD
 	READcommand.append(0x01) # # Block number of the card
 	READcommand.append(0x24) # LRC
 
-
+	# Command no.36 for block 4
 	READKEY4command = bytearray()
 	READKEY4command.append(0x02) # STX
 	READKEY4command.append(0x00) # LEN-H
@@ -76,7 +88,7 @@ def main():
 		READKEY4command.append(0xFF) #  Key[0]..[5], The key data to be stored into the secret key buffer
 	READKEY4command.append(0x38) # LRC
 	
-	
+	# Command no.36 for block 5
 	READKEY5command = bytearray()
 	READKEY5command.append(0x02) # STX
 	READKEY5command.append(0x00) # LEN-H
@@ -89,6 +101,7 @@ def main():
 		READKEY5command.append(0xFF) #  Key[0]..[5], The key data to be stored into the secret key buffer
 	READKEY5command.append(0x39) # LRC
 
+	# Command no.36 for block 6
 	READKEY6command = bytearray()
 	READKEY6command.append(0x02) # STX
 	READKEY6command.append(0x00) # LEN-H
