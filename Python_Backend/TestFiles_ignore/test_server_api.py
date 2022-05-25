@@ -82,5 +82,51 @@ for student_id in ID_list:
 
 
 	time.sleep(3)
-                
+
+"""
+Standard server response format for product v.0.0.3:
+
+{"errorCode":"00",
+"errorMessage":"",
+"data":
+	{"id":1,
+	"name":"Phạm Ngọc Bảo An",
+	"gender":"FEMALE",
+	"studentId":"0012-22-0219",
+	"firstName":"Pham Ngoc Bao ",
+	"lastName":"An",
+	"school":
+		{"id":3,
+		"name":"Tiểu học Thịnh Long A",
+		"type":"SECONDARY",
+		"schoolContract":
+			{"id":3,
+			"name":"HD0003",
+			"useSelfCheckAttendance":true,
+			"useNutrition":true}
+		},
+	"clazz":
+		{"id":1,
+		"name":"1A1"}
+	}
+} """            
+"""
+errorCode: 00
+====> Ok
+
+ errorCode: E011
++ errorMessage: Mã học sinh không được để trống!
+
++ errorCode: E007
++ errorMessage: Học sinh không tồn tại!
+
++ errorCode: E008
++ errorMessage: Học sinh không thuộc lớp học nào!
+
++ errorCode: E009
++ errorMessage: Lớp học không tồn tại!
+                    
++ errorCode: E010
++ errorMessage: Dữ liệu quẹt thẻ đã tồn tại!
+"""
 
