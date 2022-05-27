@@ -1,4 +1,4 @@
 cd ~
-cd pi_card_reader/
-echo 1 | sudo -S flutter run -d web-server --web-hostname localhost --web-port 41200
+cd pi_card_reader/build/web/
+echo 1 | sudo -S python3 -m http.server 41200
 
