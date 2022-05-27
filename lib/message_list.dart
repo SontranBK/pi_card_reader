@@ -34,18 +34,18 @@ class _MessageList extends State<MessageList> {
             }
         );
    }
+  @override
+  Widget build(BuildContext context) {
+    double heightR, widthR; //v26
+    heightR = MediaQuery.of(context).size.height/1080;//v26
+    widthR = MediaQuery.of(context).size.width/1920;//v26
+    var curR = widthR;//v26
+    return Text('');
+    }
    
   @override
   void initState() {
     super.initState();
-    var _ID = " ";
-    var _class = " ";
-    var _textSt = TextStyle(
-    decoration: TextDecoration.none,
-    fontSize: 30,
-    color: Colors.white70,
-    fontFamily: 'Dosis', fontWeight: FontWeight.w400,
-    );
     
     Future(_showStartDialog);
    
@@ -146,87 +146,124 @@ class _MessageList extends State<MessageList> {
             Future.delayed(Duration(seconds: 5), () {
               Navigator.of(context).pop(true);
             });
-            return Center(
-              child: Container(
-                padding: EdgeInsets.only (top:0),
-                height: 180,
-                width: 550,
-                margin: EdgeInsets.only(top: 50, left: 750),
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      stops: [
-                        0.0,
-                        0.33,
-                        0.68,
-                        0.99,
-                      ],
-                      colors: [
-                        Colors.lightBlue.withOpacity(0.6),
-                        Colors.lightBlue.withOpacity(0.0),
-                        Colors.lightBlue.withOpacity(0.0),
-                        Colors.lightBlue.withOpacity(0.6),
-                      ],
+            return Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(top: 180*heightR, right: 177*heightR), //v26
+                    child: Text(
+                      'Xin chào!',
+                      style: TextStyle(
+                        decoration: TextDecoration.none,
+                        fontSize: 190*curR, //v26
+                        color: Colors.white,
+                        fontFamily: 'Dosis', fontWeight: FontWeight.w400,
+                      ),
                     ),
-                    borderRadius: BorderRadius.circular(40),
-                ),
-                child: SizedBox.expand(
-                  child: Row(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(left: 30, right: 30),
-                            width: 100, height: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.white70,
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.white,
-                                width: 2,
-                              )
-                            ),
-                            child: Image.asset('THCS_CG.png', scale: 6,),
-                          )
-                        ],
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            Info[0],
-                            style: TextStyle(
-                              decoration: TextDecoration.none,
-                              fontSize: 28,
-                              color: Colors.white,
-                              fontFamily: 'Dosis', fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Text(
-                            'ID: '+Info[1],
-                            style: _textSt,
-                          ),
-                          Text(
-                            'Lớp: '+Info[2],
-                            style: _textSt,
-                          ),
-                        ],
-                      ),
-                    ],
                   ),
-                ),
+                  Container(
+                    height: 250*heightR, //v26
+                    width: 745*widthR, //v26
+                    margin: EdgeInsets.only(right: 100*widthR), //v26
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        stops: [
+                          0.0,
+                          0.33,
+                          0.68,
+                          0.99,
+                        ],
+                        colors: [
+                          Colors.lightBlue.withOpacity(0.6),
+                          Colors.lightBlue.withOpacity(0.05),
+                          Colors.lightBlue.withOpacity(0.05),
+                          Colors.lightBlue.withOpacity(0.6),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(30*curR), //v26
+                    ),
+                    child: SizedBox.expand(
+                      child: Row(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(left: 25*widthR, right: 25*heightR),//v26
+                                width: 140*widthR, height: 140*heightR,//v26
+                                decoration: BoxDecoration(
+                                    color: Colors.white60,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Colors.white,
+                                      width: 2,
+                                    )
+                                ),
+                                child: Image.asset('THCS_CG.png', scale: 4/curR,), //v26
+                              )
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.only(top: 30*heightR, bottom: 20*heightR), //v26
+                                child: Text(
+                                  Info[0],
+                                  style: TextStyle(
+                                    decoration: TextDecoration.none,
+                                    fontSize: 50*curR, //v26
+                                    color: Colors.white,
+                                    fontFamily: 'Dosis', fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'ID: '+Info[1],
+                                    style: TextStyle(
+                                      decoration: TextDecoration.none,
+                                      fontSize: 35*curR, //v26
+                                      color: Colors.white,
+                                      fontFamily: 'Dosis', fontWeight: FontWeight.w400,
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Lớp: '+Info[2],
+                                    style: TextStyle(
+                                      decoration: TextDecoration.none,
+                                      fontSize: 35*curR, //v26
+                                      color: Colors.white,
+                                      fontFamily: 'Dosis', fontWeight: FontWeight.w400,
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             );
           },
           transitionBuilder: (_, anim, __, child) {
             Tween<Offset> tween;
             if (anim.status == AnimationStatus.reverse) {
-              tween = Tween(begin: Offset(-1, 0), end: Offset.zero);
+              tween = Tween(begin: Offset(1, 0), end: Offset.zero); //v26
             } else {
-              tween = Tween(begin: Offset(1, 0), end: Offset.zero);
+              tween = Tween(begin: Offset(1, 0), end: Offset.zero); //v26
             }
 
             return SlideTransition(
@@ -237,15 +274,11 @@ class _MessageList extends State<MessageList> {
               ),
             );
           },
-        );//show dialog
+        );
       }
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Text('');
-  }
 
 }
 
