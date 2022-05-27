@@ -32,7 +32,7 @@ class _MessageList extends State<MessageList> {
                       fontSize: 30,
                       fontWeight: FontWeight.bold),
                 ),
-                content: Text('- Product version: v0.0.3\n- Sau khi thông báo này ẩn đi, đợi khoảng 10 giây,\nnếu không thấy thông báo "Bắt đầu đọc thẻ NFC",\nvui lòng làm theo các bước sau:\n1) Kiểm tra lại nguồn điện thiết bị, nguồn điện đầu đọc\n2) Kiểm tra giắc cắm đầu đọc\n3) Kiểm tra kết nối mạng\n4) Cuối cùng, khởi động lại thiết bị'),
+                content: Text('- Product version: v0.0.3\n- Sau khi thông báo này ẩn đi, đợi khoảng 30 giây,\nnếu không thấy thông báo "Bắt đầu đọc thẻ NFC",\nvui lòng làm theo các bước sau:\n1) Kiểm tra lại nguồn điện thiết bị, nguồn điện đầu đọc\n2) Kiểm tra giắc cắm đầu đọc\n3) Kiểm tra kết nối mạng\n4) Cuối cùng, khởi động lại thiết bị'),
               );
             }
         );
