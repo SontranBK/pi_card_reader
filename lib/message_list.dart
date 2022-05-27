@@ -15,6 +15,9 @@ class _MessageList extends State<MessageList> {
   //RemoteMessage mymess = RemoteMessage();
   RemoteNotification Noti = RemoteNotification();
   //List<RemoteMessage> mymess = [];
+  double heightR = 0.0; //v26
+  double widthR = 0.0;
+  double curR = 0.0;
   
   void _showStartDialog(){
 	showDialog(
@@ -36,10 +39,9 @@ class _MessageList extends State<MessageList> {
    }
   @override
   Widget build(BuildContext context) {
-    double heightR, widthR; //v26
     heightR = MediaQuery.of(context).size.height/1080;//v26
     widthR = MediaQuery.of(context).size.width/1920;//v26
-    var curR = widthR;//v26
+    curR = widthR;//v26
     return Text('');
     }
    
@@ -281,4 +283,3 @@ class _MessageList extends State<MessageList> {
 
 
 }
-
