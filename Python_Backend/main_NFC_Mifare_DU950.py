@@ -29,6 +29,24 @@ database_link = None
 # READKEY command of DU950 reader
 # Please refer to our provided protocol
 
+# Buzz on and off command
+BUZZ2command = bytearray()
+BUZZ2command.append(0x02) # STX
+BUZZ2command.append(0x00) # LEN-H
+BUZZ2command.append(0x02) # LEN-L	
+BUZZ2command.append(0x13) # BUZZ2 CMD
+BUZZ2command.append(0x00) # BUZZ2 On
+BUZZ2command.append(0x11) # LRC
+
+BUZZ3command = bytearray()
+BUZZ3command.append(0x02) # STX
+BUZZ3command.append(0x00) # LEN-H
+BUZZ3command.append(0x02) # LEN-L	
+BUZZ3command.append(0x13) # BUZZ3 CMD
+BUZZ3command.append(0x01) # BUZZ3 Off
+BUZZ3command.append(0x10) # LRC
+	
+	
 # READKEY command applied to block no.4
 READKEY4command = bytearray()
 READKEY4command.append(0x02) # STX
@@ -145,6 +163,9 @@ def read_NFC_card(ser):
 				rest = dataB6[dataB6.index("|")+1:]
 				student_id = rest[:rest.index("|")]
 				print(f"class name: {class_name}; student ID: {student_id}")
+				ser.write(BUZZ2command)
+				time.sleep(0.15)
+				ser.write(BUZZ3command)
 				return class_name, student_id
 			except:
 				pass
@@ -168,6 +189,7 @@ def send_all(title,body,FCM_token):
 		print('{0} messages were sent successfully'.format(response.success_count))
 		# [END send_all]
 	except:
+		pass
 		print("Error: Unable to connect with UI !!!!!!!!!\n")
 
 
@@ -203,12 +225,9 @@ def main():
 		#print(f"Link of database: {database_link}")
 		conn = sqlite3.connect(database_link)
 	except:
-		database_link = 'pi_card_reader/Database/Sample/SampleDB.db'
-		print(f"\n\nLink of database: {database_link}")
-		conn = sqlite3.connect(database_link)
-
+		conn = None
 		print("Error: database link not found, could not connect to local DB !!!!!!!!!\n")
-		print("Error: connect to Sample DB instead !!!!!!!!!\n")
+
 
 
 	# Initialize serial python, framework for reading serial USB
@@ -227,9 +246,10 @@ def main():
 	while (True): 
 		# Read data from NFC reader
 		# data[0] is class name, data[1] is student ID
+		time1 = time.time()
 		data = read_NFC_card(ser)
 		#print(f"Received data: {data}")
-
+		time2 = time.time()
 		# If NFC card is presented and NFC reader return data
 		if data != None:
 					
@@ -241,11 +261,9 @@ def main():
 					print(f"\n\nLink of database: {database_link}")
 					conn = sqlite3.connect(database_link)
 				except:
-					database_link = 'pi_card_reader/Database/Sample/SampleDB.db'
-					print(f"\n\nLink of database: {database_link}")
-					conn = sqlite3.connect(database_link)
+					conn = None
 					print("Error: database link not found, could not connect to local DB !!!!!!!!!\n")
-					print("Error: connect to Sample DB instead !!!!!!!!!\n")
+
 
 
 
@@ -256,11 +274,14 @@ def main():
 			#print(len(timeSentToUI))
 
 			# Read student info from database if possible
+
 			body = read_database(conn, data, school_name_db, timeSentToUI)
+			time3 = time.time()
 			if body != None:
 				send_all('NFC_card_info',body,MY_TOKEN)
 				time.sleep(5.2)
-
+			
+			time4 = time.time()
 			# Request data to be sent from client (our MCU) to server
 			postData = {
 					"machineId": machine_id,
@@ -310,7 +331,7 @@ def main():
 			# Error code of server response	
 			server_error_code = received_string["errorCode"]
 			print(f"Server response error code: {server_error_code}")
-
+			
 			# What to do with our information? 
 			# 1) Send to server and receive response data
 			# OR 2) Look this information up in our local database and update database
@@ -318,14 +339,17 @@ def main():
 
 			# Update Time A or Time B in local database
 			update_database(conn, data, timeSentToServer)
-
+			time5 = time.time()
+			
+			print(f"\n\nRead NFC time:{time2-time1+0.3}\nRead localDB time: {time3-time2}\nReq/Res and decode Res time: {time5-time4+0.4}\n")
 			# If our local database doesn't work, turn into server response and decode it for information
 			if body == None:
 				# If we're unable to decode server's response, body will be none
 				# Then, mission fail. Studen information is not valid
 				body = decode_server_response(server_error_code, received_string, timeSentToUI)
-
+				
 				# If student information is valid, send this information to UI
+				
 				if body != None:
 					send_all('NFC_card_info',body,MY_TOKEN)
 					# Wait for our pop-up dialog in our UI to disappear
