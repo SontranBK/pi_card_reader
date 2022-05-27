@@ -205,7 +205,7 @@ class _MessageList extends State<MessageList> {
                                       width: 2,
                                     )
                                 ),
-                                child: Image.asset('THCS_CG.png', scale: 4/curR,), //v26
+                                child: Image.asset('logo.png', scale: 4/curR,), //v26
                               )
                             ],
                           ),

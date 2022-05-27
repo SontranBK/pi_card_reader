@@ -38,7 +38,7 @@ class _HomepageState extends State<Homepage> {
                     padding: EdgeInsets.only(left: 95*widthR, top:50*heightR), //v26
                     child: Row(
                       children: [
-                        Image.asset('THCS_CG.png', scale: 5/curR,), //v26
+                        Image.asset('logo.png', scale: 5/curR,), //v26
                         Text('Trường THCS Cầu Giấy',
                           style: TextStyle(
                             fontFamily: 'Dosis', fontSize: 48*widthR, fontWeight: FontWeight.w400, //v26
@@ -92,5 +92,4 @@ class _HomepageState extends State<Homepage> {
     );
   }
 }
-
 
