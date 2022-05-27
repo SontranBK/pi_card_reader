@@ -24,7 +24,7 @@ def main():
 	
 
 	#print(f"valid check readable: {ser.readable()}, writeable: {ser.writable()}")
-    """
+	"""
 	Check out protocol Duali file for protocol information
 	All command below must have STX and LRC in font and back
 	Read "Communication Protocol Frame Format" in page 9 for STX and LRC information
@@ -45,6 +45,53 @@ def main():
 	WUPAcommand.append(0x01) # LEN-L
 	WUPAcommand.append(0x22) # WUPA CMD
 	WUPAcommand.append(0x23) # LRC
+	
+	# Command no.13
+	BUZZ1command = bytearray()
+	BUZZ1command.append(0x02) # STX
+	BUZZ1command.append(0x00) # LEN-H
+	BUZZ1command.append(0x02) # LEN-L	
+	BUZZ1command.append(0x13) # BUZZ1 CMD
+	BUZZ1command.append(0x03) # BUZZ1 with tone and time
+	BUZZ1command.append(0x01) # Octave 
+	BUZZ1command.append(0x00) # Frequency
+	BUZZ1command.append(0x10) # Time
+	BUZZ1command.append(0x03) # LRC
+	
+	
+	BUZZ2command = bytearray()
+	BUZZ2command.append(0x02) # STX
+	BUZZ2command.append(0x00) # LEN-H
+	BUZZ2command.append(0x02) # LEN-L	
+	BUZZ2command.append(0x13) # BUZZ2 CMD
+	BUZZ2command.append(0x00) # BUZZ2 On
+	BUZZ2command.append(0x11) # LRC
+	
+	BUZZ3command = bytearray()
+	BUZZ3command.append(0x02) # STX
+	BUZZ3command.append(0x00) # LEN-H
+	BUZZ3command.append(0x02) # LEN-L	
+	BUZZ3command.append(0x13) # BUZZ3 CMD
+	BUZZ3command.append(0x01) # BUZZ3 Off
+	BUZZ3command.append(0x10) # LRC
+	
+	LED1command = bytearray()
+	LED1command.append(0x02) # STX
+	LED1command.append(0x00) # LEN-H
+	LED1command.append(0x02) # LEN-L	
+	LED1command.append(0x13) # LED1 CMD
+	LED1command.append(0x10) # LED1 Control
+	LED1command.append(0x01) # LED1 position and on
+	LED1command.append(0x00) # LRC
+	
+	LED2command = bytearray()
+	LED2command.append(0x02) # STX
+	LED2command.append(0x00) # LEN-H
+	LED2command.append(0x02) # LEN-L	
+	LED2command.append(0x13) # LED2 CMD
+	LED2command.append(0x10) # LED2 Control
+	LED2command.append(0x00) # LED2 Position and off
+	LED2command.append(0x01) # LRC
 
 	# Command no.23
 	ANCOcommand = bytearray()
@@ -134,12 +181,40 @@ def main():
 				#print(f"hexaread 17:-2 {in_hex[17:-2]}")
 				data = str(codecs.decode(in_hex[17:-2], "hex"),'utf-8')
 				print(f"ASCII code: {data}")
-			
-		
+		if command == "buzz1":
+			ser.write(BUZZ1command) 
+			#print(f"Done writing")
+			in_hex = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
+			print(f"hexa received: {in_hex}")
 
+		if command == "buzz2":
+			ser.write(BUZZ2command) 
+			#print(f"Done writing")
+			in_hex = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
+			print(f"hexa received: {in_hex}")
+			
+		if command == "buzz3":
+			ser.write(BUZZ3command) 
+			#print(f"Done writing")
+			in_hex = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
+			print(f"hexa received: {in_hex}")
+			
+		if command == "led1":
+			ser.write(LED1command) 
+			#print(f"Done writing")
+			in_hex = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
+			print(f"hexa received: {in_hex}")
+			
+		if command == "led2":
+			ser.write(LED2command) 
+			#print(f"Done writing")
+			in_hex = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
+			print(f"hexa received: {in_hex}")
+		if command == "buzz":
+			ser.write(BUZZ2command)
+			time.sleep(0.5)
+			ser.write(BUZZ3command)
 	
 
 if __name__ == "__main__":
 	main()
- 
-
