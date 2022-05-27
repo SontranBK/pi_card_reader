@@ -89,6 +89,10 @@ flutter:
           weight: 400
         - asset: assets/fonts/Dosis-SemiBold.ttf
           weight: 600
+    - family: iCielBambola
+      fonts:
+        - asset: assets/fonts/iCielBambola.otf
+          weight: 400
   #fonts:
   #   - family: Schyler
   #     fonts:
