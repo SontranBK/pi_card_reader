@@ -299,7 +299,7 @@ def main():
 				received_string = {"errorCode":"","errorMessage":""}
 				try: 
 					conn = sqlite3.connect("log_retry.db")
-					cur.execute("CREATE TABLE IF NOT EXISTS LOGTABLE( machineID TEXT, checkingTime TEXT, studentID TEXT, retryTimes TEXT) ")
+					conn.cursor().execute("CREATE TABLE IF NOT EXISTS LOGTABLE( machineID TEXT, checkingTime TEXT, studentID TEXT, retryTimes TEXT) ")
 					conn.execute("INSERT INTO LOGTABLE (machineID,checkingTime,studentID,retryTimes) VALUES (?,?,?,?)",(postData['machineID'],postData['checkingTime'],postData['studentID'],0))
 					conn.commit()
 				except: 
