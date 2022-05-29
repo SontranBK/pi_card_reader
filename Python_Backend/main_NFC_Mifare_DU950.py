@@ -23,6 +23,8 @@ SECTION 1: DEFINE VARIABLES AND COMMAND
 machine_id = "00001"
 # Name of school where device is installed
 school_name_db = "Tiểu học Thịnh Long"
+# Student Info pop-up time
+pop_up_time = 3
 
 database_link = None
 
@@ -125,16 +127,18 @@ def read_database(connection, data, school_name_db, timeSentToUI):
 		return None
 
 # Read data from database and update our local database
-def update_database(connection, data, timeSentToServer):
+def update_database(connection, data, error_code , timeSentToServer):
 	try:
 		cursor = connection.execute(f"SELECT time_a from CLASS_{data[0]} where ID = {data[1]}")
 		for row in cursor:
 			print (f"\nFind student with following info:\nTime A = {row[0]}")
 			if (row[0] == None):
 				connection.execute("UPDATE CLASS_{} set TIME_A = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
+				connection.execute("UPDATE CLASS_{} set ERROR_CODE_A = ? where ID = ?".format(data[0]),(error_code,data[1]))
 				connection.commit()
 			else:
 				connection.execute("UPDATE CLASS_{} set TIME_B = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
+				connection.execute("UPDATE CLASS_{} set ERROR_CODE_B = ? where ID = ?".format(data[0]),(error_code,data[1]))
 				connection.commit()			
 	except:
 		print("Error: Unable to update database !!!!!!!!!\n")
@@ -279,7 +283,7 @@ def main():
 			time3 = time.time()
 			if body != None:
 				send_all('NFC_card_info',body,MY_TOKEN)
-				time.sleep(5.2)
+				time.sleep(pop_up_time + 0.2)
 			
 			time4 = time.time()
 			# Request data to be sent from client (our MCU) to server
@@ -345,7 +349,7 @@ def main():
 			# OR 3) Do both of above
 
 			# Update Time A or Time B in local database
-			update_database(conn, data, timeSentToServer)
+			update_database(conn, data, server_error_code, timeSentToServer)
 			time5 = time.time()
 			
 			print(f"\n\nRead NFC time:{time2-time1+0.3}\nRead localDB time: {time3-time2}\nReq/Res and decode Res time: {time5-time4+0.4}\n")
@@ -360,10 +364,10 @@ def main():
 				if body != None:
 					send_all('NFC_card_info',body,MY_TOKEN)
 					# Wait for our pop-up dialog in our UI to disappear
-					time.sleep(5)
+					time.sleep(pop_up_time)
 				else:
 					send_all('Error: Student Info Not Found',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
-					time.sleep(5)
+					time.sleep(pop_up_time)
 
 if __name__ == "__main__":
 	main()

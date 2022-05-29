@@ -81,7 +81,7 @@ class _MessageList extends State<MessageList> {
         showDialog(
             context: context,
             builder: (context) {
-              Future.delayed(Duration(seconds: 10), () {
+              Future.delayed(Duration(seconds: 5), () {
                 Navigator.of(context).pop(true);
               });
               return AlertDialog(
@@ -101,7 +101,7 @@ class _MessageList extends State<MessageList> {
         showDialog(
             context: context,
             builder: (context) {
-              Future.delayed(Duration(seconds: 10), () {
+              Future.delayed(Duration(seconds: 5), () {
                 Navigator.of(context).pop(true);
               });
               return AlertDialog(
@@ -145,7 +145,7 @@ class _MessageList extends State<MessageList> {
           barrierColor: Colors.black.withOpacity(0.1),
           transitionDuration: Duration(milliseconds: 500),
           pageBuilder: (_, __, ___) {
-            Future.delayed(Duration(seconds: 5), () {
+            Future.delayed(Duration(seconds: 3), () {
               Navigator.of(context).pop(true);
             });
             return Container(
