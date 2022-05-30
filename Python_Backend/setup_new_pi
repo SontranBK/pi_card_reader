@@ -84,6 +84,8 @@ cd pi_card_reader/
 sudo flutter config --enable-web
 sudo flutter create --platforms=web .
 sudo flutter build web
+cd ~
+sudo cp pi_card_reader/build/web/assets/assets/logo.png pi_card_reader/build/web/assets/
 //sudo flutter pub add firebase_messaging
 //sudo flutter pub upgrade firebase_messaging
 //sudo flutter pub upgrade
