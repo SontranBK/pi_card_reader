@@ -256,7 +256,11 @@ def main():
 		time2 = time.time()
 		# If NFC card is presented and NFC reader return data
 		if data != None:
-					
+			#print(f"Received data: {data[0]},{data[1][0:5]},{data[1][6:8]},{data[1][9:13]}, type: {type(data[1])}")
+			sid = '{:04.0f}'.format(int(data[1][0:5]))+"-"+'{:02.0f}'.format(int(data[1][6:8]))+"-"+'{:04.0f}'.format(int(data[1][9:13]))
+			#print(f"Standard data type: {sid}, {type(sid)}")
+
+
 			# We first look this information up in our local database and update database
 			# If our local database somehow doesn't work, body will be none. Then we count on server's response
 			if (database_link != 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'):
@@ -290,7 +294,7 @@ def main():
 			postData = {
 					"machineId": machine_id,
 					"checkingTime": timeSentToServer,
-					"studentID": data[1],}
+					"studentID": str(sid),}
 
 			# Perform sending above request data to server and receive response
 			try: 

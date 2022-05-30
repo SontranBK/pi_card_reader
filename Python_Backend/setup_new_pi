@@ -75,6 +75,7 @@ sudo modprobe usbserial vendor=0x31aa product=0x3000
 ### Then use following line to check if ports are open:
 sudo python3 -m serial.tools.list_ports
 ### If everything works well, the terminal output should show "/dev/ttyUSB0" as a port
+### If not run "sudo apt remove brltty" again
 
 cd ~
 sudo snap install flutter --classic
@@ -82,9 +83,10 @@ cd ~
 cd pi_card_reader/
 sudo flutter config --enable-web
 sudo flutter create --platforms=web .
-sudo flutter pub add firebase_messaging
-sudo flutter pub upgrade firebase_messaging
-sudo flutter pub upgrade
+sudo flutter build web
+//sudo flutter pub add firebase_messaging
+//sudo flutter pub upgrade firebase_messaging
+//sudo flutter pub upgrade
 
 """""""""""""""""
 4) Make system auto-boot and auto-config 
