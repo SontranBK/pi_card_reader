@@ -306,7 +306,7 @@ def main():
 				print("Error: Lost connection to OCD server !!!!!!!!!\n")
 				received_string = {"errorCode":"","errorMessage":""}
 				try: 
-					conn = sqlite3.connect("log_retry.db")
+					conn = sqlite3.connect("pi_card_reader/Database/log_retry.db")
 					conn.cursor().execute("CREATE TABLE IF NOT EXISTS LOGTABLE( machineID TEXT, checkingTime TEXT, studentID TEXT, retryTimes TEXT) ")
 					conn.execute("INSERT INTO LOGTABLE (machineID,checkingTime,studentID,retryTimes) VALUES (?,?,?,?)",(machine_id,timeSentToServe,data[1],0))
 					conn.commit()

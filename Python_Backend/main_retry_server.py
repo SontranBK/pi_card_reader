@@ -16,7 +16,7 @@ ses.headers.update({
 })
 
 while (True):
-    conn = sqlite3.connect("log_retry.db")
+    conn = sqlite3.connect("pi_card_reader/Database/log_retry.db")
     cursor = conn.execute(f"SELECT machineID, checkingTime, studentID, retryTimes FROM LOGTABLE")
     for row in cursor:
         if int(row[3]) < 5:
