@@ -116,7 +116,7 @@ def decode_server_response(server_error_code, received_string, timeSentToUI):
 # Read data from database and update our local database
 def read_database(connection, data, school_name_db, timeSentToUI):
 	try:
-		cursor = connection.execute(f"SELECT name from CLASS_{data[0]} where ID = {data[1]}")
+		cursor = connection.execute(f"SELECT name from {data[0]} where ID = {data[1]}")
 		for row in cursor:
 			print (f"\nFind student with following info:\nName = {row[0]}")
 			pass				
@@ -129,16 +129,16 @@ def read_database(connection, data, school_name_db, timeSentToUI):
 # Read data from database and update our local database
 def update_database(connection, data, error_code , timeSentToServer):
 	try:
-		cursor = connection.execute(f"SELECT time_a from CLASS_{data[0]} where ID = {data[1]}")
+		cursor = connection.execute(f"SELECT time_a from {data[0]} where ID = {data[1]}")
 		for row in cursor:
 			print (f"\nFind student with following info:\nTime A = {row[0]}")
 			if (row[0] == None):
-				connection.execute("UPDATE CLASS_{} set TIME_A = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
-				connection.execute("UPDATE CLASS_{} set ERROR_CODE_A = ? where ID = ?".format(data[0]),(error_code,data[1]))
+				connection.execute("UPDATE {} set TIME_A = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
+				connection.execute("UPDATE {} set ERROR_CODE_A = ? where ID = ?".format(data[0]),(error_code,data[1]))
 				connection.commit()
 			else:
-				connection.execute("UPDATE CLASS_{} set TIME_B = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
-				connection.execute("UPDATE CLASS_{} set ERROR_CODE_B = ? where ID = ?".format(data[0]),(error_code,data[1]))
+				connection.execute("UPDATE {} set TIME_B = ? where ID = ?".format(data[0]),(timeSentToServer,data[1]))
+				connection.execute("UPDATE {} set ERROR_CODE_B = ? where ID = ?".format(data[0]),(error_code,data[1]))
 				connection.commit()			
 	except:
 		print("Error: Unable to update database !!!!!!!!!\n")
