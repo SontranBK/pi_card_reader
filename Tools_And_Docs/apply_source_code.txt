@@ -1,0 +1,34 @@
+2.2) download this source code from github, extract and put it in "home" folder
+2.3) change the name of main folder to "pi_card_reader"
+
+2.4) Open window computer, open software DEDOWNLOADER, connect to reader, and open firmware
+DE-620L_950_DualCard_161227 (1)
+Then click "FW file down" to write this firmware to our reader
+
+
+### use lsusb to check vendor and product id
+sudo modprobe usbserial vendor=1a86 product=7532
+
+
+### Then use following line to check if ports are open:
+sudo python3 -m serial.tools.list_ports
+### If everything works well, the terminal output should show "/dev/ttyUSB0" as a port
+### If not run "sudo apt remove brltty" and try again
+
+cd ~
+cd pi_card_reader/
+copy logo truong
+doi id thiet bi
+sudo cp pi_card_reader/build/web/assets/assets/logo.png pi_card_reader/build/web/assets/
+
+cd ~
+sudo cp pi_card_reader/Ubuntu_Bootup_Modification/bgrt-fallback.png /usr/share/plymouth/themes/spinner
+cd ~
+sudo cp pi_card_reader/Ubuntu_Bootup_Modification/watermark.png /usr/share/plymouth/themes/spinner
+reboot
+
+5.3) Look at the left of the screen, you see lots of applications:
+
+Left-click every apps and choose "Remove from favorites", keep "Files" 
+Find apps named "Terminal", "Chromium browser", and "Text editor", left-click and "Add to favorites"
+
