@@ -204,6 +204,12 @@ SECTION 3: MAIN PROGRAM
 
 
 def main():
+	try:
+		conn_log = sqlite3.connect("pi_card_reader/Database/log_retry.db")
+		conn_log.cursor().execute("CREATE TABLE IF NOT EXISTS LOGTABLE( machineID TEXT, checkingTime TEXT, studentID TEXT, retryTimes TEXT) ")
+	except:
+		pass
+		
 	# Initialize firebase, API for backend-UI communication
 	cred = credentials.Certificate('service-account.json')
 	default_app = firebase_admin.initialize_app(cred)
