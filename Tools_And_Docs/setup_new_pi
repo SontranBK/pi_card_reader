@@ -89,7 +89,9 @@ sudo cp pi_card_reader/build/web/assets/assets/logo.png pi_card_reader/build/web
 //sudo flutter pub add firebase_messaging
 //sudo flutter pub upgrade firebase_messaging
 //sudo flutter pub upgrade
-
+// If you need to remove build:
+cd pi_card_reader/
+sudo rm -r build/
 """""""""""""""""
 4) Make system auto-boot and auto-config 
 """""""""""""""""
