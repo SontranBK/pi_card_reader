@@ -39,7 +39,7 @@ class _HomepageState extends State<Homepage> {
                     child: Row(
                       children: [
                         Image.asset('logo.png', scale: 5/curR,), //v26
-                        Text('Trường TH Lê Hoàn',
+                        Text('Trường Tiểu học Lê Hoàn',
                           style: TextStyle(
                             fontFamily: 'Dosis', fontSize: 48*widthR, fontWeight: FontWeight.w400, //v26
                             color: Colors.white,
