@@ -22,7 +22,7 @@ SECTION 1: DEFINE VARIABLES AND COMMAND
 # Define machine_id: id of our MCU device 
 machine_id = "00001"
 # Name of school where device is installed
-school_name_db = "Tiểu học Thịnh Long"
+school_name_db = "Tiểu học Lê Hoàn"
 # Student Info pop-up time
 pop_up_time = 3
 

@@ -39,7 +39,7 @@ class _HomepageState extends State<Homepage> {
                     child: Row(
                       children: [
                         Image.asset('logo.png', scale: 5/curR,), //v26
-                        Text('Trường THCS Cầu Giấy',
+                        Text('Trường TH Lê Hoàn',
                           style: TextStyle(
                             fontFamily: 'Dosis', fontSize: 48*widthR, fontWeight: FontWeight.w400, //v26
                             color: Colors.white,
@@ -74,7 +74,7 @@ class _HomepageState extends State<Homepage> {
                         margin: EdgeInsets.only(top: 50*heightR), //v26
                         padding: EdgeInsets.only(right: 100*widthR), //v26
                         child: Text(
-                          '"Tri thức là chìa khóa mở cửa tương lai"',
+                          '" Tri thức là chìa khóa mở cửa tương lai"',
                           style: TextStyle(
                             fontFamily: 'iCielBambola' , fontSize: 52*curR, fontWeight: FontWeight.w200, //v26
                             color: Colors.white,
