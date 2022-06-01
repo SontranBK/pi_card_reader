@@ -1,26 +1,45 @@
-2.2) download this source code from github, extract and put it in "home" folder
-2.3) change the name of main folder to "pi_card_reader"
-
-2.4) Open window computer, open software DEDOWNLOADER, connect to reader, and open firmware
+1) Để kiểm tra xem đầu đọc đã chạy được chưa (đấu mạch đúng chưa), cắm vào máy windows
+Cài driver của CH-340 cho windows, rồi dùng phần mềm DuadCard để thử lệnh (nhớ đưa thẻ vào đầu)
+2) Trong trường hợp Dualcard chạy được mà đầu đọc cắm vào MCU vẫn không được, vào máy windows
+mở phần mềm DEDOWNLOADER, kết nối đầu đọc, chọn open firmware, rồi chọn:
 DE-620L_950_DualCard_161227 (1)
-Then click "FW file down" to write this firmware to our reader
+Sau đó ấn "FW file down" 
+
+3) Để bắt đầu cài đặt
+Down source code này xuống từ github (mở github trong Mozilla firefox, phần History có sẵn)
+Down file zip xuống, mở bằng Archive manager, giải nén ra, đặt vào trong "home"
+Đổi tên thư mục thành "pi_card_reader"
+
+Ra ngoài màn hình chính, di chuột sang bên trái thấy rất nhiều phần mềm, ta click phải chuột
+từng phần mềm, chọn "Remove from favorites", giữ lại phần mềm "Files". 
+Sau đó ấn xuống ô dưới cùng, tìm phần mềm "Terminal", "Chromium browser", và "Text editor", 
+Sau đó click chuột phải vào các phần mềm này, chọn "Add to favorites"
 
 
-### use lsusb to check vendor and product id
+4) Mở phần mềm terminal -> Chột phải -> preference -> Chọn profile "Debug"
+Sau đó chạy lệnh sau (có thể copy paste từ file này vào, không cần gõ):
+
 sudo modprobe usbserial vendor=1a86 product=7532
 
-
-### Then use following line to check if ports are open:
 sudo python3 -m serial.tools.list_ports
-### If everything works well, the terminal output should show "/dev/ttyUSB0" as a port
-### If not run "sudo apt remove brltty" and try again
+### Nếu mọi thứ ok, sẽ thấy hiện lên "/dev/ttyUSB0" 
+### Nếu không, chạy lệnh "sudo apt remove brltty" và thử lại hai lệnh bên trên
 
+5) Mở "Files" -> vào pi_card_reader/assets/logo -> Chọn logo của trường mình đang cần
+Copy logo đó, cho vào thư mục pi_card_reader/assets/ -> Sau đó đổi tên thành "logo.png"
+Tiếp tục, mở file sau: pi_card_reader/Python_Backend/main_NFC_Mifare_DU950.py
+Ở dòng số 23, đổi "machine_id" về theo như anh Sơn hướng dẫn
+Ở dòng số 25, đổi tên trường thành trường mình đang làm (có dấu)
+Nếu không gõ được dấu thì mở code github của anh Sơn và copy vào
+
+6) Tiếp tục trong "Terminal", chạy lệnh sau (có thể copy paste từ file này vào, không cần gõ)
 cd ~
 cd pi_card_reader/
-copy logo truong
-doi id thiet bi
+sudo flutter build web
+cd ~
 sudo cp pi_card_reader/build/web/assets/assets/logo.png pi_card_reader/build/web/assets/
 
+7) Tiếp tục trong "Terminal", chạy lệnh sau (có thể copy paste từ file này vào, không cần gõ)
 cd ~
 sudo cp pi_card_reader/Ubuntu_Bootup_Modification/bgrt-fallback.png /usr/share/plymouth/themes/spinner
 cd ~
