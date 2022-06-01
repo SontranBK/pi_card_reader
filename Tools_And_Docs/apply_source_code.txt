@@ -1,13 +1,15 @@
 1) Để kiểm tra xem đầu đọc đã chạy được chưa (đấu mạch đúng chưa), cắm vào máy windows
-Cài driver của CH-340 cho windows, rồi dùng phần mềm DuadCard để thử lệnh (nhớ đưa thẻ vào đầu)
+Cài driver của CH-340 cho windows, rồi dùng phần mềm DuadCard để thử lệnh (nhớ đưa thẻ vào đầu đọc để thử)
 
 2) Trong trường hợp Dualcard chạy được mà đầu đọc cắm vào MCU vẫn không được, vào máy windows
 mở phần mềm DEDOWNLOADER, kết nối đầu đọc, chọn open firmware, rồi chọn:
 DE-620L_950_DualCard_161227 (1)
 Sau đó ấn "FW file down" 
 
+(Trường hợp đầu đọc có lỗi, liên hệ thầy Thiện và anh Sơn)
+
 3) Để bắt đầu cài đặt
-Down source code này xuống từ github (mở github trong Mozilla firefox, phần History có sẵn)
+Down source code này xuống từ github (mở github trong Mozilla firefox, phần History có sẵn link đã truy cập)
 Down file zip xuống, mở bằng Archive manager, giải nén ra, đặt vào trong "home"
 Đổi tên thư mục thành "pi_card_reader"
 
@@ -45,6 +47,8 @@ sudo cp pi_card_reader/Ubuntu_Bootup_Modification/bgrt-fallback.png /usr/share/p
 cd ~
 sudo cp pi_card_reader/Ubuntu_Bootup_Modification/watermark.png /usr/share/plymouth/themes/spinner
 reboot
+
+Sau đó thiết bị sẽ tự khởi động lại, bây giờ ta sẽ xem thiết bị chạy và đi vào test
 
 8) Để test sản phẩm:
 Mở phần mềm terminal -> Chuột phải -> preference -> Chọn profile "Meta_edu"
