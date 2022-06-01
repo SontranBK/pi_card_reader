@@ -62,5 +62,8 @@ Nếu không được, ấn F11 thoát full-screen, rồi mở phần mềm Term
 "Connecting to NFC Reader"
 "Retry server"
 
-Mở tab "Connecting to NFC Reader", rồi chụp cho anh Sơn xem màn hình. 
+Mở tab "Connecting to NFC Reader", rồi chụp cho anh Sơn xem màn hình. Nếu anh Sơn cần, mở cả 4 tab,
+rồi chụp cả 4 tab cho anh Sơn
 
+Nếu thông báo "Vui lòng chờ trong giây lát" hiển thị quá lâu mà không ẩn đi, dùng chuột,
+click ra một chỗ bất kì, thông báo này sẽ tự ẩn đi, sau đó quẹt thẻ bình thường
