@@ -1,5 +1,6 @@
 1) Để kiểm tra xem đầu đọc đã chạy được chưa (đấu mạch đúng chưa), cắm vào máy windows
 Cài driver của CH-340 cho windows, rồi dùng phần mềm DuadCard để thử lệnh (nhớ đưa thẻ vào đầu)
+
 2) Trong trường hợp Dualcard chạy được mà đầu đọc cắm vào MCU vẫn không được, vào máy windows
 mở phần mềm DEDOWNLOADER, kết nối đầu đọc, chọn open firmware, rồi chọn:
 DE-620L_950_DualCard_161227 (1)
@@ -15,8 +16,7 @@ từng phần mềm, chọn "Remove from favorites", giữ lại phần mềm "F
 Sau đó ấn xuống ô dưới cùng, tìm phần mềm "Terminal", "Chromium browser", và "Text editor", 
 Sau đó click chuột phải vào các phần mềm này, chọn "Add to favorites"
 
-
-4) Mở phần mềm terminal -> Chột phải -> preference -> Chọn profile "Debug"
+4) Mở phần mềm terminal -> Chuột phải -> preference -> Chọn profile "Debug"
 Sau đó chạy lệnh sau (có thể copy paste từ file này vào, không cần gõ):
 
 sudo modprobe usbserial vendor=1a86 product=7532
@@ -46,8 +46,17 @@ cd ~
 sudo cp pi_card_reader/Ubuntu_Bootup_Modification/watermark.png /usr/share/plymouth/themes/spinner
 reboot
 
-5.3) Look at the left of the screen, you see lots of applications:
+8) Để test sản phẩm:
+Mở phần mềm terminal -> Chuột phải -> preference -> Chọn profile "Meta_edu"
+Khi chọn thế này, thì phần mềm sẽ tự chạy mỗi khi bật thiết bị
+Sau đó khởi động lại thiết bị, đợi 2 phút, sau khi thấy thông báo "Bắt đầu đọc thẻ NFC"
+Thì thử quẹt thẻ xem được chưa
 
-Left-click every apps and choose "Remove from favorites", keep "Files" 
-Find apps named "Terminal", "Chromium browser", and "Text editor", left-click and "Add to favorites"
+Nếu không được, ấn F11 thoát full-screen, rồi mở phần mềm Terminal, nó sẽ có 4 tab tên là:
+"Initializing User Interface"
+"Opening User Interface"
+"Connecting to NFC Reader"
+"Retry server"
+
+Mở tab "Connecting to NFC Reader", rồi chụp cho anh Sơn xem màn hình. 
 
