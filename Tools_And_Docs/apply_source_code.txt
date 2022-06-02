@@ -8,7 +8,7 @@ Sau đó ấn "FW file down"
 
 (Trường hợp đầu đọc có lỗi, liên hệ thầy Thiện và anh Sơn)
 
-3) Để bắt đầu cài đặt
+3.1) Để bắt đầu cài đặt
 Down source code này xuống từ github (mở github trong Mozilla firefox, phần History có sẵn link đã truy cập)
 Down file zip xuống, mở bằng Archive manager, giải nén ra, đặt vào trong "home"
 Đổi tên thư mục thành "pi_card_reader"
@@ -17,6 +17,15 @@ Ra ngoài màn hình chính, di chuột sang bên trái thấy rất nhiều ph�
 từng phần mềm, chọn "Remove from favorites", giữ lại phần mềm "Files". 
 Sau đó ấn xuống ô dưới cùng, tìm phần mềm "Terminal", "Chromium browser", và "Text editor", 
 Sau đó click chuột phải vào các phần mềm này, chọn "Add to favorites"
+
+3.2) To turn off automatically software update
+
+https://askubuntu.com/questions/1139545/how-do-i-utterly-stop-automatic-update-checks-in-ubuntu-19-04
+https://linuxnightly.com/how-to-disable-automatic-updates-in-ubuntu/
+
+- First, open up the “Software & Updates” utility.
+- Head over to the “updates” tab and change the “automatically check for updates” option to never.
+
 
 4) Mở phần mềm terminal -> Chuột phải -> preference -> Chọn profile "Debug"
 Sau đó chạy lệnh sau (có thể copy paste từ file này vào, không cần gõ):
