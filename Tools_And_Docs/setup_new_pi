@@ -120,7 +120,19 @@ and set "Delay Timer" of this extension to 0.
 4.5) Go to Setting (of Ubuntu) => Power => Power Saving Options => Change to "Never" 
 (Make Ubuntu never goes to "sleep" mode)
 
+4.6) Install virtual keyboard on device (screen keyboard)
 
+- Open Setting on Ubuntu
+- Choose Accessibility
+- In Typing section -> Turn "Screen Keyboard" to "on" 
+
+4.7) To turn off automatically software update
+
+https://askubuntu.com/questions/1139545/how-do-i-utterly-stop-automatic-update-checks-in-ubuntu-19-04
+https://linuxnightly.com/how-to-disable-automatic-updates-in-ubuntu/
+
+- First, open up the “Software & Updates” utility.
+- Head over to the “updates” tab and change the “automatically check for updates” option to never. 
 """""""""""""""""
 5) Change the apperance of Ubuntu, make our product commercialized  
 """""""""""""""""
@@ -133,9 +145,3 @@ sudo cp pi_card_reader/Ubuntu_Bootup_Modification/bgrt-fallback.png /usr/share/p
 cd ~
 sudo cp pi_card_reader/Ubuntu_Bootup_Modification/watermark.png /usr/share/plymouth/themes/spinner
 reboot
-
-5.2) Install virtual keyboard on device (screen keyboard)
-
-- Open Setting on Ubuntu
-- Choose Accessibility
-- In Typing section -> Turn "Screen Keyboard" to "on" 
