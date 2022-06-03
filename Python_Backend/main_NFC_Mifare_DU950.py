@@ -173,9 +173,9 @@ def read_NFC_card(ser):
 					ser.write(BUZZ3command)
 					return class_name, student_id
 				except:
-					pass
+					return None
 	except:
-		pass
+		pass None
 				
 # Send data from python code (backend) to UI (fontend)
 def send_all(title,body,FCM_token):
