@@ -1,10 +1,13 @@
 """""""""""""""""
-1) before you start lauching following commands, do this 
-when you flash Raspberry Pi Ubuntu SD Card:
+1) Install Operating System (Hệ điều hành) for Raspberry Pi
 """""""""""""""""
-sudo nano /boot/firmware/config.txt
+1.1) Download and install Raspberry Pi Imager to your laptop here: https://www.raspberrypi.com/software/
+- Insert SD card (32 GB, 64 GB) into your laptop
+- Open Raspberry Pi Imager 
+-> Choose storage: the SD card 
+-> Choose Operating System: Other general-purpose OS -> Ubuntu -> Ubuntu Desktop
 
-- Or find file with name: config.txt
+1.2) Wait for OS to write, then find file with name: config.txt
 
 - Identify the following line:
 
@@ -15,33 +18,31 @@ dtoverlay=vc4-kms-v3d
 dtoverlay=vc4-fkms-v3d
 
 """""""""""""""""
-2) Initialize reader, operating system and source code
+2) Initialize operating system and source code
 """""""""""""""""
-2.1) install setting for Ubuntu system, set user name to "metaedu", password to 1
+2.1) Install setting for Ubuntu system, set user name to "metaedu", password to 1
 - Choose Location: Ho Chi Minh
 - Language/ keyboard: English US
 - Your name, user, desktop name: metaedu
 - Choose "auto login" => Must auto login
 
-2.2) download this source code from github and put it in "home" folder
-2.3) change the name of main folder to "pi_card_reader"
+2.2) Download this source code from github and put it in "home" folder
+2.3) Change the name of main folder to "pi_card_reader" (bỏ -main đi)
 
-2.4) Open window computer, open software DEDOWNLOADER, connect to reader, and open firmware
-DE-620L_950_DualCard_161227 (1)
-Then click "FW file down" to write this firmware to our reader
-
-2.5) Look at the left of the screen, you see lots of applications:
+2.4) Look at the left of the screen, you see lots of applications:
 
 Left-click every apps and choose "Remove from favorites", keep "Files" 
 Find apps named "Terminal", "Chromium browser", and "Text editor", left-click and "Add to favorites"
 
 """""""""""""""""
-3) Open Terminal and run those command to install dependencies:
+3) Open "Terminal" and run those command to install dependencies:
 if there's issue with "Could not get lock /var/cache/apt/archives/lock, or process is hold, ...", 
 here is the solution: https://itsfoss.com/fix-ubuntu-install-error/
 
 cd into /var/lib/dpkg/ and remove lock-fontend by: rm lock-fontend
 """""""""""""""""
+// You can copy paste those commands instead of typing
+
 cd ~
 sudo apt install --assume-yes chromium-browser
 cd ~
