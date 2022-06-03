@@ -146,33 +146,34 @@ def update_database(connection, data, error_code , timeSentToServer):
 
 # Read data from our NFC reader by sending READKEY command
 def read_NFC_card(ser):
-	dataB4 = ""
-	dataB5 = ""
-	dataB6 = ""
-	ser.write(READKEY4command) 
-	in_hexB4 = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
-	if in_hexB4[2:9] == '2001500':
-		dataB4 = str(codecs.decode(in_hexB4[17:49], "hex"),'utf-8')		
-		ser.write(READKEY5command)
-		in_hexB5 = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
-		if in_hexB5[2:9] == '2001500':
-			dataB5 = dataB4 + str(codecs.decode(in_hexB5[17:49], "hex"),'utf-8')			
-			ser.write(READKEY6command)		
-			in_hexB6 = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
-			if in_hexB6[2:9] == '2001500':
-				dataB6 = dataB5 + str(codecs.decode(in_hexB6[17:49], "hex"),'utf-8')	
-				print(f"data: {dataB6}")
-			try:
-				class_name = dataB6[:dataB6.index("|")]
-				rest = dataB6[dataB6.index("|")+1:]
-				student_id = rest[:rest.index("|")]
-				print(f"class name: {class_name}; student ID: {student_id}")
-				ser.write(BUZZ2command)
-				time.sleep(0.15)
-				ser.write(BUZZ3command)
-				return class_name, student_id
-			except:
-				pass
+	if ser != None:
+		dataB4 = ""
+		dataB5 = ""
+		dataB6 = ""
+		ser.write(READKEY4command) 
+		in_hexB4 = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
+		if in_hexB4[2:9] == '2001500':
+			dataB4 = str(codecs.decode(in_hexB4[17:49], "hex"),'utf-8')		
+			ser.write(READKEY5command)
+			in_hexB5 = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
+			if in_hexB5[2:9] == '2001500':
+				dataB5 = dataB4 + str(codecs.decode(in_hexB5[17:49], "hex"),'utf-8')			
+				ser.write(READKEY6command)		
+				in_hexB6 = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
+				if in_hexB6[2:9] == '2001500':
+					dataB6 = dataB5 + str(codecs.decode(in_hexB6[17:49], "hex"),'utf-8')	
+					print(f"data: {dataB6}")
+				try:
+					class_name = dataB6[:dataB6.index("|")]
+					rest = dataB6[dataB6.index("|")+1:]
+					student_id = rest[:rest.index("|")]
+					print(f"class name: {class_name}; student ID: {student_id}")
+					ser.write(BUZZ2command)
+					time.sleep(0.15)
+					ser.write(BUZZ3command)
+					return class_name, student_id
+				except:
+					pass
 				
 # Send data from python code (backend) to UI (fontend)
 def send_all(title,body,FCM_token):
@@ -249,6 +250,7 @@ def main():
 		print("Start reading !!!!!!!!!\n")
 		send_all('Start: Start using NFC reader',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m') + '; ID thiet bi: ' + machine_id,MY_TOKEN) # send infomation to User interface
 	except: 
+		ser = None
 		print ('Error: Reader not connected')
 		send_all('Error: Reader not connected',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN) # send infomation to User interface
 	
