@@ -109,7 +109,7 @@ class _MessageList extends State<MessageList> {
                       fontSize: 30,
                       fontWeight: FontWeight.bold),
                 ),
-                content: Text('LỖI: Du lieu quet the bi, vui long kiem tra lai thong tin the'),
+                content: Text('LỖI: Dữ liệu quẹt thẻ bị lỗi, vui lòng kiểm tra lại thông tin thẻ'),
               );
             }
         );
