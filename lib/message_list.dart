@@ -95,8 +95,26 @@ class _MessageList extends State<MessageList> {
             }
         );
       }
-      
-      
+
+      if (titleOfNoti == 'Error: Student Info Not Found') {
+        showDialog(
+            context: context,
+            builder: (context) {
+              Future.delayed(Duration(seconds: 5), () {
+                Navigator.of(context).pop(true);
+              });
+              return AlertDialog(
+                title: Text(bodyOfNoti,
+                  style: TextStyle(color: Colors.blue,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold),
+                ),
+                content: Text('LỖI: Du lieu quet the bi, vui long kiem tra lai thong tin the'),
+              );
+            }
+        );
+      }
+     
       if (titleOfNoti == 'Error: Lost connection to OCD server') {
         showDialog(
             context: context,
