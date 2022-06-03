@@ -24,8 +24,9 @@ https://askubuntu.com/questions/1139545/how-do-i-utterly-stop-automatic-update-c
 https://linuxnightly.com/how-to-disable-automatic-updates-in-ubuntu/
 
 - First, open up the “Software & Updates” utility.
-- Head over to the “updates” tab and change the “automatically check for updates” option to never.
-
+- Head over to the “updates” tab 
+- Change the “Automatically check for updates” option to never
+- Change the "Notify me of a new ubuntu version" option to never
 
 4) Mở phần mềm terminal -> Chuột phải -> preference -> Chọn profile "Debug"
 Sau đó chạy lệnh sau (có thể copy paste từ file này vào, không cần gõ):
