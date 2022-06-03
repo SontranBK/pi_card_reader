@@ -50,6 +50,10 @@ sudo flutter build web
 cd ~
 sudo cp pi_card_reader/build/web/assets/assets/logo.png pi_card_reader/build/web/assets/
 
+### Nếu cần phải build lại app (nếu anh Sơn yêu cầu), chạy lệnh sau
+cd pi_card_reader/
+sudo rm -r build/
+
 7) Tiếp tục trong "Terminal", chạy lệnh sau (có thể copy paste từ file này vào, không cần gõ)
 cd ~
 sudo cp pi_card_reader/Ubuntu_Bootup_Modification/bgrt-fallback.png /usr/share/plymouth/themes/spinner
