@@ -175,7 +175,7 @@ def read_NFC_card(ser):
 				except:
 					return None
 	except:
-		pass None
+		return None
 				
 # Send data from python code (backend) to UI (fontend)
 def send_all(title,body,FCM_token):
@@ -260,10 +260,10 @@ def main():
 	while (True): 
 		# Read data from NFC reader
 		# data[0] is class name, data[1] is student ID
-		time1 = time.time()
+		#time1 = time.time()
 		data = read_NFC_card(ser)
 		#print(f"Received data: {data}")
-		time2 = time.time()
+		#time2 = time.time()
 		# If NFC card is presented and NFC reader return data
 		if data != None:
 			#print(f"Received data: {data[0]},{data[1][0:5]},{data[1][6:8]},{data[1][9:13]}, type: {type(data[1])}")
@@ -294,12 +294,12 @@ def main():
 			# Read student info from database if possible
 
 			body = read_database(conn, data, school_name_db, timeSentToUI)
-			time3 = time.time()
+			#time3 = time.time()
 			if body != None:
 				send_all('NFC_card_info',body,MY_TOKEN)
 				time.sleep(pop_up_time + 0.2)
 			
-			time4 = time.time()
+			#time4 = time.time()
 			# Request data to be sent from client (our MCU) to server
 			postData = {
 					"machineId": machine_id,
@@ -364,9 +364,9 @@ def main():
 
 			# Update Time A or Time B in local database
 			update_database(conn, data, server_error_code, timeSentToServer)
-			time5 = time.time()
+			#time5 = time.time()
 			
-			print(f"\n\nRead NFC time:{time2-time1+0.3}\nRead localDB time: {time3-time2}\nReq/Res and decode Res time: {time5-time4+0.4}\n")
+			#print(f"\n\nRead NFC time:{time2-time1+0.3}\nRead localDB time: {time3-time2}\nReq/Res and decode Res time: {time5-time4+0.4}\n")
 			# If our local database doesn't work, turn into server response and decode it for information
 			if body == None:
 				# If we're unable to decode server's response, body will be none
