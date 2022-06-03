@@ -146,7 +146,7 @@ def update_database(connection, data, error_code , timeSentToServer):
 
 # Read data from our NFC reader by sending READKEY command
 def read_NFC_card(ser):
-	if ser != None:
+	try:
 		dataB4 = ""
 		dataB5 = ""
 		dataB6 = ""
@@ -174,6 +174,8 @@ def read_NFC_card(ser):
 					return class_name, student_id
 				except:
 					pass
+	except:
+		pass
 				
 # Send data from python code (backend) to UI (fontend)
 def send_all(title,body,FCM_token):
