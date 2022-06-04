@@ -363,7 +363,7 @@ def main():
 			# OR 3) Do both of above
 
 			# Update Time A or Time B in local database
-			update_database(conn, data, server_error_code, timeSentToServer)
+			#update_database(conn, data, server_error_code, timeSentToServer)
 			#time5 = time.time()
 			
 			#print(f"\n\nRead NFC time:{time2-time1+0.3}\nRead localDB time: {time3-time2}\nReq/Res and decode Res time: {time5-time4+0.4}\n")
