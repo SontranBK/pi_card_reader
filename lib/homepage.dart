@@ -22,6 +22,7 @@ class _HomepageState extends State<Homepage> {
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
           image: DecorationImage(
+            // you can change line 26 into "fit: BoxFit.fill" 
             fit: BoxFit.cover, //v26 It's fill properties in last ver, for keeping ratio when scaling windows
             scale: 1/curR, //v26
             image: AssetImage("assets/wallpaper.jpg"),
