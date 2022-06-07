@@ -37,12 +37,22 @@ class _MessageList extends State<MessageList> {
             }
         );
    }
-
-  
-  Future checknoti() async {
-    print('Bat dau kiem tra Notification');
-    var noti_check = await noti_Check();
-    return FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  @override
+  Widget build(BuildContext context) {
+    heightR = MediaQuery.of(context).size.height/1080;//v26
+    widthR = MediaQuery.of(context).size.width/1920;//v26
+    curR = widthR;//v26
+    return Text('');
+    }
+   
+  @override
+  void initState() {
+    super.initState();
+    
+    Future(_showStartDialog);
+   
+        
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       Noti = message.notification ?? RemoteNotification();
       String? titleOfNoti = Noti.title ?? '';
       String? bodyOfNoti = Noti.body ?? '';
@@ -287,40 +297,6 @@ class _MessageList extends State<MessageList> {
         );
       }
     });
-   }
-
-  Future noti_Check() {
-    var check = '';
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        Noti = message.notification ?? RemoteNotification();
-        String? titleOfNoti = Noti.title ?? '';
-
-        while (check != ''){
-          check = titleOfNoti;
-        }
-      }
-    );
-    return Future(() => null);
-   }
-
-
-  @override
-  Widget build(BuildContext context) {
-    heightR = MediaQuery.of(context).size.height/1080;//v26
-    widthR = MediaQuery.of(context).size.width/1920;//v26
-    curR = widthR;//v26
-    return Text('');
-    }
-   
-  @override
-  void initState() {
-    super.initState();
-    
-    Future(_showStartDialog);
-
-    checknoti();
-        
-   
   }
 
 
