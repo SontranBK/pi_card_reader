@@ -265,6 +265,7 @@ def main():
 		send_all('Start: Start using NFC reader',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m') + '; ID thiet bi: ' + machine_id,MY_TOKEN) # send infomation to User interface	
 	else:
 		# Perform reboot
+		os.system('reboot')
 	
 	
 	# MAIN LOOP
