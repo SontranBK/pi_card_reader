@@ -14,6 +14,7 @@ from firebase_admin import credentials
 from firebase_admin import messaging
 import sqlite3
 import json
+import os
 
 
 """
@@ -25,6 +26,8 @@ machine_id = "00001"
 school_name_db = "Tiểu học Phan Chu Trinh"
 # Student Info pop-up time
 pop_up_time = 3
+# Start up check
+start_up_successful = True
 
 database_link = None
 
@@ -230,6 +233,7 @@ def main():
 		print (f"Token received form file: {MY_TOKEN}, type: {type({MY_TOKEN})}")
 	except:
 		print("Error: UI Token not found !!!!!!!!!\n")
+		start_up_successful = False
 		MY_TOKEN = 'c7y9di1Dwje8TXegJiyBZX:APA91bH-SZpjbjx2YWl0MSMb4FIkSIvzbncn7PQjHUvcqaKdNPFrv9YdcJvEffdB4DUDe5l4ip1DO88o4Du9xinaWTubXWUXGsW-G8Qn36S6WJJ5LJ8i64Wdj-CxVuEFHdNWfo8t_Oj1'
 	
 	# Initialize our local database
@@ -249,12 +253,19 @@ def main():
 			port = "/dev/ttyUSB0",
 			baudrate = 115200,
 			timeout = 0.05)
-		print("Start reading !!!!!!!!!\n")
-		send_all('Start: Start using NFC reader',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m') + '; ID thiet bi: ' + machine_id,MY_TOKEN) # send infomation to User interface
 	except: 
+		start_up_successful = False
 		ser = None
 		print ('Error: Reader not connected')
 		send_all('Error: Reader not connected',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN) # send infomation to User interface
+	
+	if start_up_successful == True:
+		# Notification to start reading
+		print("Start reading !!!!!!!!!\n")
+		send_all('Start: Start using NFC reader',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m') + '; ID thiet bi: ' + machine_id,MY_TOKEN) # send infomation to User interface	
+	else:
+		# Perform reboot
+	
 	
 	# MAIN LOOP
 	while (True): 
