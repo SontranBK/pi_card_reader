@@ -232,8 +232,8 @@ def main():
 			MY_TOKEN = f.read()
 		print (f"Token received form file: {MY_TOKEN}, type: {type({MY_TOKEN})}")
 	except:
-		print("Error: UI Token not found !!!!!!!!!\n")
 		start_up_successful = False
+		print("Error: UI Token not found !!!!!!!!!\n")
 		MY_TOKEN = 'c7y9di1Dwje8TXegJiyBZX:APA91bH-SZpjbjx2YWl0MSMb4FIkSIvzbncn7PQjHUvcqaKdNPFrv9YdcJvEffdB4DUDe5l4ip1DO88o4Du9xinaWTubXWUXGsW-G8Qn36S6WJJ5LJ8i64Wdj-CxVuEFHdNWfo8t_Oj1'
 	
 	# Initialize our local database
@@ -259,6 +259,17 @@ def main():
 		print ('Error: Reader not connected')
 		send_all('Error: Reader not connected',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN) # send infomation to User interface
 	
+	try: 		
+		postData = {
+		"machineId": "00005",
+		"checkingTime": date.today().strftime('%Y-%m-%d') + ' ' + datetime.now().strftime('%H:%M:%S'),
+		"studentID": str("0101-22-9042"),}
+
+		res = ses.post(server + '/api/self-attendances/checking', json=postData, auth=('user', 'user'))
+	except:
+		start_up_successful = False
+		print("Error: Lost connection to OCD server !!!!!!!!!\n")
+
 	if start_up_successful == True:
 		# Notification to start reading
 		print("Start reading !!!!!!!!!\n")
