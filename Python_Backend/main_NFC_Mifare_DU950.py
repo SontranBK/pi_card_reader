@@ -26,8 +26,6 @@ machine_id = "00001"
 school_name_db = "Tiểu học Phan Chu Trinh"
 # Student Info pop-up time
 pop_up_time = 3
-# Start up check
-start_up_successful = True
 
 database_link = None
 
@@ -96,26 +94,18 @@ SECTION 2: FUNCTION DEFINATION
 """
 
 # Decode the server response sent to our MCU
-def decode_server_response(server_error_code, received_string, timeSentToUI):
+def decode_server_response(received_string, res):
 	try:
-		if (server_error_code == "00"):
-			# Server response is saved in received string, this contains student information
-			student_name = received_string["data"]["name"]
-			student_id = received_string["data"]["studentId"]
-			school_name = received_string["data"]["school"]["name"]
-			class_name = received_string["data"]["clazz"]["name"]
-
-			print(f'Information received from server: student_name_id: {student_name}, {student_id}\n'
-					f'school_name: {school_name}\nclass_name: {class_name}\n')
-			
+		if (received_string["errorCode"] == "00"):			
 			# Return body of UI message	
-			return student_name + ' | ' + student_id + ' | '  + class_name + ' | ' + school_name + ' | ' + timeSentToUI + ' | ' + '000000000'
+			return res.text
 		else:
 			return None
 	except:
 		return None
 		print("Error: Server response's format is incorrect !!!!!!!!!\n")
-
+		
+		
 # Read data from database and update our local database
 def read_database(connection, data, school_name_db, timeSentToUI):
 	try:
@@ -210,6 +200,10 @@ SECTION 3: MAIN PROGRAM
 
 
 def main():
+	
+	# Start up check
+	start_up_successful = True
+
 	try:
 		conn_log = sqlite3.connect("pi_card_reader/Database/log_retry.db")
 		conn_log.cursor().execute("CREATE TABLE IF NOT EXISTS LOGTABLE( machineID TEXT, checkingTime TEXT, studentID TEXT, retryTimes TEXT) ")
@@ -337,8 +331,9 @@ def main():
 
 				received_string = json.loads(res.text)
 			except:
-				print("Error: Lost connection to OCD server !!!!!!!!!\n")
+				res = None
 				received_string = {"errorCode":"","errorMessage":""}
+				print("Error: Lost connection to OCD server !!!!!!!!!\n")
 				try: 
 					conn = sqlite3.connect("pi_card_reader/Database/log_retry.db")
 					conn.cursor().execute("CREATE TABLE IF NOT EXISTS LOGTABLE( machineID TEXT, checkingTime TEXT, studentID TEXT, retryTimes TEXT) ")
@@ -378,8 +373,7 @@ def main():
 			} """
 
 			# Error code of server response	
-			server_error_code = received_string["errorCode"]
-			print(f"Server response error code: {server_error_code}")
+			print("Server response error code: " + str(received_string["errorCode"]))
 			
 			# What to do with our information? 
 			# 1) Send to server and receive response data
@@ -387,7 +381,7 @@ def main():
 			# OR 3) Do both of above
 
 			# Update Time A or Time B in local database
-			#update_database(conn, data, server_error_code, timeSentToServer)
+			#update_database(conn, data, received_string["errorCode"], timeSentToServer)
 			#time5 = time.time()
 			
 			#print(f"\n\nRead NFC time:{time2-time1+0.3}\nRead localDB time: {time3-time2}\nReq/Res and decode Res time: {time5-time4+0.4}\n")
@@ -395,7 +389,7 @@ def main():
 			if body == None:
 				# If we're unable to decode server's response, body will be none
 				# Then, mission fail. Studen information is not valid
-				body = decode_server_response(server_error_code, received_string, timeSentToUI)
+				body = decode_server_response(received_string, res)
 				
 				# If student information is valid, send this information to UI
 				

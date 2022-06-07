@@ -2,6 +2,7 @@
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
    
    
@@ -125,26 +126,14 @@ class _MessageList extends State<MessageList> {
       }
 
       if (titleOfNoti == "NFC_card_info") {
-        List Info = [];
+      	
+	Map<String, dynamic> student_info = jsonDecode(bodyOfNoti);
 
-        int idx = bodyOfNoti.indexOf("|");
-        print('idx: $idx');
-        Info.add(bodyOfNoti.substring(0, idx).trim());
-        print('Info: $Info');
-        String Rest = bodyOfNoti.substring(idx + 1);
-        print('Rest of string: $Rest');
-        print('Info: $Info');
+	print('Name, ${student_info['data']['name']}');
+	print('ID, ${student_info["data"]["studentId"]}');
+	print('School, ${student_info["data"]["school"]["name"]}');
+	print('Class, ${student_info["data"]["clazz"]["name"]}');
 
-        while (idx != 22) {
-          idx = Rest.indexOf("|");
-          print('idx: $idx');
-          Info.add(Rest.substring(1, idx).trim());
-          print('Info: $Info');
-          Rest = Rest.substring(idx + 1);
-          print('Rest of string: $Rest');
-        }
-        Info.add(Rest);
-        print('Info: $Info');
 
         showGeneralDialog(
           context: context,
@@ -224,7 +213,7 @@ class _MessageList extends State<MessageList> {
                               Container(
                                 padding: EdgeInsets.only(top: 30*heightR, bottom: 20*heightR), //v26
                                 child: Text(
-                                  Info[0],
+                                  student_info['data']['name'],
                                   style: TextStyle(
                                     decoration: TextDecoration.none,
                                     fontSize: 50*curR, //v26
@@ -237,7 +226,7 @@ class _MessageList extends State<MessageList> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'ID: '+Info[1],
+                                    'ID: '+student_info["data"]["studentId"],
                                     style: TextStyle(
                                       decoration: TextDecoration.none,
                                       fontSize: 35*curR, //v26
@@ -247,7 +236,7 @@ class _MessageList extends State<MessageList> {
                                     ),
                                   ),
                                   Text(
-                                    'Lớp: '+Info[2],
+                                    'Lớp: '+student_info["data"]["clazz"]["name"],
                                     style: TextStyle(
                                       decoration: TextDecoration.none,
                                       fontSize: 35*curR, //v26
