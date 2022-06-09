@@ -3,6 +3,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'package:cross_connectivity/cross_connectivity.dart';
 
    
    
@@ -298,8 +299,33 @@ class _MessageList extends State<MessageList> {
     heightR = MediaQuery.of(context).size.height/1080;//v26
     widthR = MediaQuery.of(context).size.width/1920;//v26
     curR = widthR;//v26
-    return Text('');
+    return Container(
+        child: ConnectivityBuilder(
+          builder: (context, isConnected, status) =>
+              errmsg('$status'),
+        )
+
+        //to show internet connection message on isoffline = true.
+      );
     }
+
+  Widget errmsg(String text, String show) {
+    //error message widget.
+    if (show == 'ConnectivityStatus.none') {
+      //if error is true then show error message box
+      return AlertDialog(
+        title: Text('Lỗi kết nối mạng',
+          style: TextStyle(color: Colors.blue,
+              fontSize: 30,
+              fontWeight: FontWeight.bold),
+        ),
+        content: Text('Lỗi mạng'),
+      );
+    } else {
+      return Container();
+    }
+    
+  }
    
   @override
   void initState() {

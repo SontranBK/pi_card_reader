@@ -42,9 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Container(
         child: ConnectivityBuilder(
           builder: (context, isConnected, status) =>
-              errmsg(
-              "Không kết nối internet! Vui lòng kiểm tra lại mạng!",
-              '$status'),
+              errmsg('$status'),
         )
 
         //to show internet connection message on isoffline = true.
@@ -55,23 +53,13 @@ class _MyHomePageState extends State<MyHomePage> {
     //error message widget.
     if (show == 'ConnectivityStatus.none') {
       //if error is true then show error message box
-      return Container(
-        padding: EdgeInsets.all(10.00),
-        margin: EdgeInsets.only(bottom: 10.00),
-        color: Colors.red,
-        child: Row(children: [
-          Container(
-            margin: EdgeInsets.only(right: 6.00),
-            child: Icon(Icons.info, color: Colors.white),
-          ), // icon for error message
-          Container(
-            child: Text(text,
-                overflow: TextOverflow.clip,
-                style: TextStyle(color: Colors.white)),
-            width: 160,
-          ),
-          //show error message text
-        ]),
+      return AlertDialog(
+        title: Text('Lỗi kết nối mạng',
+          style: TextStyle(color: Colors.blue,
+              fontSize: 30,
+              fontWeight: FontWeight.bold),
+        ),
+        content: Text('Lỗi mạng'),
       );
     } else {
       return Container();
