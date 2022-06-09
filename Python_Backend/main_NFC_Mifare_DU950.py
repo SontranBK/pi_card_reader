@@ -93,10 +93,29 @@ READKEY6command.append(0x3a) # LRC
 SECTION 2: FUNCTION DEFINATION
 """
 
-# Decode the server response sent to our MCU
-def decode_server_response(received_string, res):
+try:
+    import httplib  # python < 3.0
+except:
+    import http.client as httplib
+
+
+def have_internet():
+	int_conn = httplib.HTTPSConnection("8.8.8.8", timeout=5)
 	try:
-		if (received_string["errorCode"] == "00"):			
+        	int_conn.request("HEAD", "/")
+        	print("Internet: yes")
+        	return True
+	except Exception:
+		print("Internet: no")
+		return False
+	finally:
+        	int_conn.close()
+        
+      
+# Decode the server response sent to our MCU
+def decode_server_response(res):
+	try:
+		if ((json.loads(res.text))["errorCode"] == "00"):			
 			# Return body of UI message	
 			return res.text
 		else:
@@ -172,7 +191,8 @@ def read_NFC_card(ser):
 				
 # Send data from python code (backend) to UI (fontend)
 def send_all(title,body,FCM_token):
-	try:
+	try:	
+
 		# [START send_all]
 		# Create a list containing up to 500 messages.
 		messages = [
@@ -252,7 +272,7 @@ def main():
 		ser = None
 		print ('Error: Reader not connected')
 		send_all('Error: Reader not connected',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN) # send infomation to User interface
-	
+	"""
 	try: 		
 		postData = {
 		"machineId": "00005",
@@ -263,7 +283,8 @@ def main():
 	except:
 		start_up_successful = False
 		print("Error: Lost connection to OCD server !!!!!!!!!\n")
-
+	"""
+	
 	if start_up_successful == True:
 		# Notification to start reading
 		print("Start reading !!!!!!!!!\n")
@@ -325,25 +346,27 @@ def main():
 					"studentID": str(sid),}
 
 			# Perform sending above request data to server and receive response
-			try: 
-				res = ses.post(server + '/api/self-attendances/checking', json=postData, auth=('user', 'user'))
-				print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
-
-				received_string = json.loads(res.text)
+			
+			try: 	
+				if have_internet() == True:
+					res = ses.post(server + '/api/self-attendances/checking', json=postData, auth=('user', 'user'))
+					print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
+				else:
+					res = "Lost internet"
+					print("Error: "+res+" !!!!!!!!!\n")
 			except:
-				res = None
-				received_string = {"errorCode":"","errorMessage":""}
-				print("Error: Lost connection to OCD server !!!!!!!!!\n")
+				res = "Lost connection to OCD server"
+				print("Error: "+res+" !!!!!!!!!\n")
+				send_all('Error: Lost connection to OCD server',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
+				
 				try: 
 					conn = sqlite3.connect("pi_card_reader/Database/log_retry.db")
 					conn.cursor().execute("CREATE TABLE IF NOT EXISTS LOGTABLE( machineID TEXT, checkingTime TEXT, studentID TEXT, retryTimes TEXT) ")
 					conn.execute("INSERT INTO LOGTABLE (machineID,checkingTime,studentID,retryTimes) VALUES (?,?,?,?)",(machine_id,timeSentToServe,data[1],0))
 					conn.commit()
 				except: 
-					pass
+					pass				
 			
-			
-
 			"""
 			Standard server response format for product v.0.0.3:
 
@@ -372,9 +395,6 @@ def main():
 				}
 			} """
 
-			# Error code of server response	
-			print("Server response error code: " + str(received_string["errorCode"]))
-			
 			# What to do with our information? 
 			# 1) Send to server and receive response data
 			# OR 2) Look this information up in our local database and update database
@@ -386,10 +406,10 @@ def main():
 			
 			#print(f"\n\nRead NFC time:{time2-time1+0.3}\nRead localDB time: {time3-time2}\nReq/Res and decode Res time: {time5-time4+0.4}\n")
 			# If our local database doesn't work, turn into server response and decode it for information
-			if body == None:
+			if body == None and res != "Lost internet" and res != "Lost connection to OCD server":
 				# If we're unable to decode server's response, body will be none
 				# Then, mission fail. Studen information is not valid
-				body = decode_server_response(received_string, res)
+				body = decode_server_response(res)
 				
 				# If student information is valid, send this information to UI
 				
@@ -399,7 +419,8 @@ def main():
 					time.sleep(pop_up_time)
 				else:
 					send_all('Error: Student Info Not Found',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
-					time.sleep(pop_up_time)
+					time.sleep(5)
+			
 
 if __name__ == "__main__":
 	main()

@@ -1,5 +1,3 @@
-// ignore_for_file: require_trailing_commas
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -20,6 +18,7 @@ class _MessageList extends State<MessageList> {
   double heightR = 0.0; //v26
   double widthR = 0.0;
   double curR = 0.0;
+  String internet_connection_status = '';
   
   void _showStartDialog(){
 	showDialog(
@@ -39,12 +38,48 @@ class _MessageList extends State<MessageList> {
             }
         );
    }
+  @override
+  Widget build(BuildContext context) {
+    heightR = MediaQuery.of(context).size.height/1080;//v26
+    widthR = MediaQuery.of(context).size.width/1920;//v26
+    curR = widthR;//v26
+    return Container(
+        child: ConnectivityBuilder(
+          builder: (context, isConnected, status) =>
+              errmsg('$status'),
+        )
 
-  
-  Future checknoti() async {
-    print('Bat dau kiem tra Notification');
-    var noti_check = await noti_Check();
-    return FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        //to show internet connection message on isoffline = true.
+      );
+    }
+
+  Widget errmsg(String show) {
+    internet_connection_status = show;
+    //error message widget.
+    if (show == 'ConnectivityStatus.none') {
+      //if error is true then show error message box
+      return AlertDialog(
+        title: Text('Lỗi kết nối mạng',
+          style: TextStyle(color: Colors.blue,
+              fontSize: 30,
+              fontWeight: FontWeight.bold),
+        ),
+        content: Text('Lỗi mạng'),
+      );
+    } else {
+      return Container();
+    }
+    
+  }
+   
+  @override
+  void initState() {
+    super.initState();
+    
+    Future(_showStartDialog);
+   
+        
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       Noti = message.notification ?? RemoteNotification();
       String? titleOfNoti = Noti.title ?? '';
       String? bodyOfNoti = Noti.body ?? '';
@@ -107,7 +142,7 @@ class _MessageList extends State<MessageList> {
         );
       }
      
-      if (titleOfNoti == 'Error: Lost connection to OCD server') {
+      if ((titleOfNoti == 'Error: Lost connection to OCD server')&&(internet_connection_status != 'ConnectivityStatus.none')) {
         showDialog(
             context: context,
             builder: (context) {
@@ -125,16 +160,16 @@ class _MessageList extends State<MessageList> {
             }
         );
       }
+      
+  
 
       if (titleOfNoti == "NFC_card_info") {
-      	
-	Map<String, dynamic> student_info = jsonDecode(bodyOfNoti);
+        Map<String, dynamic> student_info = jsonDecode(bodyOfNoti);
 
 	print('Name, ${student_info['data']['name']}');
 	print('ID, ${student_info["data"]["studentId"]}');
 	print('School, ${student_info["data"]["school"]["name"]}');
 	print('Class, ${student_info["data"]["clazz"]["name"]}');
-
 
         showGeneralDialog(
           context: context,
@@ -275,68 +310,8 @@ class _MessageList extends State<MessageList> {
             );
           },
         );
-      }
+      } //NFC info
+      
     });
-   }
-
-  Future noti_Check() {
-    var check = '';
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        Noti = message.notification ?? RemoteNotification();
-        String? titleOfNoti = Noti.title ?? '';
-
-        while (check != ''){
-          check = titleOfNoti;
-        }
-      }
-    );
-    return Future(() => null);
-   }
-
-
-  @override
-  Widget build(BuildContext context) {
-    heightR = MediaQuery.of(context).size.height/1080;//v26
-    widthR = MediaQuery.of(context).size.width/1920;//v26
-    curR = widthR;//v26
-    return Container(
-        child: ConnectivityBuilder(
-          builder: (context, isConnected, status) =>
-              errmsg('$status'),
-        )
-
-        //to show internet connection message on isoffline = true.
-      );
-    }
-
-  Widget errmsg(String text, String show) {
-    //error message widget.
-    if (show == 'ConnectivityStatus.none') {
-      //if error is true then show error message box
-      return AlertDialog(
-        title: Text('Lỗi kết nối mạng',
-          style: TextStyle(color: Colors.blue,
-              fontSize: 30,
-              fontWeight: FontWeight.bold),
-        ),
-        content: Text('Lỗi mạng'),
-      );
-    } else {
-      return Container();
-    }
-    
   }
-   
-  @override
-  void initState() {
-    super.initState();
-    
-    Future(_showStartDialog);
-
-    checknoti();
-        
-   
-  }
-
-
 }
