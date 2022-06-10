@@ -59,12 +59,12 @@ class _MessageList extends State<MessageList> {
     if (show == 'ConnectivityStatus.none') {
       //if error is true then show error message box
       return AlertDialog(
-        title: Text('Lỗi kết nối mạng',
+        title: Text('Phát hiện mất kết nối mạng',
           style: TextStyle(color: Colors.blue,
               fontSize: 30,
               fontWeight: FontWeight.bold),
         ),
-        content: Text('Lỗi mạng'),
+        content: Text('Vui lòng kiểm tra kết nối wifi hoặc dây mạng\nKhông thực hiện quẹt thẻ cho đến khi có mạng trở lại\nThiết bị sẽ hoạt động bình thường sau 10 giây khi có mạng trở lại'),
       );
     } else {
       return Container();
@@ -108,7 +108,7 @@ class _MessageList extends State<MessageList> {
         showDialog(
             context: context,
             builder: (context) {
-              Future.delayed(Duration(seconds: 5), () {
+              Future.delayed(Duration(seconds: 10), () {
                 Navigator.of(context).pop(true);
               });
               return AlertDialog(
@@ -117,7 +117,7 @@ class _MessageList extends State<MessageList> {
                       fontSize: 30,
                       fontWeight: FontWeight.bold),
                 ),
-                content: Text('Lỗi: Không thể kết nối với đầu đọc, vui lòng làm theo các bước sau:\n1) Kiểm tra lại giắc cắm đầu đọc\n2) Kiểm tra nguồn điện của đầu đọc\n3) Cuối cùng, khởi động lại thiết bị'),
+                content: Text('Lỗi: Không thể kết nối với đầu đọc, vui lòng làm theo các bước sau:\n1) Kiểm tra lại giắc cắm đầu đọc\n2) Kiểm tra nguồn điện của đầu đọc\n\nThiết bị sẽ tự khởi động lại sau 10 giây'),
               );
             }
         );
@@ -166,10 +166,10 @@ class _MessageList extends State<MessageList> {
       if (titleOfNoti == "NFC_card_info") {
         Map<String, dynamic> student_info = jsonDecode(bodyOfNoti);
 
-	print('Name, ${student_info['data']['name']}');
-	print('ID, ${student_info["data"]["studentId"]}');
-	print('School, ${student_info["data"]["school"]["name"]}');
-	print('Class, ${student_info["data"]["clazz"]["name"]}');
+        print('Name, ${student_info['data']['name']}');
+        print('ID, ${student_info["data"]["studentId"]}');
+        print('School, ${student_info["data"]["school"]["name"]}');
+        print('Class, ${student_info["data"]["clazz"]["name"]}');
 
         showGeneralDialog(
           context: context,

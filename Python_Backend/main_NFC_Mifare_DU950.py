@@ -272,26 +272,14 @@ def main():
 		ser = None
 		print ('Error: Reader not connected')
 		send_all('Error: Reader not connected',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN) # send infomation to User interface
-	"""
-	try: 		
-		postData = {
-		"machineId": "00005",
-		"checkingTime": date.today().strftime('%Y-%m-%d') + ' ' + datetime.now().strftime('%H:%M:%S'),
-		"studentID": str("0101-22-9042"),}
-
-		res = ses.post(server + '/api/self-attendances/checking', json=postData, auth=('user', 'user'))
-	except:
-		start_up_successful = False
-		print("Error: Lost connection to OCD server !!!!!!!!!\n")
-	"""
 	
 	if start_up_successful == True:
 		# Notification to start reading
 		print("Start reading !!!!!!!!!\n")
 		send_all('Start: Start using NFC reader',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m') + '; ID thiet bi: ' + machine_id,MY_TOKEN) # send infomation to User interface	
 	else:
-		# Wait 5 secs and perform reboot 
-		time.sleep(5)
+		# Wait 10 secs and perform reboot 
+		time.sleep(10)
 		os.system('reboot')
 	
 	
