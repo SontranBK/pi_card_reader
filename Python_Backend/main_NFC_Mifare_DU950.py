@@ -102,11 +102,11 @@ except:
 def have_internet():
 	int_conn = httplib.HTTPSConnection("8.8.8.8", timeout=5)
 	try:
-        	int_conn.request("HEAD", "/")
-        	print("Internet: yes")
-        	return True
+		int_conn.request("HEAD", "/")
+		#print("Internet: yes")
+		return True
 	except Exception:
-		print("Internet: no")
+		#print("Internet: no")
 		return False
 	finally:
         	int_conn.close()
@@ -274,6 +274,10 @@ def main():
 		send_all('Error: Reader not connected',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN) # send infomation to User interface
 	
 	if start_up_successful == True:
+		while have_internet() == False:
+			print("Start up: no internet connection !!!!!!!!!\n")
+			# Re-check internet every 5 seconds
+			time.sleep(5)		
 		# Notification to start reading
 		print("Start reading !!!!!!!!!\n")
 		send_all('Start: Start using NFC reader',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m') + '; ID thiet bi: ' + machine_id,MY_TOKEN) # send infomation to User interface	
