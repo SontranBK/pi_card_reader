@@ -277,7 +277,7 @@ def main():
 		while have_internet() == False:
 			print("Start up: no internet connection !!!!!!!!!\n")
 			# Re-check internet every 5 seconds
-			time.sleep(5)		
+			time.sleep(10)		
 		# Notification to start reading
 		print("Start reading !!!!!!!!!\n")
 		send_all('Start: Start using NFC reader',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m') + '; ID thiet bi: ' + machine_id,MY_TOKEN) # send infomation to User interface	
