@@ -53,24 +53,95 @@ class _MessageList extends State<MessageList> {
       );
     }
 
+
   Widget errmsg(String show) {
     internet_connection_status = show;
     //error message widget.
     if (show == 'ConnectivityStatus.none') {
       //if error is true then show error message box
-      return AlertDialog(
-        title: Text('Phát hiện mất kết nối mạng',
-          style: TextStyle(color: Colors.blue,
-              fontSize: 30,
-              fontWeight: FontWeight.bold),
+      return Container(
+          height: 525*heightR, //v26
+          width: 715*widthR, //v26
+          margin: EdgeInsets.only(right: 20*widthR), //v26
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              stops: [
+                0.5,
+                0.33,
+                0.68,
+                0.99,
+              ],
+              colors: [
+                Colors.white.withOpacity(1.0),
+                Colors.white.withOpacity(1.0),
+                Colors.white.withOpacity(1.0),
+                Colors.white.withOpacity(1.0),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(40*curR), //v26
+          ),
+        child: Row(
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+
+                Expanded(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 75*widthR, top:50*heightR), //v26
+                      child: Row(
+                          children: [
+                            Icon(Icons.signal_wifi_off, color: Colors.red[500],size: 40*curR,),
+                            Text('    '),
+                            Text('Phát hiện mất kết nối mạng',
+                              style: TextStyle(color: Colors.black,
+                                  fontSize: 30*curR,
+                                  fontWeight: FontWeight.bold),
+                            )
+                          ]
+                      ),
+                    ),
+                ),
+                Expanded(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 105*widthR, top:20*heightR),
+                      child: Text('"Vui lòng kiểm tra kết nối wifi hoặc dây mạng"\n'
+                          'Không thực hiện quẹt thẻ cho đến khi có mạng trở lại\n'
+                          'Thiết bị sẽ hoạt động bình thường sau 10 giây khi có mạng trở lại',
+                        style: TextStyle(color: Colors.black,
+                            fontSize: 16*curR,
+                            fontWeight: FontWeight.bold,
+                            height: 1.5
+                        ),
+                      ),
+
+                    ),
+                ),
+                Expanded(
+                    child: Container(
+                        padding: EdgeInsets.only(left: 325*widthR, top:50*heightR), //v26
+                        alignment: Alignment.center,
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.grey,
+                          color: Colors.purple,
+                          strokeWidth: 5*curR,
+                        )
+                    )
+                ),
+              ],
+            )
+          ],
         ),
-        content: Text('Vui lòng kiểm tra kết nối wifi hoặc dây mạng\nKhông thực hiện quẹt thẻ cho đến khi có mạng trở lại\nThiết bị sẽ hoạt động bình thường sau 10 giây khi có mạng trở lại'),
       );
     } else {
       return Container();
     }
     
   }
+
    
   @override
   void initState() {
