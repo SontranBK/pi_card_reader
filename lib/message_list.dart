@@ -91,14 +91,14 @@ class _MessageList extends State<MessageList> {
 
                 Expanded(
                     child: Container(
-                      padding: EdgeInsets.only(left: 75*widthR, top:50*heightR), //v26
+                      padding: EdgeInsets.only(left: 50*widthR, top:40*heightR), //v26
                       child: Row(
                           children: [
                             Icon(Icons.signal_wifi_off, color: Colors.red[500],size: 40*curR,),
                             Text('    '),
                             Text('Phát hiện mất kết nối mạng',
                               style: TextStyle(color: Colors.black,
-                                  fontSize: 30*curR,
+                                  fontSize: 43*curR,
                                   fontWeight: FontWeight.bold),
                             )
                           ]
@@ -107,12 +107,12 @@ class _MessageList extends State<MessageList> {
                 ),
                 Expanded(
                     child: Container(
-                      padding: EdgeInsets.only(left: 105*widthR, top:20*heightR),
+                      padding: EdgeInsets.only(left: 75*widthR, top:14*heightR),
                       child: Text('"Vui lòng kiểm tra kết nối wifi hoặc dây mạng"\n'
-                          'Không thực hiện quẹt thẻ cho đến khi có mạng trở lại\n'
-                          'Thiết bị sẽ hoạt động bình thường sau 10 giây khi có mạng trở lại',
+                          '"Không thực hiện quẹt thẻ cho đến khi có mạng trở lại"\n'
+                          '"Thiết bị sẽ hoạt động bình thường \nsau 10 giây khi có mạng trở lại"',
                         style: TextStyle(color: Colors.black,
-                            fontSize: 16*curR,
+                            fontSize: 24*curR,
                             fontWeight: FontWeight.bold,
                             height: 1.5
                         ),
@@ -126,7 +126,7 @@ class _MessageList extends State<MessageList> {
                         alignment: Alignment.center,
                         child: CircularProgressIndicator(
                           backgroundColor: Colors.grey,
-                          color: Colors.purple,
+                          color: Colors.blue,
                           strokeWidth: 5*curR,
                         )
                     )

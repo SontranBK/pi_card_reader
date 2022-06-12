@@ -293,14 +293,14 @@ def main():
 		# data[0] is class name, data[1] is student ID
 		#time1 = time.time()
 		data = read_NFC_card(ser)
-		print(f"NFC card data: {data}")
+		#print(f"NFC card data: {data}")
 		#time2 = time.time()
 		if data == "Wrong data format":
 			send_all('Error: Wrong data format',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
-		else if data == "Hexa not valid":
+		elif data == "Hexa not valid":
 			send_all('Error: Hexa not valid',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
 		# If NFC card is presented and NFC reader return valid data
-		else:
+		elif data != "Hexa not valid" and data != "Wrong data format" and data != None:
 			#print(f"Received data: {data[0]},{data[1][0:5]},{data[1][6:8]},{data[1][9:13]}, type: {type(data[1])}")
 			sid = '{:04.0f}'.format(int(data[1][0:5]))+"-"+'{:02.0f}'.format(int(data[1][6:8]))+"-"+'{:04.0f}'.format(int(data[1][9:13]))
 			#print(f"Standard data type: {sid}, {type(sid)}")
