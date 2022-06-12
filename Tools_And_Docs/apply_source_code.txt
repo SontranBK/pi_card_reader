@@ -45,6 +45,8 @@ Tiếp tục, mở file sau: pi_card_reader/Python_Backend/main_NFC_Mifare_DU950
 Nếu không gõ được dấu thì mở code github của anh Sơn và copy vào
 
 6) Tiếp tục trong "Terminal", chạy lệnh sau (có thể copy paste từ file này vào, không cần gõ)
+cd pi_card_reader/
+sudo rm -r build/
 cd ~
 cd pi_card_reader/
 sudo flutter build web
