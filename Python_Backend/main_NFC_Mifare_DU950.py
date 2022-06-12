@@ -175,19 +175,19 @@ def read_NFC_card(ser):
 				if in_hexB6[2:9] == '2001500':
 					dataB6 = dataB5 + str(codecs.decode(in_hexB6[17:49], "hex"),'utf-8')	
 					print(f"data: {dataB6}")
+					ser.write(BUZZ2command)
+					time.sleep(0.15)
+					ser.write(BUZZ3command)
 				try:
 					class_name = dataB6[:dataB6.index("|")]
 					rest = dataB6[dataB6.index("|")+1:]
 					student_id = rest[:rest.index("|")]
-					print(f"class name: {class_name}; student ID: {student_id}")
-					ser.write(BUZZ2command)
-					time.sleep(0.15)
-					ser.write(BUZZ3command)
+					#print(f"class name: {class_name}; student ID: {student_id}")
 					return class_name, student_id
 				except:
-					return None
+					return "Wrong data format"
 	except:
-		return None
+		return "Hexa not valid"
 				
 # Send data from python code (backend) to UI (fontend)
 def send_all(title,body,FCM_token):
@@ -293,10 +293,14 @@ def main():
 		# data[0] is class name, data[1] is student ID
 		#time1 = time.time()
 		data = read_NFC_card(ser)
-		#print(f"Received data: {data}")
+		print(f"NFC card data: {data}")
 		#time2 = time.time()
-		# If NFC card is presented and NFC reader return data
-		if data != None:
+		if data == "Wrong data format":
+			send_all('Error: Wrong data format',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
+		else if data == "Hexa not valid":
+			send_all('Error: Hexa not valid',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
+		# If NFC card is presented and NFC reader return valid data
+		else:
 			#print(f"Received data: {data[0]},{data[1][0:5]},{data[1][6:8]},{data[1][9:13]}, type: {type(data[1])}")
 			sid = '{:04.0f}'.format(int(data[1][0:5]))+"-"+'{:02.0f}'.format(int(data[1][6:8]))+"-"+'{:04.0f}'.format(int(data[1][9:13]))
 			#print(f"Standard data type: {sid}, {type(sid)}")

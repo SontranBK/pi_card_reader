@@ -212,6 +212,45 @@ class _MessageList extends State<MessageList> {
             }
         );
       }
+
+      if (titleOfNoti == 'Error: Wrong data format') {
+        showDialog(
+            context: context,
+            builder: (context) {
+              Future.delayed(Duration(seconds: 5), () {
+                Navigator.of(context).pop(true);
+              });
+              return AlertDialog(
+                title: Text(bodyOfNoti,
+                  style: TextStyle(color: Colors.blue,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold),
+                ),
+                content: Text('LỖI: Dữ liệu thẻ ghi sai định dạng, vui lòng kiểm tra lại'),
+              );
+            }
+        );
+      }
+
+
+      if (titleOfNoti == 'Hexa not valid') {
+        showDialog(
+            context: context,
+            builder: (context) {
+              Future.delayed(Duration(seconds: 5), () {
+                Navigator.of(context).pop(true);
+              });
+              return AlertDialog(
+                title: Text(bodyOfNoti,
+                  style: TextStyle(color: Colors.blue,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold),
+                ),
+                content: Text('LỖI: Dữ liệu hexa ghi trong thẻ không hợp lệ, vui lòng kiểm tra lại'),
+              );
+            }
+        );
+      }
      
       if ((titleOfNoti == 'Error: Lost connection to OCD server')&&(internet_connection_status != 'ConnectivityStatus.none')) {
         showDialog(
