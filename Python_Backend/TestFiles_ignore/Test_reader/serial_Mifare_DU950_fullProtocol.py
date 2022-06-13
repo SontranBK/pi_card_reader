@@ -167,25 +167,42 @@ def main():
 		command = input("Please insert 1 of following commands:\n"
 						"- rk4: read block 4 of Mifare card with Key included\n")
 
-		if command == "rk4":
-			ser.write(READKEY4command) 
-			#print(f"Done writing")
-
-
-			in_hex = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
-			print(f"hexa received: {in_hex}")
-			if in_hex[2:9] == '2001500':
-				#print("READ KEY command succeded")
-				#print(f"hexaread {in_hex}")
-				print(f"hexaread 2:9 {in_hex[2:9]}")
-				#print(f"hexaread 17:-2 {in_hex[17:-2]}")
-				data = str(codecs.decode(in_hex[17:-2], "hex"),'utf-8')
-				print(f"ASCII code: {data}")
-		if command == "buzz1":
-			ser.write(BUZZ1command) 
-			#print(f"Done writing")
-			in_hex = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
-			print(f"hexa received: {in_hex}")
+		if command == "readkey":
+			try:
+				dataB4 = ""
+				dataB5 = ""
+				dataB6 = ""
+				ser.write(READKEY4command) 
+				in_hexB4 = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
+				if in_hexB4[2:9] == '2001500':
+					dataB4 = str(codecs.decode(in_hexB4[17:49], "hex"),'utf-8')		
+					ser.write(READKEY5command)
+					in_hexB5 = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
+					if in_hexB5[2:9] == '2001500':
+						dataB5 = dataB4 + str(codecs.decode(in_hexB5[17:49], "hex"),'utf-8')			
+						ser.write(READKEY6command)		
+						in_hexB6 = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
+						if in_hexB6[2:9] == '2001500':
+							dataB6 = dataB5 + str(codecs.decode(in_hexB6[17:49], "hex"),'utf-8')	
+							print(f"data: {dataB6}")
+							ser.write(BUZZ2command)
+							time.sleep(0.15)
+							ser.write(BUZZ3command)
+						try:
+							class_name = dataB6[:dataB6.index("|")]
+							rest = dataB6[dataB6.index("|")+1:]
+							student_id = rest[:rest.index("|")]
+							#print(f"class name: {class_name}; student ID: {student_id}")
+							return class_name, student_id
+						except:
+							return "Wrong data format"
+			except:
+				return "Hexa not valid"
+				if command == "buzz1":
+					ser.write(BUZZ1command) 
+					#print(f"Done writing")
+					in_hex = hex(int.from_bytes(ser.read(size=32),byteorder='big'))
+					print(f"hexa received: {in_hex}")
 
 		if command == "buzz2":
 			ser.write(BUZZ2command) 
