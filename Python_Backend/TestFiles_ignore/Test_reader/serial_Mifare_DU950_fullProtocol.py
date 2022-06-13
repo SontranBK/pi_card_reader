@@ -2,7 +2,7 @@
  
 """
 This is a serial Mifare DU-950 python code
-for reading block 4,5,6 continuously
+full protocol
 """
 
 import sys
