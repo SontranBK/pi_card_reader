@@ -3,7 +3,8 @@
                     HƯỚNG DẪN UPDATE LOGO VÀ TÊN TRƯỜNG TẠI ĐỊA ĐIỂM LẮP ĐẶT THIẾT BỊ
 ********************************************************************************************************************
 
-*** Hướng dẫn áp dụng cho các phiên bản từ 1.0.0 của sản phẩm
+* Hướng dẫn áp dụng cho các phiên bản từ 1.0.0 của sản phẩm
+* Thực hiện các bước trong file hướng dẫn này sẽ mất từ 5 đến 10 phút, có thể lâu hơn tuỳ vào người thực hiện
 
 ### Bước 1: Đưa file vào thiết bị
 
