@@ -1,8 +1,8 @@
 cd ~
 cd pi_card_reader/
-sudo rm -r build/
+echo 1 | sudo -S rm -r build/
 cd ~
 cd pi_card_reader/
-sudo flutter build web
+echo 1 | sudo -S flutter build web
 cd ~
-sudo cp pi_card_reader/build/web/assets/assets/logo.png pi_card_reader/build/web/assets/
+echo 1 | sudo -S cp pi_card_reader/build/web/assets/assets/logo.png pi_card_reader/build/web/assets/

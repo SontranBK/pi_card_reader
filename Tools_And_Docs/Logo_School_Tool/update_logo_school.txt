@@ -28,9 +28,12 @@ Tương tự, tăng số lên 1 đơn vị (ví dụ từ 41200 thành 41201, s�
 
 - Tìm phần mềm terminal -> Chuột phải -> Chọn Preference -> Chọn profile "Debug" -> thoát phần mềm
 
-- Tìm phần mềm terminal -> Chuột phải -> Chọn New window
-Sau đó chạy lệnh sau (có thể copy paste từ file này vào, không cần gõ):
-sh update_logo_school.sh
+- Tìm phần mềm terminal -> Chuột phải -> Chọn New Window
+Sau đó chạy 2 lệnh sau (có thể copy paste từ file này vào, không cần gõ):
+cd ~
+sh pi_card_reader/Tools_And_Docs/Logo_School_Tool/update_logo_school.sh
+
+- Doi chay xong (khoang 200 giay), hien ra chu metaedu@metaedu:~$ mau xanh la cay
 
 - Tìm phần mềm terminal -> Chuột phải -> Chọn Preference -> Chọn profile "Meta_edu" -> thoát phần mềm
 
@@ -40,4 +43,3 @@ sh update_logo_school.sh
 
 - Khi hiển thị lên giao diện, nếu hiện thông báo "Allow notification" ở góc bên trái trên
 Thì chọn "Allow" (giao diện có hỏi gì thì cũng cấp hết quyền cho giao diện -> Chọn "Allow")
-
