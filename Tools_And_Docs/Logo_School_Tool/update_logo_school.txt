@@ -1,4 +1,8 @@
-Hướng dẫn update logo và tên trường tại địa điểm lắp đặt thiết bị
+
+********************************************************************************************************************
+                    HƯỚNG DẪN UPDATE LOGO VÀ TÊN TRƯỜNG TẠI ĐỊA ĐIỂM LẮP ĐẶT THIẾT BỊ
+********************************************************************************************************************
+
 
 ### Bước 1: Đưa file vào thiết bị
 
@@ -11,7 +15,7 @@ Hướng dẫn update logo và tên trường tại địa điểm lắp đặt 
 - Copy logo trường từ USB sang thiết bị, đưa vào đường dẫn sau home/pi_card_reader/assets/
 Yêu cầu logo phù hợp, kích thước 400x400, độ phân giải lớn hơn 700x700
 
--Đổi tên file ảnh logo thành logo.png, nếu đã có ảnh trùng tên thì xoá ảnh đó đi
+- Đổi tên file ảnh logo thành logo.png, nếu đã có ảnh trùng tên thì xoá ảnh đó đi
 
 ### Bước 2: Sửa đổi một số file
 
@@ -28,18 +32,20 @@ Tương tự, tăng số lên 1 đơn vị (ví dụ từ 41200 thành 41201, s�
 
 - Tìm phần mềm terminal -> Chuột phải -> Chọn Preference -> Chọn profile "Debug" -> thoát phần mềm
 
-- Tìm phần mềm terminal -> Chuột phải -> Chọn New Window
+- Vẫn phần mềm terminal -> Chuột phải -> Chọn New Window
 Sau đó chạy 2 lệnh sau (có thể copy paste từ file này vào, không cần gõ):
+
 cd ~
 sh pi_card_reader/Tools_And_Docs/Logo_School_Tool/update_logo_school.sh
 
-- Doi chay xong (khoang 200 giay), hien ra chu metaedu@metaedu:~$ mau xanh la cay
+- Ta đợi tool viết sẵn chạy xong (sẽ mất khoảng 200 giây), 
+Khi chạy xong, phần mềm Terminal sẽ hiện ra chữ metaedu@metaedu:~$ màu xanh lá cây để ta chạy lệnh tiếp
 
-- Tìm phần mềm terminal -> Chuột phải -> Chọn Preference -> Chọn profile "Meta_edu" -> thoát phần mềm
+- Ta thoát phần mềm terminal, sau đó vẫn terminal -> Chuột phải -> Chọn Preference -> Chọn profile "Meta_edu" -> thoát phần mềm
 
 ### Bước 4: Kiểm tra kết quả
 
 - Khởi động lại thiết bị, khi thiết bị mở lên, sẽ tự chạy vào API tự boot
 
-- Khi hiển thị lên giao diện, nếu hiện thông báo "Allow notification" ở góc bên trái trên
-Thì chọn "Allow" (giao diện có hỏi gì thì cũng cấp hết quyền cho giao diện -> Chọn "Allow")
+- Khi hiển thị lên giao diện, nếu hiện thông báo ở góc bên trái phía trên thì chọn "Allow"
+(giao diện hỏi gì thì cũng cấp hết quyền cho giao diện bằng cách chọn "Allow")
