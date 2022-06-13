@@ -3,6 +3,7 @@
                     HƯỚNG DẪN UPDATE LOGO VÀ TÊN TRƯỜNG TẠI ĐỊA ĐIỂM LẮP ĐẶT THIẾT BỊ
 ********************************************************************************************************************
 
+*** Hướng dẫn áp dụng cho các phiên bản từ 1.0.0 của sản phẩm
 
 ### Bước 1: Đưa file vào thiết bị
 
