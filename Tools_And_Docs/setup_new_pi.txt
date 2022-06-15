@@ -83,6 +83,10 @@ sudo modprobe usbserial vendor=0x31aa product=0x3000
 sudo python3 -m serial.tools.list_ports
 ### If everything works well, the terminal output should show "/dev/ttyUSB0" as a port
 ### If not run "sudo apt remove brltty" again
+### sudo dmesg | grep -i USB
+### sudo lsusb -t
+### sudo udevadm monitor -u
+### sudo apt-get install linux-image-extra-virtual
 
 cd ~
 sudo snap install flutter --classic
