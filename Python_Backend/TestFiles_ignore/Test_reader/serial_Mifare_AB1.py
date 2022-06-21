@@ -1,10 +1,9 @@
 #!/usr/bin/python3
 
-# sudo python3 serial_Mifare_AB.py 
+# sudo python3 serial_Mifare_AB1.py 
 
 """
-This is a serial Mifare DU-950 python code
-for reading block 4,5,6 continuously
+This is a serial Mifare AB Circle python code
 """
 
 import sys
