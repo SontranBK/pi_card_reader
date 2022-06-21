@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+# https://pyscard.sourceforge.io/#documentation
 # sudo python3 serial_Mifare_AB2.py 
 
 """
