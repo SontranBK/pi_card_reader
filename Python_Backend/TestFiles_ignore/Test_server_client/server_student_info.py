@@ -57,7 +57,6 @@ for student_id in ID_list:
 		print(f'\nserver response: {res.text}, type res: {type(res)}, type: {type(res.text)}\n')
 
 		received_string = json.loads(res.text)
-		print(received_string[received_string.index("errorCode")+12:received_string.index("errorMessage")-3])
 	except:
 		print("Error: Lost connection to OCD server !!!!!!!!!\n")
 		received_string = {"errorCode":"","errorMessage":""}
