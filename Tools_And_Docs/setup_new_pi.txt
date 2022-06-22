@@ -49,6 +49,9 @@ cd ~
 sudo apt install python3-pip
 cd ~
 sudo pip install pyserial
+// Try out AB Circle reader
+// sudo apt-get install swig
+// sudo python3 -m pip install pyscard
 cd ~
 sudo python3 -m pip install firebase-admin
 cd ~
