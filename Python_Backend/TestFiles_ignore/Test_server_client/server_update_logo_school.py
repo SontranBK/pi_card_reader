@@ -15,8 +15,7 @@ machine_Id_list =["00001",
 "00010",
 ]
 
-
-server = 'http://api.metaedu.edu.vn/'
+server = 'http://api.metaedu.edu.vn'
 
 
 ses = Session()
@@ -25,12 +24,8 @@ ses.headers.update({
 })
 
 for mID in machine_Id_list:
-	postData = {
-	"machineId": mID,
-	}
-
 	try: 
-		res = ses.post(server + '/api/self-attendances/checking', json=postData, auth=('user', 'user'))
+		res = ses.get(server + '/api/school-devices/getByMachineId/1234TT', json={"machineId":mID,}, auth=('user', 'user'))
 		print(f'\nserver response: {res.text}, type res: {type(res)}, type: {type(res.text)}\n')
 
 	except:

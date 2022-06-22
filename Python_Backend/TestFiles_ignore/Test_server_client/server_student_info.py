@@ -33,7 +33,7 @@ ID_list =[1083682100084, 1083682100100,
 ]
 
 
-server = 'http://171.244.207.65:7856'
+server = 'http://api.metaedu.edu.vn'
 
 
 ses = Session()
