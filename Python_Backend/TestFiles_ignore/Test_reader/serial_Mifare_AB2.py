@@ -23,6 +23,13 @@ def main():
     connection = r[1].createConnection()
     connection.connect()
 
+    # ([], 144, 0), this is correct response
+    # Since 144 decimal is 0x90 hexa, 0 decimal is 0x00 hexa
+
+    # ([], 99, 0), this is not correct response
+    # Scine 99 decimal is 0x63 hexa, 0 decimal is 0x00 hexa
+
+    
     """
     LOADKEY = [0xFF, 0x82, 0x00, 0x00, 0x06, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
     card_response = connection.transmit(LOADKEY)
