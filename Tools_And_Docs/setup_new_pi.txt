@@ -91,6 +91,17 @@ sudo python3 -m serial.tools.list_ports
 ### sudo udevadm monitor -u
 ### sudo apt-get install linux-image-extra-virtual
 
+
+### For AB Circle reader
+### (do not use this command) sudo modprobe usbserial vendor=0x31aa product=0x3000
+sudo apt-get install swig
+sudo python3 -m pip install pyscard
+yaourt -S aur/acsccid
+sudo systemctl enable pcscd.service
+sudo systemctl start pcscd.service 
+sudo systemctl status pcscd.service
+
+### To install flutter
 cd ~
 sudo snap install flutter --classic
 cd ~
