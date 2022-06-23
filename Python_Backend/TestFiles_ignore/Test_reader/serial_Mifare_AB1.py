@@ -111,7 +111,8 @@ def main():
 	
 	
 	while (True): 
-		command = input("Please insert 1 of following commands:\n"
+		
+        command = input("Please insert 1 of following commands:\n"
                         "- rk4: read block 4 of Mifare card with Key included\n"
                         "- loadk:")
 
