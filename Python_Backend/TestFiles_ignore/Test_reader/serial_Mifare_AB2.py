@@ -8,7 +8,7 @@ This is a serial Mifare AB Circle python code
 
 import sys
 import time
-sys.path.append('./.local/lib/python3.9/site-packages')
+#sys.path.append('./.local/lib/python3.9/site-packages')
 from smartcard.System import readers
 from smartcard.util import toHexString
 import time
@@ -19,14 +19,27 @@ import codecs
 
 def main():
     r = readers()
-    print (readers())
-    connection = r[0].createConnection()
+    print (r)
+    connection = r[1].createConnection()
     connection.connect()
 
-    #SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
-    #DF_TELECOM = [0x7F, 0x10]
-    #card_response = connection.transmit( SELECT + DF_TELECOM )
-    #print(card_response)
+    """
+    LOADKEY = [0xFF, 0x82, 0x00, 0x00, 0x06, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
+    card_response = connection.transmit(LOADKEY)
+    print(f"loadkey res: if sw1 is 144 then is correct: {card_response}")
+    
+    AUTH = [0xFF, 0x86, 0x00, 0x00, 0x05, 0x01, 0x00, 0x04, 0x60, 0x00]
+    card_response = connection.transmit(AUTH)
+    print(f"auth res: if sw1 is 144 then is correct: {card_response}")
+    
+    WRITE4 = [0xFF, 0xD6, 0x00, 0x04, 0x10, 0x31, 0x41, 0x31, 0x7c, 0x31, 0x30, 0x38, 0x33, 0x36, 0x38, 0x36, 0x33, 0x32, 0x30, 0x30, 0x30]
+    card_response = connection.transmit(WRITE4)
+    print(f"write res: if sw1 is 144 then is correct: {card_response}")
+    """
+    
+    BUZZ = [0xFF, 0x00, 0x04, 0x01, 0x03, 0x19, 0x19, 0x02]
+    card_response = connection.transmit(BUZZ)
+    print(f"write res: if sw1 is 144 then is correct: {card_response}")
 
 
 if __name__ == "__main__":
