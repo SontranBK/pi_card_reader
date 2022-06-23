@@ -67,8 +67,8 @@ UPDATEB4command.append(0xD6)    #INS
 UPDATEB4command.append(0x00)    #MSB
 UPDATEB4command.append(0x04)    #LSB
 UPDATEB4command.append(0x10)    #LC
-    for i in range(16):
-UPDATEB4command.append(0x00)    #DATA
+for i in range(16):
+    UPDATEB4command.append(0x00)    #DATA
 
 UPDATEB5command = bytearray()
 UPDATEB5command.append(0xFF)    #CLA
@@ -76,8 +76,8 @@ UPDATEB5command.append(0xD6)    #INS
 UPDATEB5command.append(0x00)    #MSB
 UPDATEB5command.append(0x05)    #LSB
 UPDATEB5command.append(0x10)    #LC
-    for i in range(16):
-UPDATEB5command.append(0x00)    #DATA
+for i in range(16):
+    UPDATEB5command.append(0x00)    #DATA
 
 UPDATEB6command = bytearray()
 UPDATEB6command.append(0xFF)    #CLA
@@ -85,8 +85,8 @@ UPDATEB6command.append(0xD6)    #INS
 UPDATEB6command.append(0x00)    #MSB
 UPDATEB6command.append(0x06)    #LSB
 UPDATEB6command.append(0x10)    #LC
-    for i in range(16):
-UPDATEB6command.append(0x00)    #DATA
+for i in range(16):
+    UPDATEB6command.append(0x00)    #DATA
 
 
 
