@@ -10,7 +10,7 @@ import 'package:cross_connectivity/cross_connectivity.dart';
 
 
 bool DialogShowing = false; //v20_6
-/// Listens for incoming foreground messages and displays them in a list.
+/// Listens for incoming foreground messages and displays them in a list.1
 class MessageList extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _MessageList();
@@ -163,7 +163,10 @@ class _MessageList extends State<MessageList> {
         
       print(bodyOfNoti);
       if (titleOfNoti == 'Start: Start using NFC reader') {
-        if (DialogShowing = true) Navigator.pop(context); //v20_6
+        if (DialogShowing = true) {
+          Navigator.of(context).pop(true);
+          DialogShowing = false;
+        } // v22_06
         showDialog(
             context: context,
             builder: (context) {
@@ -185,7 +188,10 @@ class _MessageList extends State<MessageList> {
       }
       
       if (titleOfNoti == 'Error: Reader not connected') {
-        if (DialogShowing = true) Navigator.pop(context); //v20_6
+        if (DialogShowing = true) {
+          Navigator.of(context).pop(true);
+          DialogShowing = false;
+        } // v22_06
         showDialog(
             context: context,
             builder: (context) {
@@ -207,7 +213,10 @@ class _MessageList extends State<MessageList> {
       }
 
       if (titleOfNoti == 'Error: Student Info Not Found') {
-        if (DialogShowing = true) Navigator.pop(context); //v20_6
+        if (DialogShowing = true) {
+          Navigator.of(context).pop(true);
+          DialogShowing = false;
+        } // v22_06
         showDialog(
             context: context,
             builder: (context) {
@@ -229,7 +238,10 @@ class _MessageList extends State<MessageList> {
       }
 
       if (titleOfNoti == 'Error: Wrong data format') {
-        if (DialogShowing = true) Navigator.pop(context); //v20_6
+        if (DialogShowing = true) {
+          Navigator.of(context).pop(true);
+          DialogShowing = false;
+        } // v22_06
         showDialog(
             context: context,
             builder: (context) {
@@ -252,7 +264,10 @@ class _MessageList extends State<MessageList> {
 
 
       if (titleOfNoti == 'Hexa not valid') {
-        if (DialogShowing = true) Navigator.pop(context); //v20_6
+        if (DialogShowing = true) {
+          Navigator.of(context).pop(true);
+          DialogShowing = false;
+        } // v22_06
         showDialog(
             context: context,
             builder: (context) {
@@ -274,7 +289,10 @@ class _MessageList extends State<MessageList> {
       }
      
       if ((titleOfNoti == 'Error: Lost connection to OCD server')&&(internet_connection_status != 'ConnectivityStatus.none')) {
-        if (DialogShowing = true) Navigator.pop(context); //v20_6
+        if (DialogShowing = true) {
+          Navigator.of(context).pop(true);
+          DialogShowing = false;
+        } // v22_06
         showDialog(
             context: context,
             builder: (context) {
@@ -298,7 +316,10 @@ class _MessageList extends State<MessageList> {
   
 
       if (titleOfNoti == "NFC_card_info") {
-        if (DialogShowing = true) Navigator.pop(context); //v20_6
+        if (DialogShowing = true) {
+          Navigator.of(context).pop(true);
+          DialogShowing = false;
+        } // v22_06
         Map<String, dynamic> student_info = jsonDecode(bodyOfNoti);
 
         print('Name, ${student_info['data']['name']}');
@@ -314,7 +335,7 @@ class _MessageList extends State<MessageList> {
           transitionDuration: Duration(milliseconds: 500),
           pageBuilder: (_, __, ___) {
             DialogShowing = true; //v20_6
-            Future.delayed(Duration(seconds: 5), () {
+            Future.delayed(Duration(seconds: 3), () {
               Navigator.of(context).pop(true);
               DialogShowing = false; //v20_6
             });
