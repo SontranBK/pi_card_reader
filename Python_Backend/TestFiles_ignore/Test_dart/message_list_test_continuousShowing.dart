@@ -3,14 +3,11 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:cross_connectivity/cross_connectivity.dart';
 
-
-// *********************************
-// Test tính năng quẹt thẻ liên tục 
-// *********************************
-
+   
 
 bool DialogShowing = false; //v20_6
-/// Listens for incoming foreground messages and displays them in a list.1
+   
+/// Listens for incoming foreground messages and displays them in a list.
 class MessageList extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _MessageList();
@@ -20,6 +17,7 @@ class _MessageList extends State<MessageList> {
   //RemoteMessage mymess = RemoteMessage();
   RemoteNotification Noti = RemoteNotification();
   //List<RemoteMessage> mymess = [];
+  bool DialogShowing = false; //v20_6
   double heightR = 0.0; //v26
   double widthR = 0.0;
   double curR = 0.0;
@@ -29,10 +27,9 @@ class _MessageList extends State<MessageList> {
 	showDialog(
             context: context,
             builder: (context) {
-            DialogShowing = true; //v20_6
-              // Future.delayed(Duration(seconds: 10), () {
-              //   Navigator.of(context).pop(true);
-              // });
+              Future.delayed(Duration(seconds: 10), () {
+                Navigator.of(context).pop(true);
+              });
               return AlertDialog(
                 title: Text('Vui lòng chờ thêm giây lát',
                   style: TextStyle(color: Colors.blue,
@@ -163,17 +160,11 @@ class _MessageList extends State<MessageList> {
         
       print(bodyOfNoti);
       if (titleOfNoti == 'Start: Start using NFC reader') {
-        if (DialogShowing = true) {
-          Navigator.of(context).pop(true);
-          DialogShowing = false;
-        } // v22_06
         showDialog(
             context: context,
             builder: (context) {
-              DialogShowing = true; //v20_6
               Future.delayed(Duration(seconds: 5), () {
                 Navigator.of(context).pop(true);
-                DialogShowing = false; //v20_6
               });
               return AlertDialog(
                 title: Text(bodyOfNoti,
@@ -188,17 +179,11 @@ class _MessageList extends State<MessageList> {
       }
       
       if (titleOfNoti == 'Error: Reader not connected') {
-        if (DialogShowing = true) {
-          Navigator.of(context).pop(true);
-          DialogShowing = false;
-        } // v22_06
         showDialog(
             context: context,
             builder: (context) {
-              DialogShowing = true; //v20_6
               Future.delayed(Duration(seconds: 10), () {
                 Navigator.of(context).pop(true);
-                DialogShowing = false; //v20_6
               });
               return AlertDialog(
                 title: Text(bodyOfNoti,
@@ -213,17 +198,11 @@ class _MessageList extends State<MessageList> {
       }
 
       if (titleOfNoti == 'Error: Student Info Not Found') {
-        if (DialogShowing = true) {
-          Navigator.of(context).pop(true);
-          DialogShowing = false;
-        } // v22_06
         showDialog(
             context: context,
             builder: (context) {
-              DialogShowing = true; //v20_6
               Future.delayed(Duration(seconds: 5), () {
                 Navigator.of(context).pop(true);
-                DialogShowing = false; //v20_6
               });
               return AlertDialog(
                 title: Text(bodyOfNoti,
@@ -238,17 +217,11 @@ class _MessageList extends State<MessageList> {
       }
 
       if (titleOfNoti == 'Error: Wrong data format') {
-        if (DialogShowing = true) {
-          Navigator.of(context).pop(true);
-          DialogShowing = false;
-        } // v22_06
         showDialog(
             context: context,
             builder: (context) {
-              DialogShowing = true; //v20_6
               Future.delayed(Duration(seconds: 5), () {
                 Navigator.of(context).pop(true);
-                DialogShowing = false; //v20_6
               });
               return AlertDialog(
                 title: Text(bodyOfNoti,
@@ -264,17 +237,11 @@ class _MessageList extends State<MessageList> {
 
 
       if (titleOfNoti == 'Hexa not valid') {
-        if (DialogShowing = true) {
-          Navigator.of(context).pop(true);
-          DialogShowing = false;
-        } // v22_06
         showDialog(
             context: context,
             builder: (context) {
-              DialogShowing = true; //v20_6
               Future.delayed(Duration(seconds: 5), () {
                 Navigator.of(context).pop(true);
-                DialogShowing = false; //v20_6
               });
               return AlertDialog(
                 title: Text(bodyOfNoti,
@@ -289,17 +256,11 @@ class _MessageList extends State<MessageList> {
       }
      
       if ((titleOfNoti == 'Error: Lost connection to OCD server')&&(internet_connection_status != 'ConnectivityStatus.none')) {
-        if (DialogShowing = true) {
-          Navigator.of(context).pop(true);
-          DialogShowing = false;
-        } // v22_06
         showDialog(
             context: context,
             builder: (context) {
-              DialogShowing = true; //v20_6
               Future.delayed(Duration(seconds: 5), () {
                 Navigator.of(context).pop(true);
-                DialogShowing = false; //v20_6
               });
               return AlertDialog(
                 title: Text(bodyOfNoti,
@@ -316,9 +277,10 @@ class _MessageList extends State<MessageList> {
   
 
       if (titleOfNoti == "NFC_card_info") {
-        if (DialogShowing = true) {
-          Navigator.of(context).pop(true);
+        if (DialogShowing == true) {
+          Navigator.pop(context,true);
           DialogShowing = false;
+          print("TRUEEEEEEEEEEEE: ${DialogShowing}!!!!!!!!!!!");
         } // v22_06
         Map<String, dynamic> student_info = jsonDecode(bodyOfNoti);
 
@@ -326,19 +288,23 @@ class _MessageList extends State<MessageList> {
         print('ID, ${student_info["data"]["studentId"]}');
         print('School, ${student_info["data"]["school"]["name"]}');
         print('Class, ${student_info["data"]["clazz"]["name"]}');
-
+	
+        if (DialogShowing == false)
+        {
         showGeneralDialog(
           context: context,
           barrierLabel: "Barrier",
           barrierDismissible: true,
           barrierColor: Colors.black.withOpacity(0.1),
-          transitionDuration: Duration(milliseconds: 500),
+          //transitionDuration: Duration(milliseconds: 0),
           pageBuilder: (_, __, ___) {
             DialogShowing = true; //v20_6
-            Future.delayed(Duration(seconds: 3), () {
+            print("AAAAAAAAAAAA: ${DialogShowing}!!!!!!!!!!!");
+            Future.delayed(Duration(seconds: 10), () {
               Navigator.of(context).pop(true);
               DialogShowing = false; //v20_6
             });
+            print("BBBBBBBBBBBB: ${DialogShowing}!!!!!!!!!!!");
             return Container(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -451,6 +417,7 @@ class _MessageList extends State<MessageList> {
               ),
             );
           },
+          /*
           transitionBuilder: (_, anim, __, child) {
             Tween<Offset> tween;
             if (anim.status == AnimationStatus.reverse) {
@@ -466,8 +433,8 @@ class _MessageList extends State<MessageList> {
                 child: child,
               ),
             );
-          },
-        );
+          },*/
+        );}
       } //NFC info
       
     });
