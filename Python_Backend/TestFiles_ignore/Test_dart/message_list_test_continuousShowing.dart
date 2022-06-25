@@ -277,8 +277,10 @@ class _MessageList extends State<MessageList> {
   
 
       if (titleOfNoti == "NFC_card_info") {
+        BuildContext dialogContext;
+        
         if (DialogShowing == true) {
-          Navigator.pop(context,true);
+          Navigator.pop(dialogContext,true);
           DialogShowing = false;
           print("TRUEEEEEEEEEEEE: ${DialogShowing}!!!!!!!!!!!");
         } // v22_06
@@ -294,7 +296,8 @@ class _MessageList extends State<MessageList> {
         if (DialogShowing == false)
         {
         showGeneralDialog(
-          context: context,
+          //context: context,
+          context: dialogContext,
           barrierLabel: "Barrier",
           barrierDismissible: true,
           barrierColor: Colors.black.withOpacity(0.1),
@@ -303,7 +306,7 @@ class _MessageList extends State<MessageList> {
             DialogShowing = true; //v20_6
             print("AAAAAAAAAAAA: ${DialogShowing}!!!!!!!!!!!");
             Future.delayed(Duration(seconds: 10), () {
-              Navigator.of(context).pop(true);
+              Navigator.of(dialogContext).pop(true);
               DialogShowing = false; //v20_6
             });
             print("BBBBBBBBBBBB: ${DialogShowing}!!!!!!!!!!!");
