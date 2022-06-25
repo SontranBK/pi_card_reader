@@ -23,15 +23,6 @@ class _MessageList extends State<MessageList> {
   double curR = 0.0;
   String internet_connection_status = '';
   
-  async function doStuff(DialogShowing) {
-  if (DialogShowing == true) {
-      await Navigator.pop(context,true);
-      DialogShowing = false;
-      print("TRUEEEEEEEEEEEE: ${DialogShowing}!!!!!!!!!!!");
-    }
-  }
-
-
   void _showStartDialog(){
 	showDialog(
             context: context,
@@ -286,15 +277,13 @@ class _MessageList extends State<MessageList> {
   
 
       if (titleOfNoti == "NFC_card_info") {
-        /*
         if (DialogShowing == true) {
           Navigator.pop(context,true);
           DialogShowing = false;
           print("TRUEEEEEEEEEEEE: ${DialogShowing}!!!!!!!!!!!");
         } // v22_06
-        */
-        doStuff(DialogShowing)
-        
+    
+       
         Map<String, dynamic> student_info = jsonDecode(bodyOfNoti);
 
         print('Name, ${student_info['data']['name']}');
