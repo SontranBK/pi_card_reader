@@ -51,7 +51,16 @@ cd ~
 cd pi_card_reader/
 sudo flutter build web
 cd ~
-sudo cp pi_card_reader/build/web/assets/assets/logo.png pi_card_reader/build/web/assets/
+sudo cp pi_card_reader/assets/logo.png pi_card_reader/build/web/assets/
+sudo cp pi_card_reader/assets/logo.png pi_card_reader/build/web/assets/assets/
+sudo cp pi_card_reader/assets/background.jpg pi_card_reader/build/web/assets/
+sudo cp pi_card_reader/assets/background.jpg pi_card_reader/build/web/assets/assets/
+sudo cp pi_card_reader/assets/left.png pi_card_reader/build/web/assets/
+sudo cp pi_card_reader/assets/left.png pi_card_reader/build/web/assets/assets/
+sudo cp pi_card_reader/assets/right.png pi_card_reader/build/web/assets/
+sudo cp pi_card_reader/assets/right.png pi_card_reader/build/web/assets/assets/
+sudo cp pi_card_reader/assets/Meta_edu.png pi_card_reader/build/web/assets/
+sudo cp pi_card_reader/assets/Meta_edu.png pi_card_reader/build/web/assets/assets/
 
 ### Nếu cần phải build lại app (nếu anh Sơn yêu cầu), chạy lệnh sau
 cd pi_card_reader/
