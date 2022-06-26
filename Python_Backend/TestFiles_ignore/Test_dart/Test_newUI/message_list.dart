@@ -264,11 +264,6 @@ class _MessageList extends State<MessageList> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.only(
-                        right: 100 * widthR,
-                        top: 55 * heightR,
-                        left: 900 * widthR,
-                        bottom: 40 * heightR), //v26
                     // color: Colors.black,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -313,7 +308,6 @@ class _MessageList extends State<MessageList> {
                   Container(
                     height: 265 * heightR, //v26
                     width: 700 * widthR, //v26
-                    margin: EdgeInsets.only(left: 875 * widthR), //v26
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.centerLeft,
@@ -359,6 +353,7 @@ class _MessageList extends State<MessageList> {
                               Text(
                                 student_info['data']['name'],
                                 style: TextStyle(
+                                  decoration: TextDecoration.none,
                                   fontSize: 50 * curR,
                                   color: Colors.red[600],
                                   fontFamily: 'Dosis',
@@ -367,8 +362,9 @@ class _MessageList extends State<MessageList> {
                                 ),
                               ),
                               Text(
-                                'ID: ' + student_info["data"]["studentId"],
+                                'ID: '+student_info["data"]["studentId"],
                                 style: TextStyle(
+                                  decoration: TextDecoration.none,
                                   fontSize: 35 * curR,
                                   color: Colors.red,
                                   fontFamily: 'Dosis',
@@ -377,8 +373,9 @@ class _MessageList extends State<MessageList> {
                                 ),
                               ),
                               Text(
-                                'Lớp: ' + student_info["data"]["clazz"]["name"],
+                                'Lớp: '+student_info["data"]["clazz"]["name"],
                                 style: TextStyle(
+                                  decoration: TextDecoration.none,
                                   fontSize: 35 * curR,
                                   color: Colors.red,
                                   fontFamily: 'Dosis',

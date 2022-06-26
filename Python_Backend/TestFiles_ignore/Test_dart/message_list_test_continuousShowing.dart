@@ -277,39 +277,31 @@ class _MessageList extends State<MessageList> {
   
 
       if (titleOfNoti == "NFC_card_info") {
-        BuildContext dialogContext;
-        
         if (DialogShowing == true) {
-          Navigator.pop(dialogContext,true);
+          Navigator.of(context).pop(true);
           DialogShowing = false;
-          print("TRUEEEEEEEEEEEE: ${DialogShowing}!!!!!!!!!!!");
         } // v22_06
-    
-       
         Map<String, dynamic> student_info = jsonDecode(bodyOfNoti);
 
         print('Name, ${student_info['data']['name']}');
         print('ID, ${student_info["data"]["studentId"]}');
         print('School, ${student_info["data"]["school"]["name"]}');
         print('Class, ${student_info["data"]["clazz"]["name"]}');
-	
-        if (DialogShowing == false)
-        {
+
         showGeneralDialog(
-          //context: context,
-          context: dialogContext,
+          context: context,
           barrierLabel: "Barrier",
           barrierDismissible: true,
           barrierColor: Colors.black.withOpacity(0.1),
-          //transitionDuration: Duration(milliseconds: 0),
+          transitionDuration: Duration(milliseconds: 100),
           pageBuilder: (_, __, ___) {
             DialogShowing = true; //v20_6
-            print("AAAAAAAAAAAA: ${DialogShowing}!!!!!!!!!!!");
-            Future.delayed(Duration(seconds: 10), () {
-              Navigator.of(dialogContext).pop(true);
-              DialogShowing = false; //v20_6
+            Future.delayed(Duration(seconds: 5), () {
+              if (DialogShowing == true) {
+                Navigator.of(context).pop(true);
+                DialogShowing = false;
+              } // v22_06
             });
-            print("BBBBBBBBBBBB: ${DialogShowing}!!!!!!!!!!!");
             return Container(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -332,6 +324,7 @@ class _MessageList extends State<MessageList> {
                     width: 745*widthR, //v26
                     margin: EdgeInsets.only(right: 100*widthR), //v26
                     decoration: BoxDecoration(
+                      // color: Colors.blueAccent,
                       gradient: LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
@@ -367,7 +360,7 @@ class _MessageList extends State<MessageList> {
                                       width: 2,
                                     )
                                 ),
-                                child: Image.asset('logo.png', scale: 4/curR,), //v26
+                                // child: Image.asset('logo.png', scale: 4/curR,), //v26
                               )
                             ],
                           ),
@@ -422,13 +415,12 @@ class _MessageList extends State<MessageList> {
               ),
             );
           },
-          /*
           transitionBuilder: (_, anim, __, child) {
             Tween<Offset> tween;
             if (anim.status == AnimationStatus.reverse) {
-              tween = Tween(begin: Offset(1, 0), end: Offset.zero); //v26
+              tween = Tween(begin: Offset(0, 0), end: Offset.zero); //v26
             } else {
-              tween = Tween(begin: Offset(1, 0), end: Offset.zero); //v26
+              tween = Tween(begin: Offset(0, 0.05), end: Offset.zero); //v26
             }
 
             return SlideTransition(
@@ -438,8 +430,8 @@ class _MessageList extends State<MessageList> {
                 child: child,
               ),
             );
-          },*/
-        );}
+          },
+        );
       } //NFC info
       
     });

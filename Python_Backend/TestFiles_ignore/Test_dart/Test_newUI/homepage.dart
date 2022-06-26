@@ -42,12 +42,12 @@ class _HomepageState extends State<Homepage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      // color: Colors.blueAccent,
+                       // color: Colors.blueAccent,
                         padding: EdgeInsets.only(
                             left: 95 * widthR, top: 60 * heightR), //v26
                         child: Row(
                           children: [
-                            Image.asset('TH_PCT.png',scale: 3.5/curR,),
+                            Image.asset('logo.png',scale: 3.5/curR,),
                             // Image.network('http://171.244.207.65:7856/api/attachments/preview?id=1',scale: 3.5*curR,),//v26
                             Text(
                               '  TRƯỜNG TIỂU HỌC PHAN CHU TRINH',
@@ -98,9 +98,8 @@ class _HomepageState extends State<Homepage> {
                                         ],
                                       ),
                                     ),
-                                    child: Container(
+                                    child: SizedBox.expand(
                                       child: MessageList(),
-                                      // color: Colors.greenAccent,
                                     ),
                                   ),
                                   Container(
@@ -111,6 +110,7 @@ class _HomepageState extends State<Homepage> {
                                     child: Text(
                                       '" Tri thức là chìa khóa mở cửa tương lai"',
                                       style: TextStyle(
+                                        decoration: TextDecoration.none,
                                         fontFamily: 'Dosis', fontSize: 40 * curR,
                                         fontWeight: FontWeight.bold, //v26
                                         color: Colors.blue[900],
