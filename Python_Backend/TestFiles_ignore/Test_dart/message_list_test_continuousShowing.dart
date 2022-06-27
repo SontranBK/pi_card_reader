@@ -5,7 +5,7 @@ import 'package:cross_connectivity/cross_connectivity.dart';
 
    
 
-bool DialogShowing = false; //v20_6
+var DialogShowing = 0; //v20_6
    
 /// Listens for incoming foreground messages and displays them in a list.
 class MessageList extends StatefulWidget {
@@ -27,9 +27,10 @@ class _MessageList extends State<MessageList> {
 	showDialog(
             context: context,
             builder: (context) {
-              Future.delayed(Duration(seconds: 10), () {
-                Navigator.of(context).pop(true);
-              });
+              DialogShowing++; //v20_6
+              //Future.delayed(Duration(seconds: 10), () {
+              //  Navigator.of(context).pop(true);
+              //});
               return AlertDialog(
                 title: Text('Vui lòng chờ thêm giây lát',
                   style: TextStyle(color: Colors.blue,
@@ -277,9 +278,9 @@ class _MessageList extends State<MessageList> {
   
 
       if (titleOfNoti == "NFC_card_info") {
-        if (DialogShowing == true) {
+        if (DialogShowing >= 1) {
           Navigator.of(context).pop(true);
-          DialogShowing = false;
+          // DialogShowing--;
         } // v22_06
         Map<String, dynamic> student_info = jsonDecode(bodyOfNoti);
 
@@ -295,11 +296,12 @@ class _MessageList extends State<MessageList> {
           barrierColor: Colors.black.withOpacity(0.1),
           transitionDuration: Duration(milliseconds: 100),
           pageBuilder: (_, __, ___) {
-            DialogShowing = true; //v20_6
+            DialogShowing++; //v20_6
             Future.delayed(Duration(seconds: 5), () {
-              if (DialogShowing == true) {
+              DialogShowing--;
+              if (DialogShowing == 1) {
                 Navigator.of(context).pop(true);
-                DialogShowing = false;
+                DialogShowing--;
               } // v22_06
             });
             return Container(
