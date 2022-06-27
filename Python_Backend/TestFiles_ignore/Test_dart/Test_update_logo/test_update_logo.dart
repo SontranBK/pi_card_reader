@@ -56,3 +56,19 @@ Bản tin json bắn lên từ python sẽ như sau, dart sẽ nhận được j
 
 
 
+
+
+// HƯỚNG THỨ 2: LƯU VÀO MỘT FILE JSON, TÊN LÀ json_data.json
+
+// LOAD FILE JSON TRONG ASSET BẰNG CODE SAU: https://stackoverflow.com/questions/63653299/how-to-read-local-json-import-in-flutter
+
+// SAU ĐÓ DÙNG CODE DƯỚI, LẤY TỪNG DỮ LIỆU TRONG FILE JSON RA:
+
+      Map<String, dynamic> UI_update_info = jsonDecode(bodyOfNoti);
+
+      print('Tên trường: ${UI_update_info["data"]["name"]}');
+      print('Link logo: ${UI_update_info["data"]["logoUrl"]}');
+      print('Link background: ${UI_update_info["data"]["backgroundUrl"]}');
+
+// ĐƯA ĐỐNG LINK NÀY VÀO ẢNH VÀ LOGO
+
