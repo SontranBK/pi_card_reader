@@ -22,7 +22,7 @@ class _HomepageState extends State<Homepage> {
   */
 
   Future<String> getJson() {
-  return rootBundle.loadString('json_data.json');
+  return rootBundle.loadString('ui_auto_update.json');
   }
 
   double heightR = 0.0; //v26
