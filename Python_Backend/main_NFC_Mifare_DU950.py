@@ -183,7 +183,12 @@ def read_NFC_card(ser):
 					rest = dataB6[dataB6.index("|")+1:]
 					student_id = rest[:rest.index("|")]
 					#print(f"class name: {class_name}; student ID: {student_id}")
-					return class_name, student_id
+
+					#print(f"Received data: {class_name},{student_id[0:5]},{student_id[6:8]},{student_id[9:13]}, type: {type(student_id)}")
+					format_student_id = '{:04.0f}'.format(int(student_id[0:5]))+"-"+'{:02.0f}'.format(int(student_id[6:8]))+"-"+'{:04.0f}'.format(int(student_id[9:13]))
+					#print(f"Standard data type: {format_student_id}, {type(format_student_id)}")
+
+					return class_name, format_student_id
 				except:
 					return "Wrong data format"
 	except:
@@ -302,7 +307,7 @@ def main():
 		# If NFC card is presented and NFC reader return valid data
 		elif data != "Hexa not valid" and data != "Wrong data format" and data != None:
 			#print(f"Received data: {data[0]},{data[1][0:5]},{data[1][6:8]},{data[1][9:13]}, type: {type(data[1])}")
-			sid = '{:04.0f}'.format(int(data[1][0:5]))+"-"+'{:02.0f}'.format(int(data[1][6:8]))+"-"+'{:04.0f}'.format(int(data[1][9:13]))
+			#sid = '{:04.0f}'.format(int(data[1][0:5]))+"-"+'{:02.0f}'.format(int(data[1][6:8]))+"-"+'{:04.0f}'.format(int(data[1][9:13]))
 			#print(f"Standard data type: {sid}, {type(sid)}")
 
 
@@ -339,7 +344,7 @@ def main():
 			postData = {
 					"machineId": machine_id,
 					"checkingTime": timeSentToServer,
-					"studentID": str(sid),}
+					"studentID": str(data[1]),}
 
 			# Perform sending above request data to server and receive response
 			
