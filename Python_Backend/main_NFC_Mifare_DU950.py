@@ -15,7 +15,10 @@ from firebase_admin import messaging
 import sqlite3
 import json
 import os
-
+try:
+    import httplib  # python < 3.0
+except:
+    import http.client as httplib
 
 """
 SECTION 1: DEFINE VARIABLES AND COMMAND
@@ -28,6 +31,8 @@ school_name_db = "Tiểu học Phan Chu Trinh"
 block_studentInfo_time = 1.5
 # Error noiification blocking pop-up time
 block_errorNoti_time = 1.5
+# Server domain to call for response
+server = 'http://171.244.207.65:7856'
 
 database_link = None
 
@@ -94,12 +99,6 @@ READKEY6command.append(0x3a) # LRC
 """
 SECTION 2: FUNCTION DEFINATION
 """
-
-try:
-    import httplib  # python < 3.0
-except:
-    import http.client as httplib
-
 
 def have_internet():
 	int_conn = httplib.HTTPSConnection("8.8.8.8", timeout=5)
@@ -242,7 +241,6 @@ def main():
 	default_app = firebase_admin.initialize_app(cred)
 
 	# Initialize API for connecting to server-backend
-	server = 'http://171.244.207.65:7856'
 	ses = Session()
 	ses.headers.update({
 		'Content-Type': 'application/json'})

@@ -62,8 +62,8 @@ class _HomepageState extends State<Homepage> {
               fit: BoxFit
                   .fill, //v26 It's fill properties in last ver, for keeping ratio when scaling windows
               scale: 1, //v26
-              //image: AssetImage("assets/background.jpg"),
-              image:  NetworkImage(backgroundURL),
+              // image: AssetImage("assets/background.jpg"),
+              image: NetworkImage(backgroundURL),
             ),
           ),
           child: Container(
@@ -80,8 +80,8 @@ class _HomepageState extends State<Homepage> {
                             left: 95 * widthR, top: 60 * heightR), //v26
                         child: Row(
                           children: [
-                            //Image.asset('logo.png',scale: 3.5/curR,),
-                            Image.network(logoURL,scale: 3.5*curR,),//v26
+                            // Image.asset('logo.png',scale: 3.5/curR,),
+                             Image.network(logoURL,scale: 3.5*curR,),//v26
                             Text(
                               //'  TRƯỜNG TIỂU HỌC PHAN CHU TRINH',
                               '  ' + school_name,
