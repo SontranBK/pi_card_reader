@@ -4,7 +4,8 @@ import 'dart:ui';
 import 'message_list.dart';
 import 'show_date_time.dart';
 import 'package:flutter/services.dart' show rootBundle;
-
+//import 'package:flutter/services.dart';
+import 'dart:convert';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -18,25 +19,29 @@ class _HomepageState extends State<Homepage> {
 
   flutter:
     assets:
-      - json_data.json
+      - ui_auto_update.json
   */
+  String school_name;
 
-  Future<String> getJson() {
-  return rootBundle.loadString('ui_auto_update.json');
+  // Fetch content from the json file
+  Future<void> readJson() async {
+    final String response = await rootBundle.loadString('assets/ui_auto_update.json');
+    final data = await json.decode(response);
+    setState(() {
+      school_name = data["data"]["name"];
+    });
   }
+
 
   double heightR = 0.0; //v26
   double widthR = 0.0;
   double curR = 0.0;
   @override
   Widget build(BuildContext context) {
-    var UI_update_info = json.decode(await getJson());
 
-    //Map<String, dynamic> UI_update_info = jsonDecode(await getJson());
-
-    print('Tên trường: ${UI_update_info["data"]["name"]}');
-    print('Link logo: ${UI_update_info["data"]["logoUrl"]}');
-    print('Link background: ${UI_update_info["data"]["backgroundUrl"]}');
+    print('Tên trường: ${school_name}');
+    //print('Link logo: ${UI_update_info["data"]["logoUrl"]}');
+    //print('Link background: ${UI_update_info["data"]["backgroundUrl"]}');
 
     double heightR, widthR; //v26
     heightR = MediaQuery.of(context).size.height / 1080; //v26
