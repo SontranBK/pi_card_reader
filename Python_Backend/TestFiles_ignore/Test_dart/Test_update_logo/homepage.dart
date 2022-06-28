@@ -21,14 +21,19 @@ class _HomepageState extends State<Homepage> {
     assets:
       - ui_auto_update.json
   */
-  String school_name;
+  String school_name = "";
+  String logoURL = "";
+  String backgroundURL = "";
 
   // Fetch content from the json file
   Future<void> readJson() async {
     final String response = await rootBundle.loadString('assets/ui_auto_update.json');
     final data = await json.decode(response);
+    print('data: ${data}');
     setState(() {
       school_name = data["data"]["name"];
+      logoURL = data["data"]["logoUrl"];
+      backgroundURL = data["data"]["backgroundUrl"];
     });
   }
 
@@ -39,9 +44,10 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
 
+    readJson();
     print('Tên trường: ${school_name}');
-    //print('Link logo: ${UI_update_info["data"]["logoUrl"]}');
-    //print('Link background: ${UI_update_info["data"]["backgroundUrl"]}');
+    print('Link logo: ${logoURL}');
+    print('Link background: ${backgroundURL}');
 
     double heightR, widthR; //v26
     heightR = MediaQuery.of(context).size.height / 1080; //v26
@@ -56,7 +62,8 @@ class _HomepageState extends State<Homepage> {
               fit: BoxFit
                   .fill, //v26 It's fill properties in last ver, for keeping ratio when scaling windows
               scale: 1, //v26
-              image: AssetImage("assets/background.jpg"),
+              //image: AssetImage("assets/background.jpg"),
+              image:  NetworkImage(backgroundURL),
             ),
           ),
           child: Container(
@@ -73,11 +80,11 @@ class _HomepageState extends State<Homepage> {
                             left: 95 * widthR, top: 60 * heightR), //v26
                         child: Row(
                           children: [
-                            Image.asset('logo.png',scale: 3.5/curR,),
-                            // Image.network(UI_update_info["data"]["logoUrl"],scale: 3.5*curR,),//v26
+                            //Image.asset('logo.png',scale: 3.5/curR,),
+                            Image.network(logoURL,scale: 3.5*curR,),//v26
                             Text(
-                              '  TRƯỜNG TIỂU HỌC PHAN CHU TRINH',
-                              //'  ' + UI_update_info["data"]["name"],
+                              //'  TRƯỜNG TIỂU HỌC PHAN CHU TRINH',
+                              '  ' + school_name,
                               style: TextStyle(
                                 fontFamily: 'Dosis', fontSize: 48 * widthR,
                                 fontWeight: FontWeight.bold, //v26
