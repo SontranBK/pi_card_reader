@@ -25,7 +25,7 @@ class _MessageList extends State<MessageList> {
     showDialog(
         context: context,
         builder: (context) {
-          DialogShowing = true; //v20_6
+           DialogShowing = true; //v20_6
           //Future.delayed(Duration(seconds: 10), () {
           //  Navigator.of(context).pop(true);
           //});
@@ -280,6 +280,7 @@ class _MessageList extends State<MessageList> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
+                    padding: EdgeInsets.only(left: 875*widthR,top: 300*heightR),
                     // color: Colors.black,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -322,6 +323,7 @@ class _MessageList extends State<MessageList> {
                     ),
                   ),
                   Container(
+                    margin: EdgeInsets.only(left: 875*widthR,top: 10*heightR),
                     height: 265 * heightR, //v26
                     width: 700 * widthR, //v26
                     decoration: BoxDecoration(
