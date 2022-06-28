@@ -32,7 +32,10 @@ def have_internet():
 	finally:
         	int_conn.close()
 
+# check if port is range 41200 to 41209
 
+
+# call server for UI update info
 while(retry_time < 5):
 	try: 	
 		if have_internet() == True:
