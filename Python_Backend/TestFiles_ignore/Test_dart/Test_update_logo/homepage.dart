@@ -30,9 +30,9 @@ class _HomepageState extends State<Homepage> {
   double curR = 0.0;
   @override
   Widget build(BuildContext context) {
-    // var my_data = json.decode(await getJson());
+    var UI_update_info = json.decode(await getJson());
 
-    Map<String, dynamic> UI_update_info = jsonDecode(await getJson());
+    //Map<String, dynamic> UI_update_info = jsonDecode(await getJson());
 
     print('Tên trường: ${UI_update_info["data"]["name"]}');
     print('Link logo: ${UI_update_info["data"]["logoUrl"]}');
@@ -69,9 +69,10 @@ class _HomepageState extends State<Homepage> {
                         child: Row(
                           children: [
                             Image.asset('logo.png',scale: 3.5/curR,),
-                            // Image.network('http://171.244.207.65:7856/api/attachments/preview?id=1',scale: 3.5*curR,),//v26
+                            // Image.network(UI_update_info["data"]["logoUrl"],scale: 3.5*curR,),//v26
                             Text(
                               '  TRƯỜNG TIỂU HỌC PHAN CHU TRINH',
+                              //'  ' + UI_update_info["data"]["name"],
                               style: TextStyle(
                                 fontFamily: 'Dosis', fontSize: 48 * widthR,
                                 fontWeight: FontWeight.bold, //v26
