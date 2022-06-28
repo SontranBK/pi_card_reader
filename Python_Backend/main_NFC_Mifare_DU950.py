@@ -24,8 +24,10 @@ SECTION 1: DEFINE VARIABLES AND COMMAND
 machine_id = "00001"
 # Name of school where device is installed
 school_name_db = "Tiểu học Phan Chu Trinh"
-# Student Info pop-up time
-pop_up_time = 3
+# Student Info blocking pop-up time
+block_studentInfo_time = 1.5
+# Error noiification blocking pop-up time
+block_errorNoti_time = 1.5
 
 database_link = None
 
@@ -285,7 +287,8 @@ def main():
 			time.sleep(10)		
 		# Notification to start reading
 		print("Start reading !!!!!!!!!\n")
-		send_all('Start: Start using NFC reader',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m') + '; ID thiet bi: ' + machine_id,MY_TOKEN) # send infomation to User interface	
+		send_all('Start: Start using NFC reader',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m') + '; ID thiet bi: ' + machine_id,MY_TOKEN) # send infomation to User interface
+		time.sleep(block_errorNoti_time)	
 	else:
 		# Wait 10 secs and perform reboot 
 		time.sleep(10)
@@ -302,8 +305,10 @@ def main():
 		#time2 = time.time()
 		if data == "Wrong data format":
 			send_all('Error: Wrong data format',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
+			time.sleep(block_errorNoti_time)
 		elif data == "Hexa not valid":
 			send_all('Error: Hexa not valid',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
+			time.sleep(block_errorNoti_time)
 		# If NFC card is presented and NFC reader return valid data
 		elif data != "Hexa not valid" and data != "Wrong data format" and data != None:
 			#print(f"Received data: {data[0]},{data[1][0:5]},{data[1][6:8]},{data[1][9:13]}, type: {type(data[1])}")
@@ -337,7 +342,7 @@ def main():
 			#time3 = time.time()
 			if body != None:
 				send_all('NFC_card_info',body,MY_TOKEN)
-				time.sleep(pop_up_time + 0.2)
+				time.sleep(block_studentInfo_time)
 			
 			#time4 = time.time()
 			# Request data to be sent from client (our MCU) to server
@@ -359,6 +364,7 @@ def main():
 				res = "Lost connection to OCD server"
 				print("Error: "+res+" !!!!!!!!!\n")
 				send_all('Error: Lost connection to OCD server',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
+				time.sleep(block_errorNoti_time)
 				
 				try: 
 					conn = sqlite3.connect("pi_card_reader/Database/log_retry.db")
@@ -417,9 +423,10 @@ def main():
 				if body != None:
 					send_all('NFC_card_info',body,MY_TOKEN)
 					# Wait for our pop-up dialog in our UI to disappear
-					time.sleep(pop_up_time)
+					time.sleep(block_studentInfo_time)
 				else:
 					send_all('Error: Student Info Not Found',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
+					time.sleep(block_errorNoti_time)
 					time.sleep(5)
 			
 
