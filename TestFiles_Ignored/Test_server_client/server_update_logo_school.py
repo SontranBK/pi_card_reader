@@ -29,7 +29,7 @@ ses.headers.update({
 for mID in machine_Id_list:
 	try: 
 		# try send machine id to server, which means call server
-		res = ses.get(server + '/api/school-devices/getByMachineId/1234TT', json={"machineId":mID,}, auth=('user', 'user'))
+		res = ses.get(server + '/api/school-devices/getByMachineId/' + mID, json={"machineId":mID,}, auth=('user', 'user'))
 		# print response to console
 		print(f'\nserver response: {res.text}, type res: {type(res)}, type: {type(res.text)}\n')
 	except:
