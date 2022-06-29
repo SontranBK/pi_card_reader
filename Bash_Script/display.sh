@@ -12,4 +12,4 @@ echo 1 | sudo -S rm API_TOKEN\ \(8\).txt
 echo 1 | sudo -S rm API_TOKEN\ \(9\).txt
 cd ~
 sleep 3
-chromium-browser --start-fullscreen --app=http://localhost:41200
+chromium-browser --start-fullscreen --app=http://localhost:$(jq ".web_port" system_config.json)
