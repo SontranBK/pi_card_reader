@@ -21,19 +21,50 @@ except:
     import http.client as httplib
 
 """
-SECTION 1: DEFINE VARIABLES AND COMMAND
+SECTION 1: READ SYSTEM CONFIG AND DEFINE VARIABLES
 """
-# Define machine_id: id of our MCU device 
-machine_id = "00001"
-# Name of school where device is installed
-school_name_db = "Tiểu học Phan Chu Trinh"
-# Student Info blocking pop-up time
-block_studentInfo_time = 1.5
-# Error noiification blocking pop-up time
-block_errorNoti_time = 1.5
-# Server domain to call for response
-server = 'http://171.244.207.65:7856'
 
+# parse json config file
+try: 
+	with open('system_config.json') as json_file:
+	    data = json.loads(json_file.read())
+	    #print(data)
+except:
+	data = ""
+
+# Define machine_id: id of our MCU device 
+try: 
+	mID = data["machine_id"]
+	print("Read system config successfully")
+except:
+	mID = "00001"
+	print("FAIL to read system config")
+
+
+# Student Info blocking pop-up time
+try:
+	block_studentInfo_time = data["block_studentInfo_time"]
+except:
+	block_studentInfo_time = 1.5
+
+# Error noiification blocking pop-up time
+try:
+	block_errorNoti_time = data["block_errorNoti_time"]
+except:
+	block_errorNoti_time = 5
+
+# Server domain to call for response
+try:
+	server = data["server_client_config"]["server_domain"]
+	print("Read system config successfully")
+except:
+	server = 'http://api.metaedu.edu.vn'
+	print("FAIL to read system config")
+
+# Name of school where device is installed
+school_name_db = ""
+
+# Database link
 database_link = None
 
 # READKEY command of DU950 reader
@@ -345,7 +376,7 @@ def main():
 			#time4 = time.time()
 			# Request data to be sent from client (our MCU) to server
 			postData = {
-					"machineId": machine_id,
+					"machineId": mID,
 					"checkingTime": timeSentToServer,
 					"studentID": str(data[1]),}
 
@@ -367,7 +398,7 @@ def main():
 				try: 
 					conn = sqlite3.connect("pi_card_reader/Database/log_retry.db")
 					conn.cursor().execute("CREATE TABLE IF NOT EXISTS LOGTABLE( machineID TEXT, checkingTime TEXT, studentID TEXT, retryTimes TEXT) ")
-					conn.execute("INSERT INTO LOGTABLE (machineID,checkingTime,studentID,retryTimes) VALUES (?,?,?,?)",(machine_id,timeSentToServe,data[1],0))
+					conn.execute("INSERT INTO LOGTABLE (machineID,checkingTime,studentID,retryTimes) VALUES (?,?,?,?)",(mID,timeSentToServe,data[1],0))
 					conn.commit()
 				except: 
 					pass				

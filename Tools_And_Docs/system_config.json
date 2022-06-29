@@ -1,0 +1,1 @@
+{"machine_id": "00001", "product_version": "1.0.3", "web_port": 41200, "UI_noti_time": {"block_studentInfo_time": 1.5, "block_errorNoti_time": 5}, "server_client_config": {"server_domain": "http://api.metaedu.edu.vn", "maximum_retry_time": 5, "time_break_between_retry": 30}}
