@@ -1,5 +1,11 @@
-{
-    "machine_id" : "",
+{   
+    "machine id" : "00001",
+    "product version" : "1.0.3",
+    "web port" : 41200,
     "school_name_db" : "Tieu hoc Phan Chu Trinh",
-    "pop_up_time" : 3
+    "block studentInfo time" : 1.5,
+    "block errorNoti time" : 5,
+    "server domain" : "http://api.metaedu.edu.vn",
+    "maximum retry time" : 5,
+    "time break between retry" : 30
 }
