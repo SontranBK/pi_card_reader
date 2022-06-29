@@ -29,8 +29,8 @@ class _ShowDateTimeState extends State<ShowDateTime> {
     return Text(
       _timeString,
       style: TextStyle(
-        fontFamily: 'Dosis', fontWeight: FontWeight.w400,
-        color: Colors.white,
+        fontFamily: 'Dosis', fontWeight: FontWeight.bold,
+        color: Colors.red[600],
         fontSize: 48.0*widthR, // v26
       ),
     );
