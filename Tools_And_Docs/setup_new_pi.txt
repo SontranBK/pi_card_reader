@@ -63,6 +63,7 @@ sudo apt remove brltty
 cd ~
 sudo apt update
 sudo apt install -y jq
+jq --version
 cd ~
 sudo apt-get install minicom
 sudo minicom -s
