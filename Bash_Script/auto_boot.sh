@@ -1,3 +1,6 @@
+cd ~
+echo 1 | sudo -S cp pi_card_reader/Python_Backend/main_auto_updateUI.py ~
+echo 1 | sudo -S python3 main_auto_updateUI.py
 
 title1="Initializing User Interface"
 title2="Opening User Interface"
