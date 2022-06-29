@@ -96,13 +96,13 @@ def have_internet():
 # check whether json response is similar to json saved in device
 def check_json_equal(res):
 	try: 
-		json_saved_data = json.load(open('ui_auto_update.json'))
+		json_saved_data = json.load(open('pi_card_reader/assets/ui_auto_update.json'))
 		server_res_json = json.loads(res.text)
 		print(f"Hai file json:\n{json_saved_data}\n{server_res_json}\n")
-		for item in json_saved_data.keys() :
-			if (server_res_json[item] != json_saved_data[item]):
-				return False
-		return True
+		if json_saved_data == server_res_json:
+			return True
+		else:
+			return False
 	except:
 		return True
 
@@ -143,7 +143,7 @@ while(retry_time < max_retry_time):
 		else:
 			try:
 				print("Server yêu cầu update giao diện")
-				with open("ui_auto_update.json", "w+") as ui_auto_update_file:
+				with open("pi_card_reader/assets/ui_auto_update.json", "w+") as ui_auto_update_file:
 					ui_auto_update_file.write(res.text)
 				jsonFile = open("system_config.json", "r") # Open the JSON file for reading
 				data = json.load(jsonFile) # Read the JSON into the buffer
