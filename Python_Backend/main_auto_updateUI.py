@@ -107,7 +107,7 @@ while(retry_time < max_retry_time):
 
 	try: 	
 		if have_internet() == True:
-			res = ses.get(server + '/api/school-devices/getByMachineId/1234TT', json={"machineId":mID,}, auth=('user', 'user'))
+			res = ses.get(server + '/api/school-devices/getByMachineId/' + mID, json={"machineId":mID,}, auth=('user', 'user'))
 			print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
 			# check if json file "assets\ui_auto_update.json" is similar to our response
 			# if similar, break	=> keep port, do not re-build
