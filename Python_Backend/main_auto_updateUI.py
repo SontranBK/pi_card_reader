@@ -93,6 +93,14 @@ def have_internet():
 	finally:
 		int_conn.close()
 
+# check whether json response is similar to json saved in device
+def check_json_equal(server_res):
+	json_saved_data = json.load(open('pi_card_reader/assets/ui_auto_update.json'))
+
+	for item in json_saved_data.keys() :
+		if (server_res[item] != json_saved_data[item]):
+			return False
+	return True
 
 """
 SECTION 3: MAIN PROGRAM
@@ -111,7 +119,9 @@ while(retry_time < max_retry_time):
 			print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
 			# check if json file "assets\ui_auto_update.json" is similar to our response
 			# if similar, break	=> keep port, do not re-build
-			if similar:
+			if check_json_equal(res.text) == True:
+				with open("pi_card_reader/assets/ui_auto_update.json", "w+") as ui_auto_update_file:
+            		ui_auto_update_file.write(res.text)
 				jsonFile = open("system_config.json", "r") # Open the JSON file for reading
 				data = json.load(jsonFile) # Read the JSON into the buffer
 				jsonFile.close() # Close the JSON file
