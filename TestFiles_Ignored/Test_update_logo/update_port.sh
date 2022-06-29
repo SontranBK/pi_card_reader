@@ -1,7 +1,5 @@
 # https://lindevs.com/install-jq-on-ubuntu/
 
-printf(jq '.school_name_db' system_config.json)
-#.school_name_db
+echo 1 | sudo -S python3 -m http.server $(jq ".web_port" system_config.json)
 
-
-echo 1 | sudo -S python3 -m http.server 41200
+chromium-browser --start-fullscreen --app=http://localhost:$(jq ".web_port" system_config.json)
