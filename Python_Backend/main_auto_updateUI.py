@@ -94,89 +94,88 @@ def have_internet():
 		int_conn.close()
 
 # check whether json response is similar to json saved in device
-def check_json_equal(server_res):
-	json_saved_data = json.load(open('pi_card_reader/assets/ui_auto_update.json'))
-
-	for item in json_saved_data.keys() :
-		if (server_res[item] != json_saved_data[item]):
-			return False
-	return True
+def check_json_equal(res):
+	try: 
+		json_saved_data = json.load(open('ui_auto_update.json'))
+		server_res_json = json.loads(res.text)
+		print(f"Hai file json:\n{json_saved_data}\n{server_res_json}\n")
+		for item in json_saved_data.keys() :
+			if (server_res_json[item] != json_saved_data[item]):
+				return False
+		return True
+	except:
+		return True
 
 """
 SECTION 3: MAIN PROGRAM
 """
 
-# check if port is range 41200 to 41209
-
-similar = True
-
 # call server for UI update info
 while(retry_time < max_retry_time):
 
-	try: 	
-		if have_internet() == True:
+	if have_internet() == True:
+		try:
 			res = ses.get(server + '/api/school-devices/getByMachineId/' + mID, json={"machineId":mID,}, auth=('user', 'user'))
 			print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
-			# check if json file "assets\ui_auto_update.json" is similar to our response
-			# if similar, break	=> keep port, do not re-build
-			if check_json_equal(res.text) == True:
-				with open("pi_card_reader/assets/ui_auto_update.json", "w+") as ui_auto_update_file:
-            		ui_auto_update_file.write(res.text)
+		except: 
+			res = "Lost connection to OCD server"
+			print("\nKhông thể kết nối với server, vui lòng liên hệ kĩ thuật viên\n"
+				  "Thử kết nối lại với server sau 30 giây\n")
+			time.sleep(time_break_between_retry)
+			retry_time += 1
+			print(f"\nThử kết nối lại với server lần thứ {retry_time}\n")
+			continue
+		# check if json file "assets\ui_auto_update.json" is similar to our response
+		# if similar, break	=> keep port, do not re-build
+		if check_json_equal(res) == True:
+			print("Giữ nguyên giao diện, không update")
+			jsonFile = open("system_config.json", "r") # Open the JSON file for reading
+			data = json.load(jsonFile) # Read the JSON into the buffer
+			jsonFile.close() # Close the JSON file
+
+			# MODIFY REQUIRE REBUILD 
+			data["required_rebuild"] = 0
+			jsonFile = open("system_config.json", "w+")
+			jsonFile.write(json.dumps(data))
+			jsonFile.close()
+			break
+		# if not similar, modify system_config.json file
+		else:
+			try:
+				print("Server yêu cầu update giao diện")
+				with open("ui_auto_update.json", "w+") as ui_auto_update_file:
+					ui_auto_update_file.write(res.text)
 				jsonFile = open("system_config.json", "r") # Open the JSON file for reading
 				data = json.load(jsonFile) # Read the JSON into the buffer
 				jsonFile.close() # Close the JSON file
 
 				# MODIFY REQUIRE REBUILD 
-				data["required_rebuild"] = 0
-				jsonFile = open("system_config.json", "w+")
-				jsonFile.write(json.dumps(data))
-				jsonFile.close()
+				data["required_rebuild"] = 1
+				# MODIFY WEB PORT
+				# if port number is 41205, set port to 41200
+				if data["web_port"] == max_web_port:
+					data["web_port"] = min_web_port
+					jsonFile = open("system_config.json", "w+")
+					jsonFile.write(json.dumps(data))
+					jsonFile.close()
+				# else increase port number by 1
+				else:
+					data["web_port"] += 1
+					jsonFile = open("system_config.json", "w+")
+					jsonFile.write(json.dumps(data))
+					jsonFile.close()
 				break
-			# if not similar, modify system_config.json file
-			else:
-				try: 
-					jsonFile = open("system_config.json", "r") # Open the JSON file for reading
-					data = json.load(jsonFile) # Read the JSON into the buffer
-					jsonFile.close() # Close the JSON file
+			except:
+				print("\nFAIL to modify web port\n")
+				break
 
-					# MODIFY REQUIRE REBUILD 
-					data["required_rebuild"] = 1
-					# MODIFY WEB PORT
-					# if port number is 41205, set port to 41200
-					if data["web_port"] == max_web_port:
-						data["web_port"] = min_web_port
-						jsonFile = open("system_config.json", "w+")
-						jsonFile.write(json.dumps(data))
-						jsonFile.close()
-					# else increase port number by 1
-					else:
-						data["web_port"] += 1
-						jsonFile = open("system_config.json", "w+")
-						jsonFile.write(json.dumps(data))
-						jsonFile.close()
-					break
-				except:
-					print("\nFAIL to modify web port\n")
-					break
-				# run tool to re-build dart
-
-		else:
-			res = "Lost internet"
-			print("\nThiết bị mất kết nối internet, vui lòng kiểm tra lại kết nối internet\n"
-			      "Thử kết nối lại với server sau 30 giây\n")
-			time.sleep(time_break_between_retry)
-			retry_time += 1
-			print(f"\nThử kết nối lại với server lần thứ {retry_time}\n")
-	except:
-		res = "Lost connection to OCD server"
-		print("\nKhông thể kết nối với server, vui lòng liên hệ kĩ thuật viên\n"
-			  "Thử kết nối lại với server sau 30 giây\n")
+	else:
+		res = "Lost internet"
+		print("\nThiết bị mất kết nối internet, vui lòng kiểm tra lại kết nối internet\n"
+		      "Thử kết nối lại với server sau 30 giây\n")
 		time.sleep(time_break_between_retry)
 		retry_time += 1
 		print(f"\nThử kết nối lại với server lần thứ {retry_time}\n")
-	
-
-
 
 """
 Standard server response format for product v.1.0.3:
