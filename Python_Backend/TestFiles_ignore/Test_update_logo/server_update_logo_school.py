@@ -42,12 +42,16 @@ while(retry_time < 5):
 			res = ses.get(server + '/api/school-devices/getByMachineId/1234TT', json={"machineId":mID,}, auth=('user', 'user'))
 			print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
 			# check if json file "assets\ui_auto_update.json" is similar to our response
-			# if similar, break			
+			# if similar, break	=> keep port, do not re-build		
 			break
 
 			# if not similar, modify system_setting.json file
 				# if port number is 41209, set port to 41200
 				# else increase port number by 1
+
+				# run tool to re-build dart
+
+				# reboot
 		else:
 			res = "Lost internet"
 			print("Thiết bị mất kết nối internet, vui lòng kiểm tra lại kết nối internet\n"
