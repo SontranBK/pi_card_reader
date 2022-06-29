@@ -1,6 +1,15 @@
 cd ~
 echo 1 | sudo -S cp pi_card_reader/Python_Backend/main_auto_updateUI.py ~
 echo 1 | sudo -S python3 main_auto_updateUI.py
+cd ~
+if [ $(jq ".required_rebuild" system_config.json) == 1 ]; then
+  echo "Server yêu cầu thay đổi giao diện, đang build giao diện mới"
+  cd ~
+  sh pi_card_reader/Tools_And_Docs/Logo_School_Tool/update_logo_school.sh
+else
+  echo "Server không yêu cầu thay đổi giao diện"
+fi
+
 
 title1="Initializing User Interface"
 title2="Opening User Interface"

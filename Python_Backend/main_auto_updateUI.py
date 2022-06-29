@@ -100,18 +100,27 @@ SECTION 3: MAIN PROGRAM
 
 # check if port is range 41200 to 41209
 
-similar = False
+similar = True
 
 # call server for UI update info
 while(retry_time < max_retry_time):
 
 	try: 	
 		if have_internet() == True:
-			res = ses.get(server + '/api/school-devices/getByMachineId/' + mID, json={"machineId":mID,}, auth=('user', 'user'))
+			res = ses.get(server + '/api/school-devices/getByMachineId/1234TT', json={"machineId":mID,}, auth=('user', 'user'))
 			print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
 			# check if json file "assets\ui_auto_update.json" is similar to our response
 			# if similar, break	=> keep port, do not re-build
 			if similar:
+				jsonFile = open("system_config.json", "r") # Open the JSON file for reading
+				data = json.load(jsonFile) # Read the JSON into the buffer
+				jsonFile.close() # Close the JSON file
+
+				# MODIFY REQUIRE REBUILD 
+				data["required_rebuild"] = 0
+				jsonFile = open("system_config.json", "w+")
+				jsonFile.write(json.dumps(data))
+				jsonFile.close()
 				break
 			# if not similar, modify system_config.json file
 			else:
@@ -119,6 +128,10 @@ while(retry_time < max_retry_time):
 					jsonFile = open("system_config.json", "r") # Open the JSON file for reading
 					data = json.load(jsonFile) # Read the JSON into the buffer
 					jsonFile.close() # Close the JSON file
+
+					# MODIFY REQUIRE REBUILD 
+					data["required_rebuild"] = 1
+					# MODIFY WEB PORT
 					# if port number is 41205, set port to 41200
 					if data["web_port"] == max_web_port:
 						data["web_port"] = min_web_port
