@@ -112,9 +112,8 @@ cd ~
 cd pi_card_reader/
 sudo flutter config --enable-web
 sudo flutter create --platforms=web .
-sudo flutter build web
 cd ~
-sudo cp pi_card_reader/build/web/assets/assets/logo.png pi_card_reader/build/web/assets/
+sh pi_card_reader/Tools_And_Docs/Logo_School_Tool/update_logo_school.sh
 
 """""""""""""""""
 4) Make system auto-boot and auto-config 
