@@ -31,7 +31,7 @@ class _HomepageState extends State<Homepage> {
     final data = await json.decode(response);
     //print('data: ${data}');
     setState(() {
-      school_name = data["data"]["name"];
+        school_name = data["data"]["name"];
       logoURL = data["data"]["logoUrl"];
       backgroundURL = data["data"]["backgroundUrl"];
     });
@@ -70,33 +70,38 @@ class _HomepageState extends State<Homepage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                       // color: Colors.blueAccent,
+                        color: Colors.white,
                         padding: EdgeInsets.only(
-                            left: 95 * widthR, top: 60 * heightR), //v26
+                            left: 95 * widthR, right: 65 * widthR, bottom: 32*heightR,top: 32 * heightR ), //v26
+                        margin: EdgeInsets.only(
+                        top: 45 * heightR
+                        ),
                         child: Row(
                           children: [
-                             Image.network(logoURL,scale: 7.5*curR,),//v26
-                            Text(
-                              '  ' + school_name,
-                              style: TextStyle(
-                                fontFamily: 'Dosis', fontSize: 48 * widthR,
-                                fontWeight: FontWeight.bold, //v26
-                                color: Colors.blue[900],
+                            Container(
+                              child: Image.network(logoURL,scale: 9*curR,),//v26
+                            ),
+                            Container(
+                              // color: Colors.red,
+                              height: 70*heightR,
+                              width: 1130*widthR,
+                              child: Text(
+                                '  ' + school_name,
+                                style: TextStyle(
+                                  fontFamily: 'Dosis', fontSize: 48 * widthR,
+                                  fontWeight: FontWeight.bold, //v26
+                                  color: Colors.blue[900],
+                                ),
                               ),
                             ),
-                            Expanded(
-                                child: Container(
-                                  // color: Colors.purple,
-                                  padding:
-                                  EdgeInsets.only(left: 300 * widthR), //v26
-                                  //color: Colors.white,
-                                  child: ShowDateTime(),
-                                ),
-                            )
+                            Container(
+                              // color: Colors.black,
+                              child: ShowDateTime(),
+                            ),
                           ],
                         )
                     ),
