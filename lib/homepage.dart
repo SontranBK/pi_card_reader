@@ -79,7 +79,7 @@ class _HomepageState extends State<Homepage> {
                             left: 95 * widthR, top: 60 * heightR), //v26
                         child: Row(
                           children: [
-                             Image.network(logoURL,scale: 3.5*curR,),//v26
+                             Image.network(logoURL,scale: 5.5*curR,),//v26
                             Text(
                               '  ' + school_name,
                               style: TextStyle(
