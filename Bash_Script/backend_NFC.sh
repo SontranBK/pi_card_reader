@@ -13,9 +13,9 @@ echo 1 | sudo -S rm API_TOKEN\ \(7\).txt
 echo 1 | sudo -S rm API_TOKEN\ \(8\).txt
 echo 1 | sudo -S rm API_TOKEN\ \(9\).txt
 # Check if API_TOKEN.txt exists
-# Wait 2 mins, equals 2 sec * 60 = 120 secs 
+# Wait 2 sec * 50 = 100 secs 
 count=0
-while [ $count -le 60 ];
+while [ $count -le 50 ];
 do
     if [ -f "API_TOKEN.txt" ]; 
 	then
@@ -24,9 +24,9 @@ do
 		break
 	else
 		# is it is not exist then it will be printed
-		echo "No API_TOKEN found"
-		((count++))
-		echo $count
+		#echo "No API_TOKEN found"
+		count=$((count+1))
+		#echo $count
 		sleep 2
 	fi
 done  

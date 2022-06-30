@@ -3,11 +3,11 @@ echo 1 | sudo -S cp pi_card_reader/Python_Backend/main_auto_updateUI.py ~
 echo 1 | sudo -S python3 main_auto_updateUI.py
 if [ $(jq ".required_rebuild" system_config.json) = 1 ];
 then
-  echo -e 'ĐANG THỰC HIỆN BUILD GIAO DIỆN MỚI\n'
+  echo 'Đang thực hiện build giao diện mới\n'
   cd ~
   sh pi_card_reader/Tools_And_Docs/Logo_School_Tool/update_logo_school.sh  
 else
-  echo -e 'TIẾP TỤC KHỞI ĐỘNG CHƯƠNG TRÌNH\n'
+  echo 'Tiếp tục khởi động chương trình\n'
   sleep 3 
 fi
 

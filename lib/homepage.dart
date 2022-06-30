@@ -45,9 +45,9 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
 
     readJson();
-    print('Tên trường: ${school_name}');
-    print('Link logo: ${logoURL}');
-    print('Link background: ${backgroundURL}');
+    //print('Tên trường: ${school_name}');
+    //print('Link logo: ${logoURL}');
+    //print('Link background: ${backgroundURL}');
 
     double heightR, widthR; //v26
     heightR = MediaQuery.of(context).size.height / 1080; //v26
@@ -79,7 +79,7 @@ class _HomepageState extends State<Homepage> {
                             left: 95 * widthR, top: 60 * heightR), //v26
                         child: Row(
                           children: [
-                             Image.network(logoURL,scale: 5.5*curR,),//v26
+                             Image.network(logoURL,scale: 7.5*curR,),//v26
                             Text(
                               '  ' + school_name,
                               style: TextStyle(

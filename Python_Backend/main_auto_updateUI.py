@@ -98,7 +98,7 @@ def check_json_equal(res):
 	try: 
 		json_saved_data = json.load(open('pi_card_reader/assets/ui_auto_update.json'))
 		server_res_json = json.loads(res.text)
-		print(f"\nYêu cầu giao diện cũ và mới:\n\n{json_saved_data}\n\n{server_res_json}\n")
+		print(f"\nYêu cầu giao diện cũ và mới:\n\n- Cũ: {json_saved_data}\n\n- Mới: {server_res_json}\n")
 		if json_saved_data == server_res_json:
 			return True
 		else:
@@ -116,7 +116,7 @@ while(retry_time < max_retry_time):
 	if have_internet() == True:
 		try:
 			res = ses.get(server + '/api/school-devices/getByMachineId/' + mID, json={"machineId":mID,}, auth=('user', 'user'))
-			print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
+			#print(f'{res.text}, type res: {type(res)}, type: {type(res.text)}\n')
 		except: 
 			res = "Lost connection to OCD server"
 			print("\nKhông thể kết nối với server, vui lòng liên hệ kĩ thuật viên\n"
@@ -128,7 +128,7 @@ while(retry_time < max_retry_time):
 		# check if json file "assets\ui_auto_update.json" is similar to our response
 		# if similar, break	=> keep port, do not re-build
 		if check_json_equal(res) == True:
-			print("SERVER KHÔNG THAY ĐỔI GIAO DIỆN\n")
+			print("Server không yêu cầu thay đổi giao diện\n")
 			jsonFile = open("system_config.json", "r") # Open the JSON file for reading
 			data = json.load(jsonFile) # Read the JSON into the buffer
 			jsonFile.close() # Close the JSON file
@@ -142,7 +142,7 @@ while(retry_time < max_retry_time):
 		# if not similar, modify system_config.json file
 		else:
 			try:
-				print("SERVER YÊU CẦU UPDATE GIAO DIỆN\n")
+				print("Server yêu cầu thay đổi giao diện\n")
 				with open("pi_card_reader/assets/ui_auto_update.json", "w+") as ui_auto_update_file:
 					ui_auto_update_file.write(res.text)
 				jsonFile = open("system_config.json", "r") # Open the JSON file for reading
