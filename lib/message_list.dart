@@ -354,7 +354,7 @@ class _MessageList extends State<MessageList> {
                             width: 140 * widthR,
                             height: 140 * heightR, //v26
                             decoration: BoxDecoration(
-                                color: Colors.black38,
+                                color: Colors.white,
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   color: Colors.greenAccent,
