@@ -1,7 +1,7 @@
 cd ~
 echo 1 | sudo -S cp pi_card_reader/Python_Backend/main_NFC_Mifare_DU950.py ~
 echo 1 | sudo -S cp pi_card_reader/Python_Backend/service-account.json ~
-sleep 70
+sleep 90
 cd ~
 cd Downloads/
 echo 1 | sudo -S rm API_TOKEN\ \(1\).txt
