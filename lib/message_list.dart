@@ -76,10 +76,10 @@ class _MessageList extends State<MessageList> {
               0.99,
             ],
             colors: [
-              Colors.green.withOpacity(1.0),
-              Colors.green.withOpacity(1.0),
-              Colors.green.withOpacity(1.0),
-              Colors.green.withOpacity(1.0),
+              Colors.white.withOpacity(1.0),
+              Colors.white.withOpacity(1.0),
+              Colors.white.withOpacity(1.0),
+              Colors.white.withOpacity(1.0),
             ],
           ),
           borderRadius: BorderRadius.circular(40 * curR), //v26

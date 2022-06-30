@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:cross_connectivity/cross_connectivity.dart';
 
+
+bool DialogShowing = false; //v20_6
+
 /// Listens for incoming foreground messages and displays them in a list.
 class MessageList extends StatefulWidget {
   @override
@@ -22,9 +25,10 @@ class _MessageList extends State<MessageList> {
     showDialog(
         context: context,
         builder: (context) {
-          Future.delayed(Duration(seconds: 10), () {
-            Navigator.of(context).pop(true);
-          });
+           DialogShowing = true; //v20_6
+          //Future.delayed(Duration(seconds: 10), () {
+          //  Navigator.of(context).pop(true);
+          //});
           return AlertDialog(
             title: Text(
               'Vui lòng chờ thêm giây lát',
@@ -34,7 +38,7 @@ class _MessageList extends State<MessageList> {
                   fontWeight: FontWeight.bold),
             ),
             content: Text(
-                '- Product version: v1.0.2\n- Sau khi thông báo này ẩn đi, đợi khoảng 30 giây,\nnếu không thấy thông báo "Bắt đầu đọc thẻ NFC",\nvui lòng làm theo các bước sau:\n1) Kiểm tra lại nguồn điện thiết bị, nguồn điện đầu đọc\n2) Kiểm tra giắc cắm đầu đọc\n3) Kiểm tra kết nối mạng\n4) Cuối cùng, khởi động lại thiết bị'),
+                '- Phiên bản của sản phẩm: v1.0.3\n- Hãy quẹt thẻ khi thông báo BẮT ĐẦU ĐỌC THẺ NFC hiện lên\n- Thiết bị sẽ tự khởi động lại nếu khởi động thất bại\n- Nếu thiết bị báo lỗi, vui lòng kiểm tra phần bị báo lỗi (đầu đọc, kết nối mạng, ...)'),
           );
         });
   }
@@ -72,10 +76,10 @@ class _MessageList extends State<MessageList> {
               0.99,
             ],
             colors: [
-              Colors.green.withOpacity(1.0),
-              Colors.green.withOpacity(1.0),
-              Colors.green.withOpacity(1.0),
-              Colors.green.withOpacity(1.0),
+              Colors.white.withOpacity(1.0),
+              Colors.white.withOpacity(1.0),
+              Colors.white.withOpacity(1.0),
+              Colors.white.withOpacity(1.0),
             ],
           ),
           borderRadius: BorderRadius.circular(40 * curR), //v26
@@ -156,6 +160,10 @@ class _MessageList extends State<MessageList> {
 
       print(bodyOfNoti);
       if (titleOfNoti == 'Start: Start using NFC reader') {
+        if (DialogShowing == true) {
+           Navigator.of(context).pop(true);
+           DialogShowing = false;
+         } // v22_06
         showDialog(
             context: context,
             builder: (context) {
@@ -180,7 +188,7 @@ class _MessageList extends State<MessageList> {
         showDialog(
             context: context,
             builder: (context) {
-              Future.delayed(Duration(seconds: 10), () {
+              Future.delayed(Duration(seconds: 5), () {
                 Navigator.of(context).pop(true);
               });
               return AlertDialog(
@@ -241,6 +249,10 @@ class _MessageList extends State<MessageList> {
       }
 
       if (titleOfNoti == "NFC_card_info") {
+        if (DialogShowing == true) {
+          Navigator.of(context).pop(true);
+          DialogShowing = false;
+        } // v22_06
         Map<String, dynamic> student_info = jsonDecode(bodyOfNoti);
 
         print('Name, ${student_info['data']['name']}');
@@ -255,8 +267,12 @@ class _MessageList extends State<MessageList> {
           barrierColor: Colors.black.withOpacity(0.1),
           transitionDuration: Duration(milliseconds: 500),
           pageBuilder: (_, __, ___) {
-            Future.delayed(Duration(seconds: 3), () {
-              Navigator.of(context).pop(true);
+            DialogShowing = true; //v20_6
+            Future.delayed(Duration(seconds: 5), () {
+              if (DialogShowing == true) {
+                Navigator.of(context).pop(true);
+                DialogShowing = false;
+              } // v22_06
             });
             return Container(
               child: Column(
@@ -264,6 +280,7 @@ class _MessageList extends State<MessageList> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
+                    padding: EdgeInsets.only(left: 875*widthR,top: 300*heightR),
                     // color: Colors.black,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -306,6 +323,7 @@ class _MessageList extends State<MessageList> {
                     ),
                   ),
                   Container(
+                    margin: EdgeInsets.only(left: 875*widthR,top: 10*heightR),
                     height: 265 * heightR, //v26
                     width: 700 * widthR, //v26
                     decoration: BoxDecoration(

@@ -3,6 +3,9 @@ import 'package:reader_pi_display/message_list.dart';
 import 'dart:ui';
 import 'message_list.dart';
 import 'show_date_time.dart';
+import 'package:flutter/services.dart' show rootBundle;
+//import 'package:flutter/services.dart';
+import 'dart:convert';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -12,11 +15,40 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  /* put json file in assets folder:
+
+  flutter:
+    assets:
+      - ui_auto_update.json
+  */
+  String school_name = "";
+  String logoURL = "";
+  String backgroundURL = "";
+
+  // Fetch content from the json file
+  Future<void> readJson() async {
+    final String response = await rootBundle.loadString('assets/ui_auto_update.json');
+    final data = await json.decode(response);
+    //print('data: ${data}');
+    setState(() {
+      school_name = data["data"]["name"];
+      logoURL = data["data"]["logoUrl"];
+      backgroundURL = data["data"]["backgroundUrl"];
+    });
+  }
+
+
   double heightR = 0.0; //v26
   double widthR = 0.0;
   double curR = 0.0;
   @override
   Widget build(BuildContext context) {
+
+    readJson();
+    //print('Tên trường: ${school_name}');
+    //print('Link logo: ${logoURL}');
+    //print('Link background: ${backgroundURL}');
+
     double heightR, widthR; //v26
     heightR = MediaQuery.of(context).size.height / 1080; //v26
     widthR = MediaQuery.of(context).size.width / 1920; //v26
@@ -30,7 +62,7 @@ class _HomepageState extends State<Homepage> {
               fit: BoxFit
                   .fill, //v26 It's fill properties in last ver, for keeping ratio when scaling windows
               scale: 1, //v26
-              image: AssetImage("assets/background.jpg"),
+              image: NetworkImage(backgroundURL),
             ),
           ),
           child: Container(
@@ -47,10 +79,9 @@ class _HomepageState extends State<Homepage> {
                             left: 95 * widthR, top: 60 * heightR), //v26
                         child: Row(
                           children: [
-                            Image.asset('logo.png',scale: 3.5/curR,),
-                            // Image.network('http://171.244.207.65:7856/api/attachments/preview?id=1',scale: 3.5*curR,),//v26
+                             Image.network(logoURL,scale: 7.5*curR,),//v26
                             Text(
-                              '  TRƯỜNG TIỂU HỌC PHAN CHU TRINH',
+                              '  ' + school_name,
                               style: TextStyle(
                                 fontFamily: 'Dosis', fontSize: 48 * widthR,
                                 fontWeight: FontWeight.bold, //v26
