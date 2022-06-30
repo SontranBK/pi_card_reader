@@ -26,7 +26,8 @@ dtoverlay=vc4-fkms-v3d
 - Your name, user, desktop name: metaedu
 - Choose "auto login" => Must auto login
 
-2.2) Download this source code from github and put it in "home" folder
+2.2) Download this source code from github and put it in "home" folder:
+git clone https://github.com/SontranBK/pi_card_reader 
 2.3) Change the name of main folder to "pi_card_reader" (bỏ -main đi)
 
 2.4) Look at the left of the screen, you see lots of applications:
