@@ -38,7 +38,7 @@ class _MessageList extends State<MessageList> {
                   fontWeight: FontWeight.bold),
             ),
             content: Text(
-                '- Product version: v1.0.3\n- Sau khi thông báo này ẩn đi, đợi khoảng 30 giây,\nnếu không thấy thông báo "Bắt đầu đọc thẻ NFC",\nvui lòng làm theo các bước sau:\n1) Kiểm tra lại nguồn điện thiết bị, nguồn điện đầu đọc\n2) Kiểm tra giắc cắm đầu đọc\n3) Kiểm tra kết nối mạng\n4) Cuối cùng, khởi động lại thiết bị'),
+                '- Phiên bản của sản phẩm: v1.0.3\n- Hãy quẹt thẻ khi thông báo BẮT ĐẦU ĐỌC THẺ NFC hiện lên\n- Thiết bị sẽ tự khởi động lại nếu khởi động thất bại\n- Nếu thiết bị báo lỗi, vui lòng kiểm tra phần bị báo lỗi (đầu đọc, kết nối mạng, ...)'),
           );
         });
   }

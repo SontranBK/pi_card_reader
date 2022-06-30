@@ -26,37 +26,37 @@ except:
 # read machine id from json
 try: 
 	mID = data["machine_id"]
-	print("Read system config successfully")
+	print("Đọc file config thành công")
 except:
 	mID = "00001"
-	print("FAIL to read system config")
+	print("KHÔNG đọc được file config")
 
 # max number of retry time when call server
 # retry_time is a counting variable
 try:
 	retry_time = 0
 	max_retry_time = data["server_client_config"]["maximum_retry_time"]
-	print("Read system config successfully")
+	print("Đọc file config thành công")
 except:
 	retry_time = 0
 	max_retry_time = 5
-	print("FAIL to read system config")
+	print("KHÔNG đọc được file config")
 
 # this is our server domain
 try:
 	server = data["server_client_config"]["server_domain"]
-	print("Read system config successfully")
+	print("Đọc file config thành công")
 except:
 	server = 'http://api.metaedu.edu.vn'
-	print("FAIL to read system config")
+	print("KHÔNG đọc được file config")
 
 # time between two retry time, if failed
 try:
 	time_break_between_retry = data["server_client_config"]["time_break_between_retry"]
-	print("Read system config successfully")
+	print("Đọc file config thành công")
 except:
 	time_break_between_retry = 30
-	print("FAIL to read system config")
+	print("KHÔNG đọc được file config")
 
 # check web port and set to valid port if error
 try:
@@ -65,9 +65,9 @@ try:
 		jsonFile = open("system_config.json", "w+")
 		jsonFile.write(json.dumps(data))
 		jsonFile.close()
-	print("Check web port successfully")
+	print("Kiểm tra port thành công")
 except:
-	print("FAIL to check web port")
+	print("KHÔNG kiểm tra được port")
 
 
 """
@@ -98,7 +98,7 @@ def check_json_equal(res):
 	try: 
 		json_saved_data = json.load(open('pi_card_reader/assets/ui_auto_update.json'))
 		server_res_json = json.loads(res.text)
-		print(f"Hai file json:\n{json_saved_data}\n{server_res_json}\n")
+		print(f"\nYêu cầu giao diện cũ và mới:\n\n{json_saved_data}\n\n{server_res_json}\n")
 		if json_saved_data == server_res_json:
 			return True
 		else:
@@ -128,7 +128,7 @@ while(retry_time < max_retry_time):
 		# check if json file "assets\ui_auto_update.json" is similar to our response
 		# if similar, break	=> keep port, do not re-build
 		if check_json_equal(res) == True:
-			print("Giữ nguyên giao diện, không update")
+			print("SERVER KHÔNG THAY ĐỔI GIAO DIỆN\n")
 			jsonFile = open("system_config.json", "r") # Open the JSON file for reading
 			data = json.load(jsonFile) # Read the JSON into the buffer
 			jsonFile.close() # Close the JSON file
@@ -142,7 +142,7 @@ while(retry_time < max_retry_time):
 		# if not similar, modify system_config.json file
 		else:
 			try:
-				print("Server yêu cầu update giao diện")
+				print("SERVER YÊU CẦU UPDATE GIAO DIỆN\n")
 				with open("pi_card_reader/assets/ui_auto_update.json", "w+") as ui_auto_update_file:
 					ui_auto_update_file.write(res.text)
 				jsonFile = open("system_config.json", "r") # Open the JSON file for reading
