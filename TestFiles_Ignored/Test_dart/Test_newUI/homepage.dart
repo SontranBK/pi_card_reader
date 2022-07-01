@@ -74,16 +74,17 @@ class _HomepageState extends State<Homepage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                        color: Colors.white,
+                        color: Colors.black,
+                        height: 160*heightR,
                         padding: EdgeInsets.only(
-                            left: 95 * widthR, right: 65 * widthR, bottom: 32*heightR,top: 32 * heightR ), //v26
+                            left: 95 * widthR), //v26
                         margin: EdgeInsets.only(
                         top: 45 * heightR
                         ),
                         child: Row(
                           children: [
                             Container(
-                              child: Image.network(logoURL,scale: 9*curR,),//v26
+                               child: Image.network(logoURL,scale: 4/curR,),//v26
                             ),
                             Container(
                               // color: Colors.red,
@@ -115,7 +116,7 @@ class _HomepageState extends State<Homepage> {
                                   Container(
                                     height: 500 * heightR, //v26
                                     width: 700 * widthR, //v26
-                                    margin: EdgeInsets.only(left: 575 * widthR,top: 100*heightR), //v26
+                                    margin: EdgeInsets.only(left: 575 * widthR,top: 55*heightR), //v26
                                     decoration: BoxDecoration(
                                       gradient: LinearGradient(
                                         begin: Alignment.centerLeft,
@@ -163,3 +164,8 @@ class _HomepageState extends State<Homepage> {
                 ),
 
               ],
+            ),
+          )),
+    );
+  }
+}
