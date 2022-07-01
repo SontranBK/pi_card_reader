@@ -280,21 +280,12 @@ class _MessageList extends State<MessageList> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.only(left: 875*widthR,top: 300*heightR),
+                    padding: EdgeInsets.only(left: 1000*widthR,top: 300*heightR),
                     // color: Colors.black,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Container(
-                          child: Container(
-                            // color: Colors.blue,
-                            child: Image.asset(
-                              'left.png',
-                              scale: 1 / curR,
-                            ),
-                          ),
-                        ),
                         Container(
                           child: Container(
                             // color: Colors.red,
@@ -307,15 +298,6 @@ class _MessageList extends State<MessageList> {
                                 fontFamily: 'Dosis',
                                 fontWeight: FontWeight.bold,
                               ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          child: Container(
-                            // color: Colors.greenAccent,
-                            child: Image.asset(
-                              'right.png',
-                              scale: 1 / curR,
                             ),
                           ),
                         ),
