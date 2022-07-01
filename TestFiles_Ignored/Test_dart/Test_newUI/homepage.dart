@@ -76,14 +76,14 @@ class _HomepageState extends State<Homepage> {
                     Container(
                         color: Colors.white,
                         padding: EdgeInsets.only(
-                            left: 95 * widthR,bottom: 42*heightR,top: 32 * heightR ), //v26
+                            left: 95 * widthR, right: 65 * widthR, bottom: 32*heightR,top: 32 * heightR ), //v26
                         margin: EdgeInsets.only(
                         top: 45 * heightR
                         ),
                         child: Row(
                           children: [
                             Container(
-                              child: Image.network(logoURL,scale: 7.5*curR,),//v26
+                              child: Image.network(logoURL,scale: 9*curR,),//v26
                             ),
                             Container(
                               // color: Colors.red,
@@ -163,8 +163,3 @@ class _HomepageState extends State<Homepage> {
                 ),
 
               ],
-            ),
-          )),
-    );
-  }
-}

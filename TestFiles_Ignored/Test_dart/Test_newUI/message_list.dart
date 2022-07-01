@@ -105,7 +105,7 @@ class _MessageList extends State<MessageList> {
                         'Phát hiện mất kết nối mạng',
                         style: TextStyle(
                             color: Colors.black,
-                            fontSize: 32 * curR,
+                            fontSize: 38 * curR,
                             fontWeight: FontWeight.bold),
                       )
                     ]),
@@ -117,11 +117,11 @@ class _MessageList extends State<MessageList> {
                         EdgeInsets.only(left: 105 * widthR, top: 20 * heightR),
                     child: Text(
                       '"Vui lòng kiểm tra kết nối wifi hoặc dây mạng"\n'
-                      'Không thực hiện quẹt thẻ cho đến khi có mạng trở lại\n'
-                      'Thiết bị sẽ hoạt động bình thường sau 10 giây khi có mạng trở lại',
+                      '"Không thực hiện quẹt thẻ \ncho đến khi có mạng trở lại"\n'
+                      '"Thiết bị sẽ hoạt động bình thường \nsau 10 giây khi có mạng trở lại"',
                       style: TextStyle(
                           color: Colors.black,
-                          fontSize: 18 * curR,
+                          fontSize: 25 * curR,
                           fontWeight: FontWeight.bold,
                           height: 1.5),
                     ),
@@ -354,7 +354,7 @@ class _MessageList extends State<MessageList> {
                             width: 140 * widthR,
                             height: 140 * heightR, //v26
                             decoration: BoxDecoration(
-                                color: Colors.black38,
+                                color: Colors.white,
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   color: Colors.greenAccent,
