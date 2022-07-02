@@ -1,3 +1,6 @@
+###################
+PHẦN A: KIỂM TRA ĐẦU ĐỌC 
+###################
 1) Để kiểm tra xem đầu đọc đã chạy được chưa (đấu mạch đúng chưa), cắm vào máy windows
 Cài driver của CH-340 cho windows, rồi dùng phần mềm DuadCard để thử lệnh (nhớ đưa thẻ vào đầu đọc để thử)
 
@@ -8,17 +11,16 @@ Sau đó ấn "FW file down"
 
 (Trường hợp đầu đọc có lỗi, liên hệ thầy Thiện và anh Sơn)
 
-3.1) Để bắt đầu cài đặt
-Down source code này xuống từ github (mở github trong Mozilla firefox, phần History có sẵn link đã truy cập)
-Down file zip xuống, mở bằng Archive manager, giải nén ra, đặt vào trong "home"
-Đổi tên thư mục thành "pi_card_reader"
+###################
+PHẦN B: ÁP CODE MỚI NHẤT VÀO SẢN PHẨM
+###################
 
-Ra ngoài màn hình chính, di chuột sang bên trái thấy rất nhiều phần mềm, ta click phải chuột
+1) Ra ngoài màn hình chính, di chuột sang bên trái thấy rất nhiều phần mềm, ta click phải chuột
 từng phần mềm, chọn "Remove from favorites", giữ lại phần mềm "Files". 
 Sau đó ấn xuống ô dưới cùng, tìm phần mềm "Terminal", "Chromium browser", và "Text editor", 
 Sau đó click chuột phải vào các phần mềm này, chọn "Add to favorites"
 
-3.2) To turn off automatically software update
+2) To turn off automatically software update
 
 https://askubuntu.com/questions/1139545/how-do-i-utterly-stop-automatic-update-checks-in-ubuntu-19-04
 https://linuxnightly.com/how-to-disable-automatic-updates-in-ubuntu/
@@ -28,47 +30,61 @@ https://linuxnightly.com/how-to-disable-automatic-updates-in-ubuntu/
 - Change the “Automatically check for updates” option to never
 - Change the "Notify me of a new ubuntu version" option to never
 
-4) Mở phần mềm terminal -> Chuột phải -> preference -> Chọn profile "Debug"
+3) Mở phần mềm terminal -> Chuột phải -> preference -> Chọn profile "Debug"
 Sau đó chạy lệnh sau (có thể copy paste từ file này vào, không cần gõ):
 
-sudo modprobe usbserial vendor=1a86 product=7532
+cd ~
+echo 1 | sudo -S rm -r pi_card_reader/
+cd ~
+sudo apt update
+sudo apt install -y jq
+jq --version
 
+### Nếu chạy đúng, sẽ hiện ra jq-1.6 (hoặc 1.7, 1.8, ...)
+
+cd ~
+sudo apt install git
+cd ~
+git clone https://github.com/SontranBK/pi_card_reader
+cd ~
+cp pi_card_reader/Tools_And_Docs/system_config.json ~
+cd ~
+sudo modprobe usbserial vendor=1a86 product=7532
 sudo python3 -m serial.tools.list_ports
+
 ### Nếu mọi thứ ok, sẽ thấy hiện lên "/dev/ttyUSB0" 
 ### Nếu không, chạy lệnh "sudo apt remove brltty" và thử lại hai lệnh bên trên
 
-5) Mở "Files" -> vào pi_card_reader/assets/logo -> Chọn logo của trường mình đang cần
-Copy logo đó, cho vào thư mục pi_card_reader/assets/ -> Sau đó đổi tên thành "logo.png"
-Tiếp tục, mở file sau: pi_card_reader/Python_Backend/main_NFC_Mifare_DU950.py
-Ở dòng số 23, đổi "machine_id" về theo như anh Sơn hướng dẫn
-Ở dòng số 25, đổi tên trường thành trường mình đang làm (có dấu)
-Nếu không gõ được dấu thì mở code github của anh Sơn và copy vào
+Mở "Files", tìm và mở "system_config.json", sửa "machine_id": "00001" thành id thiết bị mà anh Sơn yêu cầu
 
-6) Tiếp tục trong "Terminal", chạy lệnh sau (có thể copy paste từ file này vào, không cần gõ)
+4) Mở phần mềm Chromium và mở link (chrome://settings/content/notifications), phần "Allowed to send notifications", thêm 5 link: 
+http://localhost:41200
+http://localhost:41201
+http://localhost:41202
+http://localhost:41203
+http://localhost:41204
+http://localhost:41205
 
-cd ~
-sh pi_card_reader/Tools_And_Docs/Logo_School_Tool/update_logo_school.sh
+Vẫn phần mềm Chromium, mở link (chrome://settings/content/automaticDownloads), thêm 5 link: 
+http://localhost:41200
+http://localhost:41201
+http://localhost:41202
+http://localhost:41203
+http://localhost:41204
+http://localhost:41205
 
-### Nếu cần phải build lại app (nếu anh Sơn yêu cầu), chạy lệnh sau
-cd pi_card_reader/
-sudo rm -r build/
 
-7) Tiếp tục trong "Terminal", chạy lệnh sau (có thể copy paste từ file này vào, không cần gõ)
-cd ~
-sudo cp pi_card_reader/Ubuntu_Bootup_Modification/bgrt-fallback.png /usr/share/plymouth/themes/spinner
-cd ~
-sudo cp pi_card_reader/Ubuntu_Bootup_Modification/watermark.png /usr/share/plymouth/themes/spinner
-reboot
+###################
+PHẦN C: TEST SẢN PHẨM
+###################
 
-Sau đó thiết bị sẽ tự khởi động lại, bây giờ ta sẽ xem thiết bị chạy và đi vào test
-
-8) Để test sản phẩm:
+1) Để test sản phẩm:
 Mở phần mềm terminal -> Chuột phải -> preference -> Chọn profile "Meta_edu"
 Khi chọn thế này, thì phần mềm sẽ tự chạy mỗi khi bật thiết bị
 Sau đó khởi động lại thiết bị, đợi 2 phút, sau khi thấy thông báo "Bắt đầu đọc thẻ NFC"
 Thì thử quẹt thẻ xem được chưa
 
-Nếu không được, ấn F11 thoát full-screen, rồi mở phần mềm Terminal, nó sẽ có 4 tab tên là:
+2) Nếu không được, ấn F11 thoát full-screen, rồi mở phần mềm Terminal, nó sẽ có 4 tab tên là:
 "Initializing User Interface"
 "Opening User Interface"
 "Connecting to NFC Reader"
@@ -76,6 +92,3 @@ Nếu không được, ấn F11 thoát full-screen, rồi mở phần mềm Term
 
 Mở tab "Connecting to NFC Reader", rồi chụp cho anh Sơn xem màn hình. Nếu anh Sơn cần, mở cả 4 tab,
 rồi chụp cả 4 tab cho anh Sơn
-
-Nếu thông báo "Vui lòng chờ trong giây lát" hiển thị quá lâu mà không ẩn đi, dùng chuột,
-click ra một chỗ bất kì, thông báo này sẽ tự ẩn đi, sau đó quẹt thẻ bình thường

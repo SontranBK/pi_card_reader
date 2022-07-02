@@ -26,11 +26,14 @@ dtoverlay=vc4-fkms-v3d
 - Your name, user, desktop name: metaedu
 - Choose "auto login" => Must auto login
 
-2.2) Download this source code from github and put it in "home" folder:
-git clone https://github.com/SontranBK/pi_card_reader 
-2.3) Change the name of main folder to "pi_card_reader" (bỏ -main đi)
+2.2) Download code: Open "Terminal" and run those commands (don't type, copy paste):
 
-2.4) Look at the left of the screen, you see lots of applications:
+cd ~
+sudo apt update
+sudo apt install git
+git clone https://github.com/SontranBK/pi_card_reader 
+
+2.3) Look at the left of the screen, you see lots of applications:
 
 Left-click every apps and choose "Remove from favorites", keep "Files" 
 Find apps named "Terminal", "Chromium browser", and "Text editor", left-click and "Add to favorites"
@@ -50,9 +53,6 @@ cd ~
 sudo apt install python3-pip
 cd ~
 sudo pip install pyserial
-// Try out AB Circle reader
-// sudo apt-get install swig
-// sudo python3 -m pip install pyscard
 cd ~
 sudo python3 -m pip install firebase-admin
 cd ~
@@ -91,14 +91,14 @@ sudo modprobe usbserial vendor=0x31aa product=0x3000
 sudo python3 -m serial.tools.list_ports
 ### If everything works well, the terminal output should show "/dev/ttyUSB0" as a port
 ### If not run "sudo apt remove brltty" again
+
+### (DO NOT RUN 4 FOLLOWING COMMAND)
 ### sudo dmesg | grep -i USB
 ### sudo lsusb -t
 ### sudo udevadm monitor -u
 ### sudo apt-get install linux-image-extra-virtual
 
-
-### For AB Circle reader
-### (do not use this command) sudo modprobe usbserial vendor=0x31aa product=0x3000
+### For AB Circle reader, run:
 sudo apt-get install swig
 sudo python3 -m pip install pyscard
 yaourt -S aur/acsccid
@@ -133,18 +133,33 @@ now right-click Terminal and open Preferences:
 4.2) Install "Autohide Downloads Bar" extension for chromium here (https://chrome.google.com/webstore/detail/autohide-downloads-bar/iaefpjibipfaofmigecedfapfgplmplo)
 and set "Delay Timer" of this extension to 0.
 
-4.3) Go to Chromium setting (chrome://settings/content/notifications), in "Allowed to send notifications" part, add link: http://localhost:41200
-4.4) Go to Setting (of Ubuntu) => Appearance => Enable "Auto-hide the Dock"
-4.5) Go to Setting (of Ubuntu) => Power => Power Saving Options => Change to "Never" 
+4.3) Open Chromium and open link (chrome://settings/content/notifications), in "Allowed to send notifications" part, add 5 link: 
+http://localhost:41200
+http://localhost:41201
+http://localhost:41202
+http://localhost:41203
+http://localhost:41204
+http://localhost:41205
+
+4.4) Open Chromium and open link (chrome://settings/content/automaticDownloads), add 5 link: 
+http://localhost:41200
+http://localhost:41201
+http://localhost:41202
+http://localhost:41203
+http://localhost:41204
+http://localhost:41205
+
+4.5) Go to Setting (of Ubuntu) => Appearance => Enable "Auto-hide the Dock"
+4.6) Go to Setting (of Ubuntu) => Power => Power Saving Options => Change to "Never" 
 (Make Ubuntu never goes to "sleep" mode)
 
-4.6) Install virtual keyboard on device (screen keyboard)
+4.7) Install virtual keyboard on device (screen keyboard)
 
 - Open Setting on Ubuntu
 - Choose Accessibility
 - In Typing section -> Turn "Screen Keyboard" to "on" 
 
-4.7) To turn off automatically software update
+4.8) To turn off automatically software update
 
 https://askubuntu.com/questions/1139545/how-do-i-utterly-stop-automatic-update-checks-in-ubuntu-19-04
 https://linuxnightly.com/how-to-disable-automatic-updates-in-ubuntu/
@@ -153,6 +168,7 @@ https://linuxnightly.com/how-to-disable-automatic-updates-in-ubuntu/
 - Head over to the “updates” tab 
 - Change the “Automatically check for updates” option to never
 - Change the "Notify me of a new ubuntu version" option to never
+
 """""""""""""""""
 5) Change the apperance of Ubuntu, make our product commercialized  
 """""""""""""""""
