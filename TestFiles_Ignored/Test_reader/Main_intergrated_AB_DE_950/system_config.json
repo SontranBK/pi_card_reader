@@ -13,5 +13,10 @@
     "server_domain": "http://api.metaedu.edu.vn", 
     "maximum_retry_time": 5, 
     "time_break_between_retry": 30
+    },
+"select_reader":
+    {
+    "AB_Circle": 1,
+    "DE_950": 0
     }
 }
