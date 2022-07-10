@@ -33,6 +33,17 @@ https://linuxnightly.com/how-to-disable-automatic-updates-in-ubuntu/
 3) Mở phần mềm terminal -> Chuột phải -> preference -> Chọn profile "Debug"
 Sau đó chạy lệnh sau (có thể copy paste từ file này vào, không cần gõ):
 
+### For AB Circle reader, run:
+cd ~
+sudo apt-get install swig
+sudo apt-get install libpcsclite-dev
+sudo apt-get install pcscd
+sudo python3 -m pip install pyscard
+yaourt -S aur/acsccid
+sudo systemctl enable pcscd.service
+sudo systemctl start pcscd.service 
+sudo systemctl status pcscd.service
+
 cd ~
 echo 1 | sudo -S rm -r pi_card_reader/
 cd ~

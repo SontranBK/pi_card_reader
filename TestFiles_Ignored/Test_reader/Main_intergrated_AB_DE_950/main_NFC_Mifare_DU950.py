@@ -300,14 +300,12 @@ def read_NFC_AB_Circle(r):
 							student_id = rest[:rest.index("|")]
 							#print(f"class name: {class_name}; student ID: {student_id}")
 
-							format_student_id = '{:04.0f}'.format(int(student_id[0:5]))+"-"+'{:02.0f}'.format(int(student_id[6:8]))+"-"+'{:04.0f}'.format(int(student_id[9:13]))
+							format_student_id = '{:04.0f}'.format(int(student_id[0:4]))+"-"+'{:02.0f}'.format(int(student_id[5:7]))+"-"+'{:04.0f}'.format(int(student_id[8:12]))
 							return class_name, format_student_id
 						except:
 							return "Wrong data format"
 		except:
 			return "Hexa not valid"
-
-
 
 
 # Send data from python code (backend) to UI (fontend)
@@ -389,7 +387,7 @@ def main():
 				baudrate = 115200,
 				timeout = 0.05)
 		elif reader_selection == "AB_Circle":
-    		print (readers())
+			print (readers())
 	except: 
 		start_up_successful = False
 		ser = None
@@ -421,7 +419,6 @@ def main():
 		elif reader_selection == "AB_Circle":
 			data = read_NFC_AB_Circle(readers())
 
-		#print(f"NFC card data: {data}")
 		#time2 = time.time()
 		if data == "Wrong data format":
 			send_all('Error: Wrong data format',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
@@ -434,6 +431,7 @@ def main():
 
 			# We first look this information up in our local database and update database
 			# If our local database somehow doesn't work, body will be none. Then we count on server's response
+			print(f"NFC card data: {data}")
 			if (database_link != 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'):
 				try:
 					database_link = 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'
