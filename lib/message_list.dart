@@ -4,7 +4,8 @@ import 'dart:convert';
 import 'package:cross_connectivity/cross_connectivity.dart';
 
 
-bool DialogShowing = false; //v20_6
+var DialogShowing = 0; //v10_7
+bool startDialogShowing = false;//v10_7
 
 /// Listens for incoming foreground messages and displays them in a list.
 class MessageList extends StatefulWidget {
@@ -25,7 +26,7 @@ class _MessageList extends State<MessageList> {
     showDialog(
         context: context,
         builder: (context) {
-           DialogShowing = true; //v20_6
+           startDialogShowing = true; //v10_7
           //Future.delayed(Duration(seconds: 10), () {
           //  Navigator.of(context).pop(true);
           //});
@@ -160,10 +161,10 @@ class _MessageList extends State<MessageList> {
 
       print(bodyOfNoti);
       if (titleOfNoti == 'Start: Start using NFC reader') {
-        if (DialogShowing == true) {
-           Navigator.of(context).pop(true);
-           DialogShowing = false;
-         } // v22_06
+        if (startDialogShowing == true) { //v10_7
+           Navigator.of(context).pop(true);//v10_7
+           startDialogShowing = false;//v10_7
+         } //v10_7
         showDialog(
             context: context,
             builder: (context) {
@@ -249,10 +250,10 @@ class _MessageList extends State<MessageList> {
       }
 
       if (titleOfNoti == "NFC_card_info") {
-        if (DialogShowing == true) {
-          Navigator.of(context).pop(true);
-          DialogShowing = false;
-        } // v22_06
+        if (startDialogShowing == true || DialogShowing >=1) { //v10_7
+          Navigator.of(context).pop(true); //v10_7
+          startDialogShowing = false; //v10_7
+        } //v10_7
         Map<String, dynamic> student_info = jsonDecode(bodyOfNoti);
 
         print('Name, ${student_info['data']['name']}');
@@ -263,16 +264,21 @@ class _MessageList extends State<MessageList> {
         showGeneralDialog(
           context: context,
           barrierLabel: "Barrier",
-          barrierDismissible: true,
+          barrierDismissible: false,
           barrierColor: Colors.black.withOpacity(0.1),
           transitionDuration: Duration(milliseconds: 500),
           pageBuilder: (_, __, ___) {
-            DialogShowing = true; //v20_6
-            Future.delayed(Duration(seconds: 5), () {
-              if (DialogShowing == true) {
-                Navigator.of(context).pop(true);
-                DialogShowing = false;
-              } // v22_06
+            DialogShowing++; //v20_6
+            Future.delayed(Duration(seconds: 5), () { //v10_7
+              if (DialogShowing == 1) {
+                Future.delayed(Duration(seconds: 5), () {
+                  if (DialogShowing == 1) {
+                    Navigator.of(context).pop(true);
+                  }
+                  DialogShowing--;
+                });
+              }
+              else DialogShowing--;
             });
             return Container(
               child: Column(
@@ -287,7 +293,7 @@ class _MessageList extends State<MessageList> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Container(
-                          child: Container(
+                          child: Container(                       
                             // color: Colors.red,
                             child: Text(
                               "XIN CHÀO",
@@ -300,7 +306,7 @@ class _MessageList extends State<MessageList> {
                               ),
                             ),
                           ),
-                        ),
+                        ),    
                       ],
                     ),
                   ),
