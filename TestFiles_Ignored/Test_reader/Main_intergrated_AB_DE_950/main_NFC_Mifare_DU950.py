@@ -243,11 +243,10 @@ def read_NFC_DE_950(ser):
 					class_name = dataB6[:dataB6.index("|")]
 					rest = dataB6[dataB6.index("|")+1:]
 					student_id = rest[:rest.index("|")]
-					#print(f"class name: {class_name}; student ID: {student_id}")
-
-					#print(f"Received data: {class_name},{student_id[0:5]},{student_id[6:8]},{student_id[9:13]}, type: {type(student_id)}")
-					format_student_id = '{:04.0f}'.format(int(student_id[0:5]))+"-"+'{:02.0f}'.format(int(student_id[6:8]))+"-"+'{:04.0f}'.format(int(student_id[9:13]))
-					#print(f"Standard data type: {format_student_id}, {type(format_student_id)}")
+					if student_id[0] != ' ':
+						format_student_id = '{:04.0f}'.format(int(student_id[0:4]))+"-"+'{:02.0f}'.format(int(student_id[5:7]))+"-"+'{:04.0f}'.format(int(student_id[8:12]))
+					elif student_id[0] == ' ':
+						format_student_id = '{:04.0f}'.format(int(student_id[1:5]))+"-"+'{:02.0f}'.format(int(student_id[6:8]))+"-"+'{:04.0f}'.format(int(student_id[9:13]))
 
 					return class_name, format_student_id
 				except:
@@ -299,8 +298,10 @@ def read_NFC_AB_Circle(r):
 							rest = strDATA[strDATA.index("|")+1:]
 							student_id = rest[:rest.index("|")]
 							#print(f"class name: {class_name}; student ID: {student_id}")
-
-							format_student_id = '{:04.0f}'.format(int(student_id[0:4]))+"-"+'{:02.0f}'.format(int(student_id[5:7]))+"-"+'{:04.0f}'.format(int(student_id[8:12]))
+							if student_id[0] != ' ':
+								format_student_id = '{:04.0f}'.format(int(student_id[0:4]))+"-"+'{:02.0f}'.format(int(student_id[5:7]))+"-"+'{:04.0f}'.format(int(student_id[8:12]))
+							elif student_id[0] == ' ':
+								format_student_id = '{:04.0f}'.format(int(student_id[1:5]))+"-"+'{:02.0f}'.format(int(student_id[6:8]))+"-"+'{:04.0f}'.format(int(student_id[9:13]))
 							return class_name, format_student_id
 						except:
 							return "Wrong data format"
