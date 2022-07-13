@@ -388,7 +388,8 @@ def main():
 				baudrate = 115200,
 				timeout = 0.05)
 		elif reader_selection == "AB_Circle":
-			print (readers())
+			connection = readers()[0].createConnection()
+
 	except: 
 		start_up_successful = False
 		ser = None
