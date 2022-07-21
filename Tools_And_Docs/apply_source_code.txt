@@ -1,8 +1,16 @@
 ###################
 PHẦN A: KIỂM TRA ĐẦU ĐỌC 
 ###################
-1) Để kiểm tra xem đầu đọc đã chạy được chưa (đấu mạch đúng chưa), cắm vào máy windows
-Cài driver của CH-340 cho windows, rồi dùng phần mềm DuadCard để thử lệnh (nhớ đưa thẻ vào đầu đọc để thử)
+
+Ở phần A này, ta sẽ làm việc với đầu đọc Duali DE-950
+
+1) Down source code này xuống máy tính windows mà ta có, thường thì nếu đầu đọc DE-950 chạy đúng, đèn LED sẽ phải là màu xanh dương
+
+2) Để kiểm tra xem đầu đọc đã chạy được chưa (đấu mạch đúng chưa), ta làm theo bước sau:
+- Cắm đầu đọc qua dây USB-to-COM (CH340/ màu xanh lá cây) vào máy windows
+- Lên google search và cài driver của CH-340 cho windows
+- 
+- Dùng phần mềm DuadCard để thử lệnh (nhớ đưa thẻ vào đầu đọc để thử)
 
 2) Trong trường hợp Dualcard chạy được mà đầu đọc cắm vào MCU vẫn không được, vào máy windows
 mở phần mềm DEDOWNLOADER, kết nối đầu đọc, chọn open firmware, rồi chọn:
