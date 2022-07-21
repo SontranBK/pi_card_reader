@@ -5,30 +5,39 @@ PHẦN A: KIỂM TRA ĐẦU ĐỌC
 Ở phần A này, ta sẽ làm việc với đầu đọc Duali DE-950
 
 1) Down source code này xuống máy tính windows mà ta có, thường thì nếu đầu đọc DE-950 chạy đúng, đèn LED sẽ phải là màu xanh dương
+Nếu đèn LED không phải màu xanh dương, ta bắt buộc phải làm bước 3
 
 2) Để kiểm tra xem đầu đọc đã chạy được chưa (đấu mạch đúng chưa), ta làm theo bước sau:
 - Cắm đầu đọc qua dây USB-to-COM (CH340/ màu xanh lá cây) vào máy windows
-- Lên google search và cài driver của CH-340 cho windows
-- 
-- Dùng phần mềm DuadCard để thử lệnh (nhớ đưa thẻ vào đầu đọc để thử)
+- Lên google search và cài driver của CH-340 cho windows, sau khi cài xong, vào Device manager của windows để xem cổng COM mà ta cài là cổng gì (thường là COM3)
+- Giải nén file sau: pi_card_reader/Tools_And_Docs/DualCard/NewDualCard.reader
+- Bây giờ ta sẽ thấy phần mềm DualCard.exe trong thư mục được giải nén, mở phần mềm này lên
+- Ta chọn Device là cổng COM mà ta cài driver CH-340 (thường là COM3), sau đó ấn connect on/off
+- Ở phía dưới ta chọn Mifare, sau đó đặt thẻ lên đầu đọc, và ấn REQA
+- Giữ thẻ ở đầu đọc, ấn REQA nhiều lần cho đến khi nào thấy ở màn hình bên tay phải hiện ra "=>21" và "<=000400" (màu xanh dương)
 
-2) Trong trường hợp Dualcard chạy được mà đầu đọc cắm vào MCU vẫn không được, vào máy windows
-mở phần mềm DEDOWNLOADER, kết nối đầu đọc, chọn open firmware, rồi chọn:
-DE-620L_950_DualCard_161227 (1)
-Sau đó ấn "FW file down" 
+3) Trong trường hợp Dualcard chạy được mà đầu đọc cắm vào MCU vẫn không được:
+- Ta kiểm tra xem khi ấn REQA nhiều lần ở bước 1, có lần nào màn hình bên tay phải hiện ra "=>21" và "<=000400" (màu xanh dương) hay không
+- Nếu không hiện ra "<=000400" (màu xanh dương) mà hiện ra số khác màu xanh dương, hoặc chỉ hiện đỏ, ta làm những bước dưới đây
+- Tìm thư mục sau: pi_card_reader/Tools_And_Docs/Update_FW_DE_950, mở phần mềm DEDOWNLOADER (ở trong file zip)
+- Tắt phần mềm DualCard ở trên đi, ấn Connect (chọn Device như bước 1, thường là COM3)
+- Sau đó chọn open firmware, rồi chọn: DE-620L_950_DualCard_161227 (1).bin
+- Sau đó ấn "FW file down" 
 
-(Trường hợp đầu đọc có lỗi, liên hệ thầy Thiện và anh Sơn)
+4) Trường hợp đầu đọc vẫn có lỗi sau khi làm những bước trên, liên hệ thầy Thiện và anh Sơn
 
 ###################
 PHẦN B: ÁP CODE MỚI NHẤT VÀO SẢN PHẨM
 ###################
+
+Ở phần B này, ta sẽ làm việc với MCU RPi 4B, ta khởi động MCU lên, cắm đầu đọc vào, và làm bước sau
 
 1) Ra ngoài màn hình chính, di chuột sang bên trái thấy rất nhiều phần mềm, ta click phải chuột
 từng phần mềm, chọn "Remove from favorites", giữ lại phần mềm "Files". 
 Sau đó ấn xuống ô dưới cùng, tìm phần mềm "Terminal", "Chromium browser", và "Text editor", 
 Sau đó click chuột phải vào các phần mềm này, chọn "Add to favorites"
 
-2) To turn off automatically software update
+2) Tắt tính năng automatically software update
 
 https://askubuntu.com/questions/1139545/how-do-i-utterly-stop-automatic-update-checks-in-ubuntu-19-04
 https://linuxnightly.com/how-to-disable-automatic-updates-in-ubuntu/
