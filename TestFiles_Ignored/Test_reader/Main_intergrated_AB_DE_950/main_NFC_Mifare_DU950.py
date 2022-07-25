@@ -63,16 +63,6 @@ except:
 	server = 'http://api.metaedu.edu.vn'
 	print("FAIL to read system config")
 
-try:
-	if data["select_reader"]["AB_Circle"] == 1:
-		reader_selection = "AB_Circle"
-	elif data["select_reader"]["DE_950"] == 1:
-		reader_selection = "DE_950"
-	print("Read system config successfully")
-	print(f"Now connecting to reader: {reader_selection}")
-except:
-	reader_selection = "AB_Circle"
-	print("FAIL to read system config")
 
 # Name of school where device is installed
 school_name_db = ""
@@ -80,6 +70,30 @@ school_name_db = ""
 # Database link
 database_link = None
 
+
+# Start up check
+start_up_successful = True
+	
+#Initialize serial python, framework for reading serial USB
+try:
+	connection = readers()[0].createConnection()
+	reader_selection = "AB_Circle"
+	print("Now connect to AB circle")
+	
+except: 
+	try:
+		ser = serial.Serial(
+		port = "/dev/ttyUSB0",
+		baudrate = 115200,
+		timeout = 0.05)
+		reader_selection = "DE_950"
+		print("Now connect to DE-950")
+	except: 
+		start_up_successful = False
+		ser = None
+		print ('Error: Reader not connected')
+		send_all('Error: Reader not connected',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN) # send infomation to User interface
+			
 if reader_selection == "DE_950":
 	# Command for DU-950 reader
 	# Please refer to our provided protocol for DE-950
@@ -339,11 +353,9 @@ SECTION 3: MAIN PROGRAM
 """
 
 
-def main():
+def main(start_up_successful,reader_selection):
 	
-	# Start up check
-	start_up_successful = True
-
+	
 	try:
 		conn_log = sqlite3.connect("pi_card_reader/Database/log_retry.db")
 		conn_log.cursor().execute("CREATE TABLE IF NOT EXISTS LOGTABLE( machineID TEXT, checkingTime TEXT, studentID TEXT, retryTimes TEXT) ")
@@ -380,22 +392,6 @@ def main():
 
 
 
-	# Initialize serial python, framework for reading serial USB
-	try:
-		if reader_selection == "DE_950":
-			ser = serial.Serial(
-				port = "/dev/ttyUSB0",
-				baudrate = 115200,
-				timeout = 0.05)
-		elif reader_selection == "AB_Circle":
-			connection = readers()[0].createConnection()
-
-	except: 
-		start_up_successful = False
-		ser = None
-		print ('Error: Reader not connected')
-		send_all('Error: Reader not connected',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN) # send infomation to User interface
-			
 	if start_up_successful == True:
 		while have_internet() == False:
 			print("Start up: no internet connection !!!!!!!!!\n")
@@ -547,4 +543,4 @@ def main():
 			
 
 if __name__ == "__main__":
-	main()
+	main(start_up_successful,reader_selection)
