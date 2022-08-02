@@ -6,6 +6,8 @@ sys.path.append('./.local/lib/python3.9/site-packages')
 import codecs
 import time
 import serial
+from smartcard.System import readers
+from smartcard.util import toHexString
 from requests import Session
 import time
 from datetime import datetime,date
@@ -61,71 +63,112 @@ except:
 	server = 'http://api.metaedu.edu.vn'
 	print("FAIL to read system config")
 
+
 # Name of school where device is installed
 school_name_db = ""
 
 # Database link
 database_link = None
 
-# READKEY command of DU950 reader
-# Please refer to our provided protocol
 
-# Buzz on and off command
-BUZZ2command = bytearray()
-BUZZ2command.append(0x02) # STX
-BUZZ2command.append(0x00) # LEN-H
-BUZZ2command.append(0x02) # LEN-L	
-BUZZ2command.append(0x13) # BUZZ2 CMD
-BUZZ2command.append(0x00) # BUZZ2 On
-BUZZ2command.append(0x11) # LRC
-
-BUZZ3command = bytearray()
-BUZZ3command.append(0x02) # STX
-BUZZ3command.append(0x00) # LEN-H
-BUZZ3command.append(0x02) # LEN-L	
-BUZZ3command.append(0x13) # BUZZ3 CMD
-BUZZ3command.append(0x01) # BUZZ3 Off
-BUZZ3command.append(0x10) # LRC
+# Start up check
+start_up_successful = True
 	
+#Initialize serial python, framework for reading serial USB
+try:
+	connection = readers()[0].createConnection()
+	reader_selection = "AB_Circle"
+	print("Now connect to AB circle")
 	
-# READKEY command applied to block no.4
-READKEY4command = bytearray()
-READKEY4command.append(0x02) # STX
-READKEY4command.append(0x00) # LEN-H
-READKEY4command.append(0x0A) # LEN-L
-READKEY4command.append(0x36) # REQA CMD
-READKEY4command.append(0x00) # R mode
-READKEY4command.append(0x00) # A mode
-READKEY4command.append(0x04) # Block number of the card
-for i in range(6):
-	READKEY4command.append(0xFF) #  Key[0]..[5], The key data to be stored into the secret key buffer
-READKEY4command.append(0x38) # LRC
+except: 
+	try:
+		ser = serial.Serial(
+		port = "/dev/ttyUSB0",
+		baudrate = 115200,
+		timeout = 0.05)
+		reader_selection = "DE_950"
+		print("Now connect to DE-950")
+	except: 
+		start_up_successful = False
+		ser = None
+		print ('Error: Reader not connected')
+		send_all('Error: Reader not connected',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN) # send infomation to User interface
+			
+if reader_selection == "DE_950":
+	# Command for DU-950 reader
+	# Please refer to our provided protocol for DE-950
 
-# READKEY command applied to block no.5
-READKEY5command = bytearray()
-READKEY5command.append(0x02) # STX
-READKEY5command.append(0x00) # LEN-H
-READKEY5command.append(0x0A) # LEN-L
-READKEY5command.append(0x36) # REQA CMD
-READKEY5command.append(0x00) # R mode
-READKEY5command.append(0x00) # A mode
-READKEY5command.append(0x05) # Block number of the card
-for i in range(6):
-	READKEY5command.append(0xFF) #  Key[0]..[5], The key data to be stored into the secret key buffer
-READKEY5command.append(0x39) # LRC
+	# Buzz on and off command
+	BUZZ2command = bytearray()
+	BUZZ2command.append(0x02) # STX
+	BUZZ2command.append(0x00) # LEN-H
+	BUZZ2command.append(0x02) # LEN-L	
+	BUZZ2command.append(0x13) # BUZZ2 CMD
+	BUZZ2command.append(0x00) # BUZZ2 On
+	BUZZ2command.append(0x11) # LRC
 
-# READKEY command applied to block no.6
-READKEY6command = bytearray()
-READKEY6command.append(0x02) # STX
-READKEY6command.append(0x00) # LEN-H
-READKEY6command.append(0x0A) # LEN-L
-READKEY6command.append(0x36) # REQA CMD
-READKEY6command.append(0x00) # R mode
-READKEY6command.append(0x00) # A mode
-READKEY6command.append(0x06) # Block number of the card
-for i in range(6):
-	READKEY6command.append(0xFF) #  Key[0]..[5], The key data to be stored into the secret key buffer
-READKEY6command.append(0x3a) # LRC
+	BUZZ3command = bytearray()
+	BUZZ3command.append(0x02) # STX
+	BUZZ3command.append(0x00) # LEN-H
+	BUZZ3command.append(0x02) # LEN-L	
+	BUZZ3command.append(0x13) # BUZZ3 CMD
+	BUZZ3command.append(0x01) # BUZZ3 Off
+	BUZZ3command.append(0x10) # LRC
+		
+		
+	# READKEY command applied to block no.4
+	READKEY4command = bytearray()
+	READKEY4command.append(0x02) # STX
+	READKEY4command.append(0x00) # LEN-H
+	READKEY4command.append(0x0A) # LEN-L
+	READKEY4command.append(0x36) # REQA CMD
+	READKEY4command.append(0x00) # R mode
+	READKEY4command.append(0x00) # A mode
+	READKEY4command.append(0x04) # Block number of the card
+	for i in range(6):
+		READKEY4command.append(0xFF) #  Key[0]..[5], The key data to be stored into the secret key buffer
+	READKEY4command.append(0x38) # LRC
+
+	# READKEY command applied to block no.5
+	READKEY5command = bytearray()
+	READKEY5command.append(0x02) # STX
+	READKEY5command.append(0x00) # LEN-H
+	READKEY5command.append(0x0A) # LEN-L
+	READKEY5command.append(0x36) # REQA CMD
+	READKEY5command.append(0x00) # R mode
+	READKEY5command.append(0x00) # A mode
+	READKEY5command.append(0x05) # Block number of the card
+	for i in range(6):
+		READKEY5command.append(0xFF) #  Key[0]..[5], The key data to be stored into the secret key buffer
+	READKEY5command.append(0x39) # LRC
+
+	# READKEY command applied to block no.6
+	READKEY6command = bytearray()
+	READKEY6command.append(0x02) # STX
+	READKEY6command.append(0x00) # LEN-H
+	READKEY6command.append(0x0A) # LEN-L
+	READKEY6command.append(0x36) # REQA CMD
+	READKEY6command.append(0x00) # R mode
+	READKEY6command.append(0x00) # A mode
+	READKEY6command.append(0x06) # Block number of the card
+	for i in range(6):
+		READKEY6command.append(0xFF) #  Key[0]..[5], The key data to be stored into the secret key buffer
+	READKEY6command.append(0x3a) # LRC
+
+elif reader_selection == "AB_Circle":
+	# Command for AB Circle CIR315A reader
+	# Please refer to our provided protocol for AB Circle
+
+	# Loadkey command
+	LOADKEY = [0xFF, 0x82, 0x00, 0x00, 0x06, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
+	# Authiencation with key
+	AUTH = [0xFF, 0x86, 0x00, 0x00, 0x05, 0x01, 0x00, 0x04, 0x60, 0x00]
+	# Read block 4,5,6 command
+	READ4 = [0xFF, 0xb0, 0x00, 0x04, 0x10]
+	READ5 = [0xFF, 0xb0, 0x00, 0x05, 0x10]
+	READ6 = [0xFF, 0xb0, 0x00, 0x06, 0x10]
+	# Buzz command
+	BUZZ = [0xFF, 0x00, 0x04, 0x01, 0x03, 0x19, 0x19, 0x02]
 
 """
 SECTION 2: FUNCTION DEFINATION
@@ -189,7 +232,7 @@ def update_database(connection, data, error_code , timeSentToServer):
 		
 
 # Read data from our NFC reader by sending READKEY command
-def read_NFC_card(ser):
+def read_NFC_DE_950(ser):
 	try:
 		dataB4 = ""
 		dataB5 = ""
@@ -214,18 +257,72 @@ def read_NFC_card(ser):
 					class_name = dataB6[:dataB6.index("|")]
 					rest = dataB6[dataB6.index("|")+1:]
 					student_id = rest[:rest.index("|")]
-					#print(f"class name: {class_name}; student ID: {student_id}")
-
-					#print(f"Received data: {class_name},{student_id[0:5]},{student_id[6:8]},{student_id[9:13]}, type: {type(student_id)}")
-					format_student_id = '{:04.0f}'.format(int(student_id[0:5]))+"-"+'{:02.0f}'.format(int(student_id[6:8]))+"-"+'{:04.0f}'.format(int(student_id[9:13]))
-					#print(f"Standard data type: {format_student_id}, {type(format_student_id)}")
+					if student_id[0] != ' ':
+						format_student_id = '{:04.0f}'.format(int(student_id[0:4]))+"-"+'{:02.0f}'.format(int(student_id[5:7]))+"-"+'{:04.0f}'.format(int(student_id[8:12]))
+					elif student_id[0] == ' ':
+						format_student_id = '{:04.0f}'.format(int(student_id[1:5]))+"-"+'{:02.0f}'.format(int(student_id[6:8]))+"-"+'{:04.0f}'.format(int(student_id[9:13]))
 
 					return class_name, format_student_id
 				except:
 					return "Wrong data format"
 	except:
 		return "Hexa not valid"
-				
+
+
+def read_NFC_AB_Circle(r):
+	try:
+		connection = r[0].createConnection()
+		#print(connection)
+		connection.connect()
+		card_present = True
+	except:
+		card_present = False
+
+	if card_present == True:
+		try:
+			card_response = connection.transmit(LOADKEY)
+			#print(f"loadkey res: if sw1 is 144 then is correct: {card_response}")
+
+			card_response = connection.transmit(AUTH)
+			#print(f"auth res: if sw1 is 144 then is correct: {card_response[2]}")
+
+			card_response = connection.transmit(READ4)
+			#print(f"read4 res: if sw1 is 144 then is correct: {card_response}")
+			DATA4 = card_response[0]
+			if card_response[1] == 144:
+				card_response = connection.transmit(READ5)
+				#print(f"read5 res: if sw1 is 144 then is correct: {card_response}")
+				DATA5 = card_response[0]
+				if card_response[1] == 144:
+					card_response = connection.transmit(READ6)
+					#print(f"read6 res: if sw1 is 144 then is correct: {card_response}")
+					DATA6 = card_response[0]
+					if card_response[1] == 144:
+						DATA = DATA4 + DATA5 + DATA6
+						#print(type(DATA[0]))
+						DATA_LIST = []
+						for i in range (0,47,1):
+							DATA_LIST.append(chr(DATA[i]))
+						strDATA = "".join(DATA_LIST)
+						print(f"data in NFC card: {strDATA}")
+						card_response = connection.transmit(BUZZ)
+						#print(f"write res: if sw1 is 144 then is correct: {card_response}")
+						try:
+							class_name = strDATA[:strDATA.index("|")]
+							rest = strDATA[strDATA.index("|")+1:]
+							student_id = rest[:rest.index("|")]
+							#print(f"class name: {class_name}; student ID: {student_id}")
+							if student_id[0] != ' ':
+								format_student_id = '{:04.0f}'.format(int(student_id[0:4]))+"-"+'{:02.0f}'.format(int(student_id[5:7]))+"-"+'{:04.0f}'.format(int(student_id[8:12]))
+							elif student_id[0] == ' ':
+								format_student_id = '{:04.0f}'.format(int(student_id[1:5]))+"-"+'{:02.0f}'.format(int(student_id[6:8]))+"-"+'{:04.0f}'.format(int(student_id[9:13]))
+							return class_name, format_student_id
+						except:
+							return "Wrong data format"
+		except:
+			return "Hexa not valid"
+
+
 # Send data from python code (backend) to UI (fontend)
 def send_all(title,body,FCM_token):
 	try:	
@@ -243,7 +340,11 @@ def send_all(title,body,FCM_token):
 		response = messaging.send_all(messages)
 		# See the BatchResponse reference documentation
 		# for the contents of response.
-		print('{0} messages were sent successfully'.format(response.success_count))
+		#print('{0} messages were sent successfully'.format(response.success_count))
+		print(f'{response.success_count} messages were sent successfully')
+		if (response.success_count == 0):
+			print("Fail to connect to UI")
+			os.system('reboot')	
 		# [END send_all]
 	except:
 		pass
@@ -256,11 +357,9 @@ SECTION 3: MAIN PROGRAM
 """
 
 
-def main():
+def main(start_up_successful,reader_selection):
 	
-	# Start up check
-	start_up_successful = True
-
+	
 	try:
 		conn_log = sqlite3.connect("pi_card_reader/Database/log_retry.db")
 		conn_log.cursor().execute("CREATE TABLE IF NOT EXISTS LOGTABLE( machineID TEXT, checkingTime TEXT, studentID TEXT, retryTimes TEXT) ")
@@ -297,18 +396,6 @@ def main():
 
 
 
-	# Initialize serial python, framework for reading serial USB
-	try:
-		ser = serial.Serial(
-			port = "/dev/ttyUSB0",
-			baudrate = 115200,
-			timeout = 0.05)
-	except: 
-		start_up_successful = False
-		ser = None
-		print ('Error: Reader not connected')
-		send_all('Error: Reader not connected',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN) # send infomation to User interface
-	
 	if start_up_successful == True:
 		while have_internet() == False:
 			print("Start up: no internet connection !!!!!!!!!\n")
@@ -329,8 +416,11 @@ def main():
 		# Read data from NFC reader
 		# data[0] is class name, data[1] is student ID
 		#time1 = time.time()
-		data = read_NFC_card(ser)
-		#print(f"NFC card data: {data}")
+		if reader_selection == "DE_950":
+			data = read_NFC_DE_950(ser)
+		elif reader_selection == "AB_Circle":
+			data = read_NFC_AB_Circle(readers())
+
 		#time2 = time.time()
 		if data == "Wrong data format":
 			send_all('Error: Wrong data format',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
@@ -340,13 +430,10 @@ def main():
 			time.sleep(block_errorNoti_time)
 		# If NFC card is presented and NFC reader return valid data
 		elif data != "Hexa not valid" and data != "Wrong data format" and data != None:
-			#print(f"Received data: {data[0]},{data[1][0:5]},{data[1][6:8]},{data[1][9:13]}, type: {type(data[1])}")
-			#sid = '{:04.0f}'.format(int(data[1][0:5]))+"-"+'{:02.0f}'.format(int(data[1][6:8]))+"-"+'{:04.0f}'.format(int(data[1][9:13]))
-			#print(f"Standard data type: {sid}, {type(sid)}")
-
 
 			# We first look this information up in our local database and update database
 			# If our local database somehow doesn't work, body will be none. Then we count on server's response
+			print(f"NFC card data: {data}")
 			if (database_link != 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'):
 				try:
 					database_link = 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'
@@ -460,4 +547,4 @@ def main():
 			
 
 if __name__ == "__main__":
-	main()
+	main(start_up_successful,reader_selection)
