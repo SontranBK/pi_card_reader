@@ -184,7 +184,7 @@ def have_internet():
 		#print("Internet: no")
 		return False
 	finally:
-        int_conn.close()
+		int_conn.close()
         
       
 # Decode the server response sent to our MCU
