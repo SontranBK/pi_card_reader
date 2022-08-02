@@ -184,7 +184,7 @@ def have_internet():
 		#print("Internet: no")
 		return False
 	finally:
-        	int_conn.close()
+        int_conn.close()
         
       
 # Decode the server response sent to our MCU
@@ -358,8 +358,7 @@ SECTION 3: MAIN PROGRAM
 
 
 def main(start_up_successful,reader_selection):
-	
-	
+
 	try:
 		conn_log = sqlite3.connect("pi_card_reader/Database/log_retry.db")
 		conn_log.cursor().execute("CREATE TABLE IF NOT EXISTS LOGTABLE( machineID TEXT, checkingTime TEXT, studentID TEXT, retryTimes TEXT) ")
@@ -415,13 +414,18 @@ def main(start_up_successful,reader_selection):
 	while (True): 
 		# Read data from NFC reader
 		# data[0] is class name, data[1] is student ID
-		#time1 = time.time()
+
+		# Timestamp for measurement: start reading NFC card
+		time1 = time.time()
+		
 		if reader_selection == "DE_950":
 			data = read_NFC_DE_950(ser)
 		elif reader_selection == "AB_Circle":
 			data = read_NFC_AB_Circle(readers())
 
-		#time2 = time.time()
+		# Timestamp for measurement: finish reading NFC card
+		time2 = time.time()
+
 		if data == "Wrong data format":
 			send_all('Error: Wrong data format',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
 			time.sleep(block_errorNoti_time)
@@ -433,7 +437,7 @@ def main(start_up_successful,reader_selection):
 
 			# We first look this information up in our local database and update database
 			# If our local database somehow doesn't work, body will be none. Then we count on server's response
-			print(f"NFC card data: {data}")
+			#print(f"NFC card data: {data}")
 			if (database_link != 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'):
 				try:
 					database_link = 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'
@@ -455,12 +459,14 @@ def main(start_up_successful,reader_selection):
 			# Read student info from database if possible
 
 			body = read_database(conn, data, school_name_db, timeSentToUI)
-			#time3 = time.time()
+
 			if body != None:
 				send_all('NFC_card_info',body,MY_TOKEN)
 				time.sleep(block_studentInfo_time)
 			
-			#time4 = time.time()
+			# Timestamp for measurement: start send data to server
+			time3 = time.time()
+
 			# Request data to be sent from client (our MCU) to server
 			postData = {
 					"machineId": mID,
@@ -525,25 +531,39 @@ def main(start_up_successful,reader_selection):
 
 			# Update Time A or Time B in local database
 			#update_database(conn, data, received_string["errorCode"], timeSentToServer)
-			#time5 = time.time()
-			
-			#print(f"\n\nRead NFC time:{time2-time1+0.3}\nRead localDB time: {time3-time2}\nReq/Res and decode Res time: {time5-time4+0.4}\n")
+
 			# If our local database doesn't work, turn into server response and decode it for information
 			if body == None and res != "Lost internet" and res != "Lost connection to OCD server":
 				# If we're unable to decode server's response, body will be none
 				# Then, mission fail. Studen information is not valid
 				body = decode_server_response(res)
-				
-				# If student information is valid, send this information to UI
-				
+
+				# Timestamp for measurement: finish sending data to server and start sending to UI
+				time4 = time.time()
+
+				# If student information is valid, send this information to UI				
 				if body != None:
 					send_all('NFC_card_info',body,MY_TOKEN)
+
+					# Timestamp for measurement: finish sending data to server and start sending to UI
+					time5 = time.time()
+
 					# Wait for our pop-up dialog in our UI to disappear
 					time.sleep(block_studentInfo_time)
 				else:
 					send_all('Error: Student Info Not Found',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
+
+					# Timestamp for measurement: finish sending data to server and start sending to UI
+					time5 = time.time()
+
+					# Wait for our error dialog in our UI to disappear
 					time.sleep(block_errorNoti_time)
-					time.sleep(5)
+				
+
+				print(f"\n\nRead NFC time:{time2-time1}"
+					f"\nRequest and response time: {time4-time3}\n"
+					f"\nSend info to UI and display: {time5-time4}\n")
+				
 			
 
 if __name__ == "__main__":
