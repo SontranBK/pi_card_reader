@@ -1,3 +1,5 @@
+You can login Github account with colab right to edit this source code at:
+https://github.dev/SontranBK/pi_card_reader
 """""""""""""""""
 1) Install Operating System (Hệ điều hành) for Raspberry Pi
 """""""""""""""""
