@@ -146,7 +146,7 @@ class _HomepageState extends State<Homepage> {
                                     padding: EdgeInsets.only(right: 100 * widthR,left: 300*widthR), //v26
                                     margin: EdgeInsets.only(left: 275 * widthR,),
                                     child: Text(
-                                      '" Tri thức là chìa khóa mở cửa tương lai"',
+                                      '',
                                       style: TextStyle(
                                         decoration: TextDecoration.none,
                                         fontFamily: 'Dosis', fontSize: 40 * curR,
