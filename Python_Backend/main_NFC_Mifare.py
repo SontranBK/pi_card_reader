@@ -3,20 +3,29 @@
 
 import sys
 sys.path.append('./.local/lib/python3.9/site-packages')
+# Hexa handling lib for DE-950 reader
 import codecs
+# Time measuring lib
 import time
+# USB serial connecting lib for DE-950 reader
 import serial
+# Reading lib for AB Circle reader
 from smartcard.System import readers
 from smartcard.util import toHexString
+# Lib for client - server communication
 from requests import Session
-import time
+# Lib for obtaining and format date and time
 from datetime import datetime,date
+# Firebase lib for python backend and flutter dart fontend connection
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import messaging
+# Lib for lite local database
 import sqlite3
+# Lib for decoding json response
 import json
 import os
+# Lib for http internet connection checking
 try:
     import httplib  # python < 3.0
 except:
@@ -74,7 +83,7 @@ database_link = None
 # Start up check
 start_up_successful = True
 	
-#Initialize serial python, framework for reading serial USB
+#Initialize framework for our readers
 try:
 	connection = readers()[0].createConnection()
 	reader_selection = "AB_Circle"
@@ -174,6 +183,7 @@ elif reader_selection == "AB_Circle":
 SECTION 2: FUNCTION DEFINATION
 """
 
+# Internet checking function, return bool
 def have_internet():
 	int_conn = httplib.HTTPSConnection("8.8.8.8", timeout=5)
 	try:
@@ -231,7 +241,7 @@ def update_database(connection, data, error_code , timeSentToServer):
 		print("Error: Unable to update database !!!!!!!!!\n")
 		
 
-# Read data from our NFC reader by sending READKEY command
+# Read data from our NFC reader by sending READKEY command of DE-950 reader
 def read_NFC_DE_950(ser):
 	try:
 		dataB4 = ""
@@ -269,6 +279,7 @@ def read_NFC_DE_950(ser):
 		return "Hexa not valid"
 
 
+# Read data from our NFC reader by sending LOADKEY-AUTH-READ command of AB Circle reader
 def read_NFC_AB_Circle(r):
 	try:
 		connection = r[0].createConnection()
@@ -369,7 +380,7 @@ def main(start_up_successful,reader_selection):
 	cred = credentials.Certificate('service-account.json')
 	default_app = firebase_admin.initialize_app(cred)
 
-	# Initialize API for connecting to server-backend
+	# Initialize API for server-client connection
 	ses = Session()
 	ses.headers.update({
 		'Content-Type': 'application/json'})
@@ -394,7 +405,7 @@ def main(start_up_successful,reader_selection):
 		print("Error: database link not found, could not connect to local DB !!!!!!!!!\n")
 
 
-
+	# If start up fail, auto reboot and start the device again
 	if start_up_successful == True:
 		while have_internet() == False:
 			print("Start up: no internet connection !!!!!!!!!\n")
@@ -413,12 +424,12 @@ def main(start_up_successful,reader_selection):
 	
 	# MAIN LOOP
 	while (True): 
-		# Read data from NFC reader
-		# data[0] is class name, data[1] is student ID
 
 		# Timestamp for measurement: start reading NFC card
 		time1 = time.time()
 		
+		# Perform NFC reading with our selected reader
+		# data[0] is class name, data[1] is student ID
 		if reader_selection == "DE_950":
 			data = read_NFC_DE_950(ser)
 		elif reader_selection == "AB_Circle":
@@ -427,9 +438,11 @@ def main(start_up_successful,reader_selection):
 		# Timestamp for measurement: finish reading NFC card
 		time2 = time.time()
 
+		# If NFC reader return invalid data, data is in wrong format
 		if data == "Wrong data format":
 			send_all('Error: Wrong data format',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
 			time.sleep(block_errorNoti_time)
+		# If hexa data in NFC card is not valid
 		elif data == "Hexa not valid":
 			send_all('Error: Hexa not valid',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
 			time.sleep(block_errorNoti_time)
@@ -438,7 +451,6 @@ def main(start_up_successful,reader_selection):
 
 			# We first look this information up in our local database and update database
 			# If our local database somehow doesn't work, body will be none. Then we count on server's response
-			#print(f"NFC card data: {data}")
 			if (database_link != 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'):
 				try:
 					database_link = 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'
@@ -448,9 +460,6 @@ def main(start_up_successful,reader_selection):
 					conn = None
 					print("Error: database link not found, could not connect to local DB !!!!!!!!!\n")
 
-
-
-
 			# Time recorded when receive data from NFC reader
 			# This time will be properly formated and send to server and UI
 			timeSentToServer = date.today().strftime('%Y-%m-%d') + ' ' + datetime.now().strftime('%H:%M:%S')
@@ -458,9 +467,8 @@ def main(start_up_successful,reader_selection):
 			#print(len(timeSentToUI))
 
 			# Read student info from database if possible
-
 			body = read_database(conn, data, school_name_db, timeSentToUI)
-
+			# If can read from DB, send to UI
 			if body != None:
 				send_all('NFC_card_info',body,MY_TOKEN)
 				time.sleep(block_studentInfo_time)
@@ -525,18 +533,13 @@ def main(start_up_successful,reader_selection):
 				}
 			} """
 
-			# What to do with our information? 
-			# 1) Send to server and receive response data
-			# OR 2) Look this information up in our local database and update database
-			# OR 3) Do both of above
-
 			# Update Time A or Time B in local database
 			#update_database(conn, data, received_string["errorCode"], timeSentToServer)
 
 			# If our local database doesn't work, turn into server response and decode it for information
 			if body == None and res != "Lost internet" and res != "Lost connection to OCD server":
 				# If we're unable to decode server's response, body will be none
-				# Then, mission fail. Studen information is not valid
+				# Then, mission fail. Studen information is not valid -> body is None
 				body = decode_server_response(res)
 
 				# Timestamp for measurement: finish sending data to server and start sending to UI
