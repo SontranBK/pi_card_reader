@@ -19,6 +19,10 @@ cd ~
 sudo apt install git
 cd ~
 git clone https://github.com/SontranBK/pi_card_reader
+# Run pub get to get all the dependencies listed in the pubspec.yaml file
+# If the system cache doesn’t already contain the dependencies, pub get updates the cache, downloading dependencies if necessary
+cd pi_card_reader/
+sudo flutter pub get
 # Check config file and copy new one 
 cd ~
 if [ -f "system_config.json" ]; 
