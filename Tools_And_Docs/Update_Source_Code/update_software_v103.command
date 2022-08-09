@@ -1,3 +1,4 @@
+# This is a tool for update software from other version to v1.0.3
 # Need to check requirement for installing libs
 # Install PCSCD AB Circle support lib
 cd ~
