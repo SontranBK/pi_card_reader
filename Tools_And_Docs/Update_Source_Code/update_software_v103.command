@@ -1,5 +1,16 @@
 # This is a tool for update software from other version to v1.0.3
 # Need to check requirement for installing libs
+# Clear system lock files before installing libs
+cd ~
+cd ..
+cd ..
+cd var/lib/dpkg
+echo 1 | sudo -S rm lock-fontend
+cd ~
+cd ..
+cd ..
+cd /var/cache/apt/archives/
+echo 1 | sudo -S rm lock
 # Install PCSCD AB Circle support lib
 cd ~
 echo 1 | sudo -S apt-get install swig
