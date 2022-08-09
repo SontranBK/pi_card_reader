@@ -22,8 +22,6 @@ echo 1 | sudo -S systemctl enable pcscd.service
 echo 1 | sudo -S systemctl start pcscd.service 
 # Remove old repo and download new one, also install jq lib
 cd ~
-echo 1 | sudo -S -S rm -r pi_card_reader/
-cd ~
 echo 1 | sudo -S apt update
 echo 1 | sudo -S apt install -y jq
 jq --version
@@ -31,7 +29,13 @@ cd ~
 echo 1 | sudo -S apt install git
 cd ~
 # After publishing version 1.0.3, git clone need 1.0.3 version tag (git clone --depth 1 --branch v.1.0.3 https://github.com/SontranBK/pi_card_reader)
-git clone https://github.com/SontranBK/pi_card_reader
+if [[ -d pi_card_reader/ ]]
+then
+    cd pi_card_reader/
+    git pull
+else 
+    git clone https://github.com/SontranBK/pi_card_reader
+fi
 # Run pub get to get all the dependencies listed in the pubspec.yaml file
 # If the system cache doesn’t already contain the dependencies, pub get updates the cache, downloading dependencies if necessary
 cd pi_card_reader/
