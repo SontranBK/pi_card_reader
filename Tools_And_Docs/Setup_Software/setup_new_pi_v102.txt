@@ -1,0 +1,163 @@
+"""""""""""""""""
+1) Install Operating System (Hệ điều hành) for Raspberry Pi
+"""""""""""""""""
+1.1) Download and install Raspberry Pi Imager to your laptop here: https://www.raspberrypi.com/software/
+- Insert SD card (32 GB, 64 GB) into your laptop
+- Open Raspberry Pi Imager 
+-> Choose storage: the SD card 
+-> Choose Operating System: Other general-purpose OS -> Ubuntu -> Ubuntu Desktop
+
+1.2) Wait for OS to write, then find file with name: config.txt
+
+- Identify the following line:
+
+dtoverlay=vc4-kms-v3d
+
+- And change it to:
+
+dtoverlay=vc4-fkms-v3d
+
+"""""""""""""""""
+2) Initialize operating system and source code
+"""""""""""""""""
+2.1) Install setting for Ubuntu system, set user name to "metaedu", password to 1
+- Choose Location: Ho Chi Minh
+- Language/ keyboard: English US
+- Your name, user, desktop name: metaedu
+- Choose "auto login" => Must auto login
+
+2.2) Download this source code from github and put it in "home" folder
+2.3) Change the name of main folder to "pi_card_reader" (bỏ -main đi)
+
+2.4) Look at the left of the screen, you see lots of applications:
+
+Left-click every apps and choose "Remove from favorites", keep "Files" 
+Find apps named "Terminal", "Chromium browser", and "Text editor", left-click and "Add to favorites"
+
+"""""""""""""""""
+3) Open "Terminal" and run those command to install dependencies:
+if there's issue with "Could not get lock /var/cache/apt/archives/lock, or process is hold, ...", 
+here is the solution: https://itsfoss.com/fix-ubuntu-install-error/
+
+cd into /var/lib/dpkg/ and remove lock-fontend by: rm lock-fontend
+"""""""""""""""""
+// You can copy paste those commands instead of typing
+
+cd ~
+sudo apt install --assume-yes chromium-browser
+cd ~
+sudo apt install python3-pip
+cd ~
+sudo pip install pyserial
+// Try out AB Circle reader
+// sudo apt-get install swig
+// sudo python3 -m pip install pyscard
+cd ~
+sudo python3 -m pip install firebase-admin
+cd ~
+sudo apt install linux-modules-extra-raspi
+cd ~
+sudo apt-get install python3-tk
+cd ~
+sudo apt remove brltty
+cd ~
+sudo apt-get install minicom
+sudo minicom -s
+
+""""""""""""""""""
+""""""""""""""""""
+- Run minicom with sudo minicom -s, go to "Serial port setup" 
+- Change the first line to /dev/ttyUSB0.
+- Save config as default with "Save setup as dfl". 
+- Restart your Pi
+""""""""""""""""""
+""""""""""""""""""
+
+lsusb
+
+### use lsusb to check vendor and product id
+sudo modprobe usbserial vendor=1a86 product=7532
+
+### If above line "sudo modprobe usbserial vendor=1a86 product=7532" doesn't work
+### For some reason, some reader need to add 0x in font of id, eg:
+sudo modprobe usbserial vendor=0x31aa product=0x3000
+
+### Then use following line to check if ports are open:
+sudo python3 -m serial.tools.list_ports
+### If everything works well, the terminal output should show "/dev/ttyUSB0" as a port
+### If not run "sudo apt remove brltty" again
+### sudo dmesg | grep -i USB
+### sudo lsusb -t
+### sudo udevadm monitor -u
+### sudo apt-get install linux-image-extra-virtual
+
+
+### For AB Circle reader
+### (do not use this command) sudo modprobe usbserial vendor=0x31aa product=0x3000
+sudo apt-get install swig
+sudo python3 -m pip install pyscard
+yaourt -S aur/acsccid
+sudo systemctl enable pcscd.service
+sudo systemctl start pcscd.service 
+sudo systemctl status pcscd.service
+
+### To install flutter
+cd ~
+sudo snap install flutter --classic
+cd ~
+cd pi_card_reader/
+sudo flutter config --enable-web
+sudo flutter create --platforms=web .
+sudo flutter build web
+cd ~
+sudo cp pi_card_reader/build/web/assets/assets/logo.png pi_card_reader/build/web/assets/
+
+"""""""""""""""""
+4) Make system auto-boot and auto-config 
+"""""""""""""""""
+4.1) Click "show application" or "activities", type in "Startup Application" and open it, then click "Add", then set:
+- Name: terminal
+- Command: click "browser", then find following path: "/user/bin/gnome-terminal.real"
+
+now right-click Terminal and open Preferences: 
+- change the name of current profile to "Debug"
+- add new Profiles named "Meta_edu" and click down arrow, then choose "Set as default"
+- now navigate to "Command" tab in profile "Meta_edu", choose both "Run command as a login shell" and "Run custom command instead of my shell"
+- add line "sh ./pi_card_reader/Bash_Script/auto_boot.sh" to Custom command
+- if possible, in "Text" tab, set "Initial terminal size" to 100 columns and 100 rows
+
+4.2) Install "Autohide Downloads Bar" extension for chromium here (https://chrome.google.com/webstore/detail/autohide-downloads-bar/iaefpjibipfaofmigecedfapfgplmplo)
+and set "Delay Timer" of this extension to 0.
+
+4.3) Go to Chromium setting (chrome://settings/content/notifications), in "Allowed to send notifications" part, add link: http://localhost:41200
+4.4) Go to Setting (of Ubuntu) => Appearance => Enable "Auto-hide the Dock"
+4.5) Go to Setting (of Ubuntu) => Power => Power Saving Options => Change to "Never" 
+(Make Ubuntu never goes to "sleep" mode)
+
+4.6) Install virtual keyboard on device (screen keyboard)
+
+- Open Setting on Ubuntu
+- Choose Accessibility
+- In Typing section -> Turn "Screen Keyboard" to "on" 
+
+4.7) To turn off automatically software update
+
+https://askubuntu.com/questions/1139545/how-do-i-utterly-stop-automatic-update-checks-in-ubuntu-19-04
+https://linuxnightly.com/how-to-disable-automatic-updates-in-ubuntu/
+
+- First, open up the “Software & Updates” utility.
+- Head over to the “updates” tab 
+- Change the “Automatically check for updates” option to never
+- Change the "Notify me of a new ubuntu version" option to never
+"""""""""""""""""
+5) Change the apperance of Ubuntu, make our product commercialized  
+"""""""""""""""""
+5.1) Bootup apperance: Install plymouth with following command:
+
+cd ~
+sudo apt install plymouth-themes
+cd ~
+sudo cp pi_card_reader/Ubuntu_Bootup_Modification/bgrt-fallback.png /usr/share/plymouth/themes/spinner
+cd ~
+sudo cp pi_card_reader/Ubuntu_Bootup_Modification/watermark.png /usr/share/plymouth/themes/spinner
+reboot

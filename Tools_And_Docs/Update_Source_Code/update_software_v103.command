@@ -19,7 +19,7 @@ jq --version
 cd ~
 echo 1 | sudo -S apt install git
 cd ~
-# After publishing version 1.0.3, git clone need 1.0.3 version tag
+# After publishing version 1.0.3, git clone need 1.0.3 version tag (git clone --depth 1 --branch v.1.0.3 https://github.com/SontranBK/pi_card_reader)
 git clone https://github.com/SontranBK/pi_card_reader
 # Run pub get to get all the dependencies listed in the pubspec.yaml file
 # If the system cache doesn’t already contain the dependencies, pub get updates the cache, downloading dependencies if necessary
