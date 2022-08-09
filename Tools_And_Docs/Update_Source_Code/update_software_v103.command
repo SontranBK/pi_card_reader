@@ -32,7 +32,7 @@ cd ~
 if [[ -d pi_card_reader/ ]]
 then
     cd pi_card_reader/
-    git pull
+    git pull --stat
 else 
     git clone https://github.com/SontranBK/pi_card_reader
 fi
