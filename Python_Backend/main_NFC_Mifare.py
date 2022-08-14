@@ -414,7 +414,11 @@ def main(start_up_successful,reader_selection):
 		# Notification to start reading
 		print("Start reading !!!!!!!!!\n")
 		send_all('Start: Start using NFC reader',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m') + '; ID thiet bi: ' + mID,MY_TOKEN) # send infomation to User interface
-		send_all('','',MY_TOKEN) # send infomation to User interface
+		send_all('Test1','',MY_TOKEN) # send test message infomation to User interface
+		send_all('Test2','',MY_TOKEN) # send test message infomation to User interface
+		send_all('Test3','',MY_TOKEN) # send test message infomation to User interface
+		send_all('Test4','',MY_TOKEN) # send test message infomation to User interface
+		send_all('Test5','',MY_TOKEN) # send test message infomation to User interface
 		time.sleep(block_errorNoti_time)	
 	else:
 		# Wait 10 secs and perform reboot 
