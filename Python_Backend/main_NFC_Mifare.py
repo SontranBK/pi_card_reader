@@ -79,9 +79,6 @@ school_name_db = ""
 # Database link
 database_link = None
 
-
-# Start up check
-start_up_successful = True
 	
 #Initialize framework for our readers
 try:
@@ -98,11 +95,10 @@ except:
 		reader_selection = "DE_950"
 		print("Now connect to DE-950")
 	except: 
-		start_up_successful = False
 		ser = None
 		print ('Error: Reader not connected')
-		send_all('Error: Reader not connected',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN) # send infomation to User interface
-			
+		reader_selection = "Not connected"
+		
 if reader_selection == "DE_950":
 	# Command for DU-950 reader
 	# Please refer to our provided protocol for DE-950
@@ -368,7 +364,10 @@ SECTION 3: MAIN PROGRAM
 """
 
 
-def main(start_up_successful,reader_selection):
+def main(reader_selection):
+	
+	# Start up check
+	start_up_successful = True
 
 	try:
 		conn_log = sqlite3.connect("pi_card_reader/Database/log_retry.db")
@@ -394,7 +393,11 @@ def main(start_up_successful,reader_selection):
 		start_up_successful = False
 		print("Error: UI Token not found !!!!!!!!!\n")
 		MY_TOKEN = 'c7y9di1Dwje8TXegJiyBZX:APA91bH-SZpjbjx2YWl0MSMb4FIkSIvzbncn7PQjHUvcqaKdNPFrv9YdcJvEffdB4DUDe5l4ip1DO88o4Du9xinaWTubXWUXGsW-G8Qn36S6WJJ5LJ8i64Wdj-CxVuEFHdNWfo8t_Oj1'
-	
+		
+	if reader_selection == "Not connected":
+		start_up_successful = False
+		send_all('Error: Reader not connected',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN) # send infomation to User interface
+		
 	# Initialize our local database
 	try:
 		database_link = 'pi_card_reader/Database/Local_database/'+ date.today().strftime('%d_%m_%Y') +'.db'
@@ -438,17 +441,19 @@ def main(start_up_successful,reader_selection):
 			data = read_NFC_DE_950(ser)
 		elif reader_selection == "AB_Circle":
 			data = read_NFC_AB_Circle(readers())
-
+		
 		# Timestamp for measurement: finish reading NFC card
 		time2 = time.time()
 
 		# If NFC reader return invalid data, data is in wrong format
 		if data == "Wrong data format":
 			send_all('Error: Wrong data format',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
+			print('Error: Wrong data format')
 			time.sleep(block_errorNoti_time)
 		# If hexa data in NFC card is not valid
 		elif data == "Hexa not valid":
 			send_all('Error: Hexa not valid',datetime.now().strftime('%H:%M') + ', ' + date.today().strftime('%d/%m'),MY_TOKEN)
+			print('Error: Hexa not valid')
 			time.sleep(block_errorNoti_time)
 		# If NFC card is presented and NFC reader return valid data
 		elif data != "Hexa not valid" and data != "Wrong data format" and data != None:
@@ -547,4 +552,4 @@ def main(start_up_successful,reader_selection):
 			
 
 if __name__ == "__main__":
-	main(start_up_successful,reader_selection)
+	main(reader_selection)
