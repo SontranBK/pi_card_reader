@@ -278,7 +278,8 @@ def read_NFC_DE_950(ser):
 # Read data from our NFC reader by sending LOADKEY-AUTH-READ command of AB Circle reader
 def read_NFC_AB_Circle(r):
 	try:
-		connection = r[0].createConnection()
+		# connection = r[1].createConnection() # for CIR315-B AB Circle
+		connection = r[0].createConnection() # for CIR315-A AB Circle
 		#print(connection)
 		connection.connect()
 		card_present = True
