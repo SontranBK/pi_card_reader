@@ -12,11 +12,11 @@ Now our device supports following readers:
 
 ## 2. Updates and releases!!!
 
-- [X]【May 17, 2022】 version 0.0.3 (Pre-release)
-- [X]【Jun 03, 2022】 version 1.0.0
-- [X]【Jun 07, 2022】 version 1.0.1
-- [X]【Jun 27, 2022】 version 1.0.2
-- [X]【Sep 15, 2022】 version 1.0.3
+* 【May 17, 2022】 version 0.0.3 (Pre-release)
+* 【Jun 03, 2022】 version 1.0.0
+* 【Jun 07, 2022】 version 1.0.1
+* 【Jun 27, 2022】 version 1.0.2
+* 【Sep 15, 2022】 version 1.0.3
 
 ***For more detail about features in each version, please check out [product releases](https://github.com/SontranBK/pi_card_reader/releases)***
 
@@ -41,3 +41,4 @@ This product is developed based on these tech:
 ## 6. Authors and credits:
 
 In research and development process, all credits go to ***Son Tran BK and CTARG LAB members***, in EEE, HUST (Hanoi University of Science and Technology), Ha Noi, Viet Nam
+
