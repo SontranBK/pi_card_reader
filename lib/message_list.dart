@@ -444,9 +444,9 @@ class _MessageList extends State<MessageList> {
           transitionBuilder: (_, anim, __, child) {
             Tween<Offset> tween;
             if (anim.status == AnimationStatus.reverse) {
-              tween = Tween(begin: Offset(1, 0), end: Offset.zero); //v26
+              tween = Tween(begin: Offset(0, 0), end: Offset.zero); //v26
             } else {
-              tween = Tween(begin: Offset(1, 0), end: Offset.zero); //v26
+              tween = Tween(begin: Offset(0, 0), end: Offset.zero); //v26
             }
 
             return SlideTransition(
