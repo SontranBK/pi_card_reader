@@ -1,6 +1,6 @@
 cd ~
-echo 1 | sudo -S cp pi_card_reader/Python_Backend/main_auto_updateUI.py ~
-echo 1 | sudo -S python3 main_auto_updateUI.py
+echo 12345678 | sudo -S cp pi_card_reader/Python_Backend/main_auto_updateUI.py ~
+echo 12345678 | sudo -S python3 main_auto_updateUI.py
 if [ $(jq ".required_rebuild" system_config.json) = 1 ];
 then
   echo 'Đang thực hiện build giao diện mới\n'
@@ -25,8 +25,6 @@ cmd4="sh backend_retryServer.sh"
 
 cd ~
 cd pi_card_reader/Bash_Script/
-gnome-terminal --tab --title="$title1" --command="bash -c '$cmd1; $SHELL'" \
-	       --tab --title="$title2" --command="bash -c '$cmd2; $SHELL'" \
-               --tab --title="$title3" --command="bash -c '$cmd3; $SHELL'" \
-               --tab --title="$title4" --command="bash -c '$cmd4; $SHELL'" 
+x-terminal-emulator --new-tab --command="bash -c '$cmd1; $SHELL'" 
+	        
               

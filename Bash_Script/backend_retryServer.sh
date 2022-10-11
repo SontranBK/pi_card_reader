@@ -1,4 +1,4 @@
 cd ~
-echo 1 | sudo -S cp pi_card_reader/Python_Backend/main_retry_server.py ~
+echo 12345678 | sudo -S cp pi_card_reader/Python_Backend/main_retry_server.py ~
 sleep 100
-echo 1 | sudo -S python3 main_retry_server.py
+echo 12345678 | sudo -S python3 main_retry_server.py

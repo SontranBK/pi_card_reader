@@ -445,10 +445,7 @@ class _MessageList extends State<MessageList> {
             Tween<Offset> tween;
             if (anim.status == AnimationStatus.reverse) {
               tween = Tween(begin: Offset(0, 0), end: Offset.zero); //v26
-            } else {
-              tween = Tween(begin: Offset(0, 0), end: Offset.zero); //v26
-            }
-
+            } 
             return SlideTransition(
               position: tween.animate(anim),
               child: FadeTransition(

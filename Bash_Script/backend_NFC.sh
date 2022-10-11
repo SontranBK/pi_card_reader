@@ -1,17 +1,20 @@
+cmd4="sh backend_retryServer.sh"
+x-terminal-emulator --new-tab --command="bash -c '$cmd4; $SHELL'" 
+
 cd ~
-echo 1 | sudo -S cp pi_card_reader/Python_Backend/main_NFC_Mifare.py ~
-echo 1 | sudo -S cp pi_card_reader/Python_Backend/service-account.json ~
+echo 12345678 | sudo -S cp pi_card_reader/Python_Backend/main_NFC_Mifare.py ~
+echo 12345678 | sudo -S cp pi_card_reader/Python_Backend/service-account.json ~
 cd Downloads/
-echo 1 | sudo -S rm API_TOKEN.txt
-echo 1 | sudo -S rm API_TOKEN\ \(1\).txt
-echo 1 | sudo -S rm API_TOKEN\ \(2\).txt
-echo 1 | sudo -S rm API_TOKEN\ \(3\).txt
-echo 1 | sudo -S rm API_TOKEN\ \(4\).txt
-echo 1 | sudo -S rm API_TOKEN\ \(5\).txt
-echo 1 | sudo -S rm API_TOKEN\ \(6\).txt
-echo 1 | sudo -S rm API_TOKEN\ \(7\).txt
-echo 1 | sudo -S rm API_TOKEN\ \(8\).txt
-echo 1 | sudo -S rm API_TOKEN\ \(9\).txt
+echo 12345678 | sudo -S rm API_TOKEN.txt
+echo 12345678 | sudo -S rm API_TOKEN\ \(1\).txt
+echo 12345678 | sudo -S rm API_TOKEN\ \(2\).txt
+echo 12345678 | sudo -S rm API_TOKEN\ \(3\).txt
+echo 12345678 | sudo -S rm API_TOKEN\ \(4\).txt
+echo 12345678 | sudo -S rm API_TOKEN\ \(5\).txt
+echo 12345678 | sudo -S rm API_TOKEN\ \(6\).txt
+echo 12345678 | sudo -S rm API_TOKEN\ \(7\).txt
+echo 12345678 | sudo -S rm API_TOKEN\ \(8\).txt
+echo 12345678 | sudo -S rm API_TOKEN\ \(9\).txt
 # Check if API_TOKEN.txt exists
 # Wait 2 sec * 50 = 100 secs 
 count=0
@@ -30,14 +33,14 @@ do
 		sleep 2
 	fi
 done  
-echo 1 | sudo -S rm API_TOKEN\ \(1\).txt
-echo 1 | sudo -S rm API_TOKEN\ \(2\).txt
-echo 1 | sudo -S rm API_TOKEN\ \(3\).txt
-echo 1 | sudo -S rm API_TOKEN\ \(4\).txt
-echo 1 | sudo -S rm API_TOKEN\ \(5\).txt
-echo 1 | sudo -S rm API_TOKEN\ \(6\).txt
-echo 1 | sudo -S rm API_TOKEN\ \(7\).txt
-echo 1 | sudo -S rm API_TOKEN\ \(8\).txt
-echo 1 | sudo -S rm API_TOKEN\ \(9\).txt
+echo 12345678 | sudo -S rm API_TOKEN\ \(1\).txt
+echo 12345678 | sudo -S rm API_TOKEN\ \(2\).txt
+echo 12345678 | sudo -S rm API_TOKEN\ \(3\).txt
+echo 12345678 | sudo -S rm API_TOKEN\ \(4\).txt
+echo 12345678 | sudo -S rm API_TOKEN\ \(5\).txt
+echo 12345678 | sudo -S rm API_TOKEN\ \(6\).txt
+echo 12345678 | sudo -S rm API_TOKEN\ \(7\).txt
+echo 12345678 | sudo -S rm API_TOKEN\ \(8\).txt
+echo 12345678 | sudo -S rm API_TOKEN\ \(9\).txt
 cd ~
-echo 1 | sudo -S python3 main_NFC_Mifare.py
+echo 12345678 | sudo -S python3 main_NFC_Mifare.py
