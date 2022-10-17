@@ -11,16 +11,6 @@ https://github.dev/SontranBK/pi_card_reader
 - Select SD card
 - Flash 
 
-1.2) Wait for OS to write, then find file with name: config.txt
-
-- Identify the following line:
-
-dtoverlay=vc4-kms-v3d
-
-- And change it to:
-
-dtoverlay=vc4-fkms-v3d
-
 """""""""""""""""
 2) Initialize operating system and source code
 """""""""""""""""
@@ -36,11 +26,6 @@ cd ~
 sudo apt update
 sudo apt install git
 git clone https://github.com/SontranBK/pi_card_reader 
-
-2.3) Look at the left of the screen, you see lots of applications:
-
-Left-click every apps and choose "Remove from favorites", keep "Files" 
-Find apps named "Terminal", "Chromium browser", and "Text editor", left-click and "Add to favorites"
 
 """""""""""""""""
 3) Open "Terminal" and run those command to install dependencies:
@@ -153,29 +138,6 @@ http://localhost:41202
 http://localhost:41203
 http://localhost:41204
 http://localhost:41205
-
-4.7) Go to Setting (of Ubuntu) => Appearance => Enable "Auto-hide the Dock"
-4.8) Go to Setting (of Ubuntu) => Power => Power Saving Options => Change to "Never" 
-(Make Ubuntu never goes to "sleep" mode)
-
-4.9) Install virtual keyboard on device (screen keyboard)
-
-- Open Setting on Ubuntu
-- Choose Accessibility
-- In Typing section -> Turn "Screen Keyboard" to "on" 
-
-4.10) To turn off automatically software update
+4.7) To turn off automatically software update
 - sudo apt remove update-notifier
 
-"""""""""""""""""
-5) Change the apperance of Ubuntu, make our product commercialized  
-"""""""""""""""""
-5.1) Bootup apperance: Install plymouth with following command:
-
-cd ~
-sudo apt install plymouth-themes
-cd ~
-sudo cp pi_card_reader/Ubuntu_Bootup_Modification/bgrt-fallback.png /usr/share/plymouth/themes/spinner
-cd ~
-sudo cp pi_card_reader/Ubuntu_Bootup_Modification/watermark.png /usr/share/plymouth/themes/spinner
-reboot
