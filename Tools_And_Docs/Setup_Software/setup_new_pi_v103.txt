@@ -30,7 +30,7 @@ dtoverlay=vc4-fkms-v3d
 - Your name, user, desktop name: metaedu
 - Choose "auto login" => Must auto login
 
-2.2) Download code: Open "Terminal" and run those commands (don't type, copy paste):
+2.2) Download code: Open "Terminal Emulator" and run those commands (don't type, copy paste):
 
 cd ~
 sudo apt update
@@ -44,10 +44,7 @@ Find apps named "Terminal", "Chromium browser", and "Text editor", left-click an
 
 """""""""""""""""
 3) Open "Terminal" and run those command to install dependencies:
-if there's issue with "Could not get lock /var/cache/apt/archives/lock, or process is hold, ...", 
-here is the solution: https://itsfoss.com/fix-ubuntu-install-error/
 
-cd into /var/lib/dpkg/ and remove lock-fontend by: rm lock-fontend
 """""""""""""""""
 // You can copy paste those commands instead of typing
 
@@ -114,6 +111,9 @@ sudo systemctl status pcscd.service
 
 ### To install flutter
 cd ~
+sudo apt update
+sudo apt install snapd
+sudo snap install core
 sudo snap install flutter --classic
 cd ~
 cd pi_card_reader/
@@ -125,21 +125,20 @@ sh pi_card_reader/Tools_And_Docs/Logo_School_Tool/update_logo_school.sh
 """""""""""""""""
 4) Make system auto-boot and auto-config 
 """""""""""""""""
-4.1) Click "show application" or "activities", type in "Startup Application" and open it, then click "Add", then set:
+4.1) Click "Application", click "Settings" and click "Session and Startup ", open "Application Autostart" then click "Add", then set:
 - Name: terminal
-- Command: click "browser", then find following path: "/user/bin/gnome-terminal.real"
+- Command: click "browser", then find following path: "/user/bin/x-terminal-emulator.real"
 
-now right-click Terminal and open Preferences: 
-- change the name of current profile to "Debug"
-- add new Profiles named "Meta_edu" and click down arrow, then choose "Set as default"
-- now navigate to "Command" tab in profile "Meta_edu", choose both "Run command as a login shell" and "Run custom command instead of my shell"
-- add line "sh ./pi_card_reader/Bash_Script/auto_boot.sh" to Custom command
-- if possible, in "Text" tab, set "Initial terminal size" to 100 columns and 100 rows
+now right-click Terminal-Emulator and open Preferences:
+- Open "Profiles", open "Command"
+- Choose both "Run command as a login shell" and "Run custom command instead of my shell"
+- Add line "sh ./pi_card_reader/Bash_Script/auto_boot.sh" to Custom command
+4.2) Click "Application", click "Settings", open "Settings Manager", click "Screensaver", then open "Display Modes", change Mode to "Disable Screen Saver" 
 
-4.2) Install "Autohide Downloads Bar" extension for chromium here (https://chrome.google.com/webstore/detail/autohide-downloads-bar/iaefpjibipfaofmigecedfapfgplmplo)
+4.3) Install "Autohide Downloads Bar" extension for chromium here (https://chrome.google.com/webstore/detail/autohide-downloads-bar/iaefpjibipfaofmigecedfapfgplmplo)
 and set "Delay Timer" of this extension to 0.
 
-4.3) Open Chromium and open link (chrome://settings/content/notifications), in "Allowed to send notifications" part, add 5 link: 
+4.5) Open Chromium and open link (chrome://settings/content/notifications), in "Allowed to send notifications" part, add 5 link: 
 http://localhost:41200
 http://localhost:41201
 http://localhost:41202
@@ -147,7 +146,7 @@ http://localhost:41203
 http://localhost:41204
 http://localhost:41205
 
-4.4) Open Chromium and open link (chrome://settings/content/automaticDownloads), add 5 link: 
+4.6) Open Chromium and open link (chrome://settings/content/automaticDownloads), add 5 link: 
 http://localhost:41200
 http://localhost:41201
 http://localhost:41202
@@ -155,25 +154,18 @@ http://localhost:41203
 http://localhost:41204
 http://localhost:41205
 
-4.5) Go to Setting (of Ubuntu) => Appearance => Enable "Auto-hide the Dock"
-4.6) Go to Setting (of Ubuntu) => Power => Power Saving Options => Change to "Never" 
+4.7) Go to Setting (of Ubuntu) => Appearance => Enable "Auto-hide the Dock"
+4.8) Go to Setting (of Ubuntu) => Power => Power Saving Options => Change to "Never" 
 (Make Ubuntu never goes to "sleep" mode)
 
-4.7) Install virtual keyboard on device (screen keyboard)
+4.9) Install virtual keyboard on device (screen keyboard)
 
 - Open Setting on Ubuntu
 - Choose Accessibility
 - In Typing section -> Turn "Screen Keyboard" to "on" 
 
-4.8) To turn off automatically software update
-
-https://askubuntu.com/questions/1139545/how-do-i-utterly-stop-automatic-update-checks-in-ubuntu-19-04
-https://linuxnightly.com/how-to-disable-automatic-updates-in-ubuntu/
-
-- First, open up the “Software & Updates” utility.
-- Head over to the “updates” tab 
-- Change the “Automatically check for updates” option to never
-- Change the "Notify me of a new ubuntu version" option to never
+4.10) To turn off automatically software update
+- sudo apt remove update-notifier
 
 """""""""""""""""
 5) Change the apperance of Ubuntu, make our product commercialized  
