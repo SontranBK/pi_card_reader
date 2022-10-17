@@ -1,13 +1,15 @@
 You can login Github account with colab right to edit this source code at:
 https://github.dev/SontranBK/pi_card_reader
 """""""""""""""""
-1) Install Operating System (Hệ điều hành) for Raspberry Pi
+1) Install Operating System Armbian (Hệ điều hành) for Orange Pi 3
 """""""""""""""""
-1.1) Download and install Raspberry Pi Imager to your laptop here: https://www.raspberrypi.com/software/
-- Insert SD card (32 GB, 64 GB) into your laptop
-- Open Raspberry Pi Imager 
--> Choose storage: the SD card 
--> Choose Operating System: Other general-purpose OS -> Ubuntu -> Ubuntu Desktop
+1.1) Download and install Orange Pi 3 Imager to your laptop here: https://www.armbian.com/orange-pi-3/
+- Download balenaEtcher to your latop here : https://www.balena.io/etcher/
+- Insert SD card (32 GB, 64 GB, 128 GB ) into your laptop
+- Open balenaEtcher, click flash from flie
+- Choose Armbian Imager which downloaded 
+- Select SD card
+- Flash 
 
 1.2) Wait for OS to write, then find file with name: config.txt
 
