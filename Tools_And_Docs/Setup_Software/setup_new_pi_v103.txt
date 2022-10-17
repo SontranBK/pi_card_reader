@@ -14,11 +14,11 @@ https://github.dev/SontranBK/pi_card_reader
 """""""""""""""""
 2) Initialize operating system and source code
 """""""""""""""""
-2.1) Install setting for Ubuntu system, set user name to "metaedu", password to 1
-- Choose Location: Ho Chi Minh
-- Language/ keyboard: English US
-- Your name, user, desktop name: metaedu
-- Choose "auto login" => Must auto login
+2.1) Install setting for Debian system :
+- Run the commnad "passwd" to change password, Enter password default(orangepi) in line "Current password", then set New password to "12345678"
+- Run command "timedatectl list-timezones" to list all available time zones
+- Identify which time zone is accurate to your location, run the command "sudo timedatectl set-timezone your_time_zone" 
+- For example, to change the system’s timezone to Asia/Ho_Chi_Minh , you would run : "sudo timedatectl set-timezone Asia/Ho_Chi_Minh"
 
 2.2) Download code: Open "Terminal Emulator" and run those commands (don't type, copy paste):
 
